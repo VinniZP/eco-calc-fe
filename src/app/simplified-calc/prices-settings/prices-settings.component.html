@@ -1,0 +1,15 @@
+<div class="card bg-base-300 w-full shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title">Настройки цен</h2>
+    <ng-container [formGroup]="form">
+    <div class="form-control flex items-center flex-row gap-2 justify-between">
+      <div class="label">Цена за 1000 калорий</div>
+      <input type="text" class="input input-sm w-32 input-bordered"  [class.input-error]="form.controls.caloriesCost.invalid" formControlName="caloriesCost">
+    </div>
+    <div class="form-control flex items-center flex-row gap-2 justify-between">
+      <div class="label">% Прибыли</div>
+      <input type="text" class="input input-sm w-32 input-bordered"  [class.input-error]="form.controls.margin.invalid" formControlName="margin">
+    </div>
+    </ng-container>
+  </div>
+</div>

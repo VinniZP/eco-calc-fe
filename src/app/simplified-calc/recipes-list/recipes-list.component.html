@@ -1,0 +1,111 @@
+<div class="flex flex-row p-4 gap-4 flex-wrap" [formGroup]="filters">
+  <label class="input input-sm input-bordered flex items-center gap-2">
+    <input type="text" class="grow" placeholder="Поиск" formControlName="search" />
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
+      <path
+        fill-rule="evenodd"
+        d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+        clip-rule="evenodd"
+      />
+    </svg>
+  </label>
+  <ng-select
+    formControlName="profession"
+    class="w-full max-w-xs"
+    [multiple]="true"
+    placeholder="Профессия"
+    [closeOnSelect]="false"
+  >
+    @for (skill of skills(); track skill) {
+      <ng-option [value]="skill">{{ skill | stripTags }}</ng-option>
+    }
+    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+      <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }" />
+      {{ item | stripTags }}
+    </ng-template>
+    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+      @for (item of items | slice: 0 : 2; track item) {
+        <div class="ng-value">
+          <span class="ng-value-label">{{ item | stripTags }}</span>
+          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+        </div>
+      }
+      @if (items.length > 2) {
+        <div class="ng-value">
+          <span class="ng-value-label">еще {{ items.length - 2 }}...</span>
+        </div>
+      }
+    </ng-template>
+  </ng-select>
+  <ng-select
+    formControlName="table"
+    class="w-full max-w-xs"
+    [multiple]="true"
+    placeholder="Верстак"
+    [closeOnSelect]="false"
+  >
+    @for (table of tables(); track table) {
+      <ng-option [value]="table">{{ table }}</ng-option>
+    }
+    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+      <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }" />
+      {{ item }}
+    </ng-template>
+    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+      @for (item of items | slice: 0 : 2; track item) {
+        <div class="ng-value">
+          <span class="ng-value-label">{{ item }}</span>
+          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+        </div>
+      }
+      @if (items.length > 2) {
+        <div class="ng-value">
+          <span class="ng-value-label">еще {{ items.length - 2 }}...</span>
+        </div>
+      }
+    </ng-template>
+  </ng-select>
+  @if (dataSource.availableSelling()) {
+    <div class="flex items-center h-8 gap-2">
+      <input type="checkbox" class="toggle" checked="checked" formControlName="selling" />
+      <span>Только что я продаю</span>
+    </div>
+  }
+</div>
+<table class="table table-zebra table-sm" cdk-table recycleRows [dataSource]="dataSource.paginatedData()">
+  <ng-container cdkColumnDef="displayName">
+    <th cdk-header-cell *cdkHeaderCellDef>Продукт</th>
+    <td cdk-cell *cdkCellDef="let row"><app-product-link [product]="row.product" /></td>
+  </ng-container>
+  <ng-container cdkColumnDef="craft">
+    <th cdk-header-cell *cdkHeaderCellDef>Профессия / Стол</th>
+    <td cdk-cell *cdkCellDef="let row">
+      <div class="flex flex-col gap-2">
+        @for (recipe of row.recipes | uniqueRecipes; track recipe.id) {
+          <app-profession-line
+            (filterByProfession)="filterByProfession($event)"
+            (filterByTable)="filterByTable($event)"
+            [recipe]="recipe"
+          />
+        }
+      </div>
+    </td>
+  </ng-container>
+  <ng-container cdkColumnDef="actions">
+    <th cdk-header-cell class="w-32" *cdkHeaderCellDef></th>
+
+    <td cdk-cell *cdkCellDef="let row">
+      <button class="btn btn-outline btn-xs btn-primary" (click)="dialogManager.open(row.product)">Посчитать</button>
+    </td>
+  </ng-container>
+  <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<div class="p-4 flex items-center justify-center">
+  <app-paginator
+    [page]="dataSource.pagination().page"
+    [pageSize]="dataSource.pagination().pageSize"
+    [totalPages]="dataSource.totalPages()"
+    (pageChange)="changePage($event)"
+  ></app-paginator>
+</div>

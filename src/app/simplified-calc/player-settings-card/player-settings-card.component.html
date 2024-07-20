@@ -1,0 +1,19 @@
+<div class="card bg-base-300 w-full shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title">Навыки и умения</h2>
+    <ng-select (change)="onChange($event)" placeholder="Выберите навык">
+      @for (skill of skills(); track skill) {
+        <ng-option [value]="skill">{{skill}}</ng-option>
+      }
+    </ng-select>
+    @for(skill of selectedSkills(); track skill.skill) {
+      <app-skill-item [skill]="skill" />
+    }
+    <div class="divider"></div>
+
+  </div>
+</div>
+
+
+
+

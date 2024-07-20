@@ -1,0 +1,274 @@
+<div class="flex gap-4">
+  <div class="form-control flex flex-col items-center">
+    <div class="label text-sm">Количество крафтов:</div>
+    <div class="join">
+      <input
+        class="join-item btn btn-sm"
+        [value]="1"
+        type="radio"
+        [name]="'craftAmount-' + productName()"
+        [ngModel]="craftAmount()"
+        (ngModelChange)="craftAmount.set(1)"
+        aria-label="1"
+      />
+      <input
+        class="join-item btn btn-sm"
+        [value]="10"
+        type="radio"
+        [name]="'craftAmount-' + productName()"
+        [ngModel]="craftAmount()"
+        (ngModelChange)="craftAmount.set(10)"
+        aria-label="10"
+      />
+      <input
+        class="join-item btn btn-sm"
+        [value]="100"
+        type="radio"
+        [name]="'craftAmount-' + productName()"
+        [ngModel]="craftAmount()"
+        (ngModelChange)="craftAmount.set(100)"
+        aria-label="100"
+      />
+    </div>
+  </div>
+  <div class="form-control">
+    <div class="label text-sm">Модуль:</div>
+    <div class="join">
+      <input
+        class="join-item btn btn-sm"
+        [value]="0"
+        type="radio"
+        [name]="'module-' + productName()"
+        [ngModel]="module()"
+        (ngModelChange)="module.set(0)"
+        aria-label="0"
+      />
+      <input
+        class="join-item btn btn-sm"
+        [value]="1"
+        type="radio"
+        [name]="'module-' + productName()"
+        [ngModel]="module()"
+        (ngModelChange)="module.set(1)"
+        aria-label="1"
+      />
+      <input
+        class="join-item btn btn-sm"
+        [value]="2"
+        type="radio"
+        [name]="'module-' + productName()"
+        [ngModel]="module()"
+        (ngModelChange)="module.set(2)"
+        aria-label="2"
+      />
+      <input
+        class="join-item btn btn-sm"
+        [value]="3"
+        type="radio"
+        [name]="'module-' + productName()"
+        [ngModel]="module()"
+        (ngModelChange)="module.set(3)"
+        aria-label="3"
+      />
+      <input
+        class="join-item btn btn-sm"
+        [value]="4"
+        type="radio"
+        [name]="'module-' + productName()"
+        [ngModel]="module()"
+        (ngModelChange)="module.set(4)"
+        aria-label="4"
+      />
+      <input
+        class="join-item btn btn-sm"
+        [value]="5"
+        type="radio"
+        [name]="'module-' + productName()"
+        [ngModel]="module()"
+        (ngModelChange)="module.set(5)"
+        aria-label="5"
+      />
+    </div>
+  </div>
+  <div class="form-control">
+    <div class="label text-sm">&nbsp;</div>
+    <div class="flex items-center h-8 gap-2">
+      <input
+        type="checkbox"
+        class="toggle"
+        checked="checked"
+        [ngModel]="lavish()"
+        (ngModelChange)="lavish.set($event)"
+      />
+      <span>Чистое рабочее место</span>
+    </div>
+  </div>
+  <div class="form-control">
+    <div class="label text-sm">Уровень профессии:</div>
+    <ng-select [ngModel]="level()" (ngModelChange)="level.set($event)" [clearable]="false">
+      <ng-option [value]="1">Уровень 1</ng-option>
+      <ng-option [value]="2">Уровень 2</ng-option>
+      <ng-option [value]="3">Уровень 3</ng-option>
+      <ng-option [value]="4">Уровень 4</ng-option>
+      <ng-option [value]="5">Уровень 5</ng-option>
+      <ng-option [value]="6">Уровень 6</ng-option>
+      <ng-option [value]="7">Уровень 7</ng-option>
+    </ng-select>
+  </div>
+</div>
+
+<div class="rounded border border-base-300 mt-4 shadow-sm">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Ингридиент</th>
+        <th class="w-[140px]">Кол-во</th>
+        <th>Цена</th>
+        <th>Цена за единицу</th>
+        <th>Общая сумма</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (ingredient of recipe().ingredients; track ingredient.name + ingredient.tag) {
+        <tr>
+          <td>
+            @if (ingredient.name) {
+              <app-product-link [product]="ingredient.name" [static]="ingredient.isStatic" />
+            } @else {
+              <span [class.text-warning]="ingredient.isStatic">Тег: {{ ingredient.tag }}</span>
+            }
+          </td>
+          <td>{{ calculations().ingredients[ingredient.name || ingredient.tag].quantity }}</td>
+          <td>
+            <app-ingredient-price [item]="ingredient.name || ingredient.tag" />
+          </td>
+          <td>{{ calculations().ingredients[ingredient.name || ingredient.tag].price | number: "0.0-2" }}</td>
+          <td>{{ calculations().ingredients[ingredient.name || ingredient.tag].totalPrice | number: "0.0-2" }}</td>
+        </tr>
+      }
+      <tr>
+        <td>Калории</td>
+        <td>
+          {{ recipe().laborCost * craftAmount() }} <br />
+          <div class="badge badge-neutral badge-sm">{{ caloriesCount() }} калорий</div>
+        </td>
+        <td>
+          <app-ingredient-price item="calories" />
+        </td>
+        <td>{{ calculations().caloriesCost | number: "0.0-2" }}</td>
+        <td>{{ calculations().totalCaloriesCost | number: "0.0-2" }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rounded border border-base-300 mt-4 shadow-sm">
+  <div class="px-2">
+    <p class="mt-2">Общая стоимость ингридиентов: {{ calculations().totalRecipeCost | number: "0.0-2" }}</p>
+    <div class="form-control">
+      <div class="label text-sm">Процент прибыли:</div>
+
+      <div class="join">
+        @for (marginOpt of marginOptions; track marginOpt) {
+          <input
+            class="join-item btn btn-sm"
+            [value]="marginOpt"
+            type="radio"
+            [name]="'margin-' + productName()"
+            [ngModel]="margin()"
+            (ngModelChange)="margin.set(marginOpt)"
+            [attr.aria-label]="marginOpt + '%'"
+          />
+        }
+      </div>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Ингридиент</th>
+        <th>Кол-во</th>
+        <th>Себестоимость (за единицу)</th>
+        <th>Цена с наценкой (за единицу)</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of recipe().products; track product.name) {
+        <tr>
+          <td>
+            <app-product-link [product]="product.name" />
+          </td>
+          <td>{{ calculations().products[product.name].quantity | number: "0.0-2" }}</td>
+          <td>
+            @if (priceOverride()[product.name]?.overrided !== true) {
+              <button
+                tpPlacement="bottom"
+                [tp]="
+                  calculations().products[product.name].isReturn
+                    ? 'Цена статическая, товар возвращается обратно'
+                    : 'Скопировать'
+                "
+                [class.btn-primary]="!calculations().products[product.name].isReturn"
+                class="btn btn-outline btn-xs"
+                (click)="copy(product.name, 'price')"
+              >
+                {{ calculations().products[product.name].price | number: "0.0-2" }}
+              </button>
+              <button
+                class="btn btn-link btn-xs"
+                (click)="editPrice(product.name)"
+                tpPlacement="bottom"
+                tp="Нажмите если знаете точную стоимость товара для более точного расчета."
+              >
+                изменить
+              </button>
+            } @else {
+              <app-ingredient-price
+                [updateStrategy]="false"
+                [item]="product.name"
+                [price]="priceOverride()[product.name]?.price ?? 0"
+                (priceUpdated)="overridePrice(product.name, $event)"
+              />
+              <button
+                class="btn btn-link btn-xs"
+                (click)="cancelOverride(product.name)"
+                tpPlacement="bottom"
+                tp="Нажмите если хотите отменить ручную цену"
+              >
+                отменить
+              </button>
+            }
+          </td>
+          <td>
+            <button
+              tpPlacement="bottom"
+              [tp]="
+                calculations().products[product.name].isReturn
+                  ? 'Цена статическая, товар возвращается обратно'
+                  : 'Скопировать'
+              "
+              [class.btn-primary]="!calculations().products[product.name].isReturn"
+              class="btn btn-outline btn-xs"
+              (click)="copy(product.name, 'marginPrice')"
+            >
+              {{ calculations().products[product.name].marginPrice | number: "0.0-2" }}
+            </button>
+          </td>
+          <td>
+            @if (!calculations().products[product.name].isReturn) {
+              <div class="space-x-2">
+                <button class="btn btn-outline btn-primary btn-xs" (click)="savePrices(product.name, false)">
+                  Сохранить
+                </button>
+                <button class="btn btn-outline btn-primary btn-xs" (click)="savePrices(product.name, true)">
+                  Сохранить и закрыть
+                </button>
+              </div>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

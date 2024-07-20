@@ -1,0 +1,1 @@
+{  "/api": {    "target": "https://eco.kamgames.xyz/",    "logLevel": "debug",    "changeOrigin": true,    "secure": false  }}

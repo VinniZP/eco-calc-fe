@@ -1,0 +1,18 @@
+<div class="flex items-center gap-3">
+  <input
+    type="number"
+    class="input input-bordered input-xs w-[60px]"
+    (change)="handleChange($event)"
+    [value]="itemPrice()"
+  />
+  @if (hasShopPrice()) {
+    <div
+      class="text-white text-lg cursor-pointer"
+      (click)="openShopPicker()"
+      tp="Выбрать цену из магазина"
+      tpPlacement="bottom"
+    >
+      <app-shop-icon />
+    </div>
+  }
+</div>

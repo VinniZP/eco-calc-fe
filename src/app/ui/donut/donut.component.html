@@ -1,0 +1,14 @@
+<svg height="100%" width="100%" viewBox="0 0 80 80">
+  <circle
+    *ngFor="let item of items(); let i = index"
+    cx="40"
+    cy="40"
+    r="30"
+    fill="transparent"
+    stroke-width="20"
+    [attr.stroke-dasharray]="getPerimeter(30)"
+    [attr.stroke-dashoffset]="getOffset(30, i)"
+    [attr.stroke]="getColor(i)"
+    [tp]="item.name + ': ' + item.count"
+  />
+</svg>

@@ -1,0 +1,14 @@
+<div class="card bg-base-300 w-full shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title">Настройки цен</h2>
+    <ng-select (change)="onChange($event)" placeholder="Выберите рецепт" [virtualScroll]="true">
+      @for (recipe of recipes(); track recipe.id) {
+        <ng-option [value]="recipe.id">{{ recipe.displayName }}</ng-option>
+      }
+    </ng-select>
+    <div class="divider"></div>
+    @for(recipe of enabledRecipes(); track recipe.id) {
+      <p>{{recipe.displayName}}</p>
+    }
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<header class="flex items-center justify-between p-4">
+  <h1>Предложения для {{ data.product }}</h1>
+  <button class="btn btn-circle btn-sm" (click)="ref.close()">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+</header>
+<div class="divider mt-0 mb-0"></div>
+<div>
+  <table class="table table-zebra table-bordered">
+    <thead>
+      <th>Продукт</th>
+      <th>Магазин</th>
+      <th>Владелец</th>
+      <th>Количество</th>
+      <th>Цена</th>
+    </thead>
+    <tbody>
+      @for (shop of shops(); track shop.id) {
+        @for (offer of shop.offers; track offer.itemName + offer.buying) {
+          <tr>
+            <td>{{ offer.itemName }}</td>
+            <td>{{ shop.name | stripTags }}</td>
+            <td>{{ shop.owner }}</td>
+            <td>
+              @if (offer.buying) {
+                Покупает {{ offer.quantity }}
+              } @else {
+                Продает {{ offer.quantity }}
+              }
+            </td>
+            <td>
+              <button class="btn btn-outline btn-primary btn-xs" (click)="pickPrice(+offer.price)">
+                {{ offer.price }}
+              </button>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

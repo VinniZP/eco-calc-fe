@@ -1,0 +1,18 @@
+<div class="navbar bg-base-300 shadow-lg mb-4">
+  <a
+    class="btn btn-ghost btn-sm"
+    routerLink="/"
+    routerLinkActive="btn-active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >Калькулятор цен</a
+  >
+  <a class="btn btn-ghost btn-sm" routerLink="/food" routerLinkActive="btn-active">Симулятор еды</a>
+</div>
+<router-outlet></router-outlet>
+
+@if (loadingState()) {
+  <div class="fixed z-50 inset-0 bg-primary-content flex flex-col items-center justify-center gap-4">
+    <span class="loading loading-spinner loading-lg"></span>
+    <span>Загружаем данные, подождите немного...</span>
+  </div>
+}

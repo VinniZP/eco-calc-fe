@@ -1,0 +1,12 @@
+<div class="join">
+  @for (pageData of pagesToRender(); track pageData.page) {
+    <button
+      class="join-item btn btn-sm"
+      [class.btn-disabled]="pageData.disabled"
+      [class.btn-active]="pageData.page == page()"
+      (click)="pageData.disabled || changePage(pageData.page)"
+    >
+      {{ pageData.text }}
+    </button>
+  }
+</div>

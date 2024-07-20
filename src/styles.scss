@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@angular/cdk/overlay-prebuilt.css";
+
+@import "tippy.js/dist/tippy.css";
+@import "tippy.js/themes/translucent.css";
+@import "tippy.js/animations/scale.css";
+
+@import "@ng-select/ng-select/themes/default.theme.css";
+@import "styles/ng-select";
+
+.ng-select .ng-select-container {
+  min-height: 32px !important;
+  font-size: 14px;
+  @apply text-neutral-content;
+}
+
+.ng-select .ng-select-container {
+  @apply bg-base-200 border-base-content/20 text-base-content;
+}
+.ng-select.ng-select-opened > .ng-select-container {
+  @apply bg-base-200 border-base-content/20 text-base-content;
+}
+
+.ng-dropdown-panel {
+  @apply bg-base-200 border-base-content/20 text-base-content;
+  font-size: 14px;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  @apply bg-base-200 border-base-content/20 text-base-content  #{!important};
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  @apply bg-base-100 border-base-content/20 text-base-content  #{!important};
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+  @apply bg-base-100 border-base-content/20 text-base-content  #{!important};
+  &:hover {
+    @apply bg-base-100 border-base-content/20 text-base-content  #{!important};
+  }
+}
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input > input {
+  @apply text-base-content;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  @apply bg-base-100 border-base-content/20 text-base-content;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon {
+  @apply border-base-content/20 #{!important};
+  &:hover {
+    @apply border-base-content/20 bg-base-300 #{!important};
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
