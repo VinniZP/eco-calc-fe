@@ -65,19 +65,6 @@ export class FoodCalcComponent {
   userService = inject(UserService);
 
   stomachData: Signal<StomachData> = this.userStore.stomach;
-  foodWithTestiness: Signal<(Food & { testiness: string })[]> = computed(() => {
-    const food = this.foodStore.entities();
-    const offers = this.shopsStore.allOffers();
-    const availableItems = offers.filter((o) => !o.buying).map((v) => v.itemName);
-    const testiness = this.userStore.stomach.testiness();
-    return food
-      .filter((f) => availableItems.includes(f.name))
-      .map((f) => ({
-        ...f,
-        testiness: testiness.find((t) => t.name === f.name)?.testiness || 'Не изучено',
-      }))
-      .sort((a, b) => b.calories - a.calories);
-  });
   foodToCal = computed(() => {
     return Object.assign(
       {},
@@ -85,24 +72,6 @@ export class FoodCalcComponent {
         [f.name]: f.calories,
       })),
     );
-  });
-  availableOffers = computed(() => {
-    const offers = this.shopsStore.allOffers();
-    return offers
-      .filter((o) => !o.buying && this.foodToCal()[o.itemName] && o.quantity > 0)
-      .map((v) => {
-        return {
-          item: v.itemName,
-          quantity: v.quantity,
-        };
-      })
-      .reduce(
-        (acc, v) => {
-          acc[v.item] = (acc[v.item] || 0) + v.quantity;
-          return acc;
-        },
-        {} as Record<string, number>,
-      );
   });
   unusedOffers = computed(() => {
     const customEated = this.customEatedList();
