@@ -19,6 +19,7 @@ import { UserConfigStore } from '../../../data/config';
 import { Recipe } from '../../../data/recipes';
 import { IngredientPriceComponent } from '../../ingredient-price/ingredient-price.component';
 import { ProductLinkComponent } from '../../product-link/product-link.component';
+import { TagPickerComponent } from '../../tag-picker/tag-picker.component';
 
 const levelMap: Record<number, number> = {
   1: 0.8,
@@ -54,6 +55,7 @@ const normalizeDecimal = (value: number) => {
     DecimalPipe,
     TippyDirective,
     JsonPipe,
+    TagPickerComponent,
   ],
   templateUrl: './recipe-calculations.component.html',
   styleUrl: './recipe-calculations.component.scss',
@@ -93,7 +95,7 @@ export class RecipeCalculationsComponent implements OnInit {
       ...recipe.ingredients.map((ingredient) => {
         const moduleMult = ingredient.isStatic ? 1 : moduleReduce[module];
         const lavishMult = ingredient.isStatic ? 1 : lavish ? 0.95 : 1;
-        let name = ingredient.name || ingredient.tag;
+        let name = ingredient.name || this.getOverrideForTag(ingredient.tag) || ingredient.tag;
         const quantity = Math.ceil(ingredient.amount * craftAmount * moduleMult * lavishMult);
         const price = itemPrices[name] || 0;
         const totalPrice = quantity * price;
@@ -168,6 +170,12 @@ export class RecipeCalculationsComponent implements OnInit {
       totalCaloriesCost: caloriesCost,
     };
   });
+
+  tagOverrides = this.userConfigStore.tagOverrides;
+
+  getOverrideForTag(tag: string): string {
+    return this.tagOverrides()[tag] || tag;
+  }
 
   ngOnInit() {
     const settings = this.userConfigStore.getProductSettings(this.productName());
@@ -272,5 +280,9 @@ export class RecipeCalculationsComponent implements OnInit {
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
+  }
+
+  changeTagOverride($event: string | null, tag: string) {
+    this.userConfigStore.updateTagOverride(tag, $event);
   }
 }

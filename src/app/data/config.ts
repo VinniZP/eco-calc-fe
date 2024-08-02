@@ -29,6 +29,7 @@ type UserConfig = {
   sellPrices: Record<string, number>;
   productSettings: Record<string, ProductSettings>;
   skillSettings: Record<string, SkillSettings>;
+  tagOverrides: Record<string, string | null>;
 };
 
 export const UserConfigStore = signalStore(
@@ -42,6 +43,7 @@ export const UserConfigStore = signalStore(
     sellPrices: {},
     productSettings: {},
     skillSettings: {},
+    tagOverrides: {},
   }),
   withMethods((state) => ({
     enableSkill(skill: string) {
@@ -109,6 +111,9 @@ export const UserConfigStore = signalStore(
     },
     updateSkillSettings(skill: string, settings: SkillSettings) {
       patchState(state, { skillSettings: { ...state.skillSettings(), [skill]: settings } });
+    },
+    updateTagOverride(tag: string, override: string | null) {
+      patchState(state, { tagOverrides: { ...state.tagOverrides(), [tag]: override } });
     },
   })),
   withHooks({

@@ -1,11 +1,10 @@
 import { NgForOf } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-donut',
   standalone: true,
-  imports: [NgForOf, TippyDirective],
+  imports: [NgForOf],
   templateUrl: './donut.component.html',
   styleUrl: './donut.component.scss',
 })

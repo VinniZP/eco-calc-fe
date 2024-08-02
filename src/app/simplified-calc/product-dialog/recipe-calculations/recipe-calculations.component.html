@@ -135,15 +135,29 @@
             @if (ingredient.name) {
               <app-product-link [product]="ingredient.name" [static]="ingredient.isStatic" />
             } @else {
-              <span [class.text-warning]="ingredient.isStatic">Тег: {{ ingredient.tag }}</span>
+              <app-tag-picker
+                [tag]="ingredient.tag"
+                [product]="tagOverrides()[ingredient.tag] || null"
+                (productChange)="changeTagOverride($event, ingredient.tag)"
+                [static]="ingredient.isStatic"
+              ></app-tag-picker>
             }
           </td>
-          <td>{{ calculations().ingredients[ingredient.name || ingredient.tag].quantity }}</td>
+          <td>{{ calculations().ingredients[ingredient.name || getOverrideForTag(ingredient.tag)].quantity }}</td>
           <td>
-            <app-ingredient-price [item]="ingredient.name || ingredient.tag" />
+            <app-ingredient-price [item]="ingredient.name || getOverrideForTag(ingredient.tag)" />
           </td>
-          <td>{{ calculations().ingredients[ingredient.name || ingredient.tag].price | number: "0.0-2" }}</td>
-          <td>{{ calculations().ingredients[ingredient.name || ingredient.tag].totalPrice | number: "0.0-2" }}</td>
+          <td>
+            {{
+              calculations().ingredients[ingredient.name || getOverrideForTag(ingredient.tag)].price | number: "0.0-2"
+            }}
+          </td>
+          <td>
+            {{
+              calculations().ingredients[ingredient.name || getOverrideForTag(ingredient.tag)].totalPrice
+                | number: "0.0-2"
+            }}
+          </td>
         </tr>
       }
       <tr>
@@ -153,7 +167,7 @@
           <div class="badge badge-neutral badge-sm">{{ caloriesCount() }} калорий</div>
         </td>
         <td>
-          <app-ingredient-price item="calories" />
+          <app-ingredient-price tp="Цена за 1000 калорий" tpPlacement="bottom-start" item="calories" />
         </td>
         <td>{{ calculations().caloriesCost | number: "0.0-2" }}</td>
         <td>{{ calculations().totalCaloriesCost | number: "0.0-2" }}</td>

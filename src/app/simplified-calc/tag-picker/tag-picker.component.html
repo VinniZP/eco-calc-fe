@@ -1,0 +1,11 @@
+<ng-select
+  class="w-60"
+  tp="Выберите предмет, который будет использоваться в качестве тега"
+  [class.is-static]="static()"
+  [ngModel]="product()"
+  (ngModelChange)="product.set($event)"
+  [placeholder]="'Тег: ' + tag()"
+>
+  <ng-option [value]="null">Тег: {{ tag() }}</ng-option>
+  <ng-option *ngFor="let product of possibleItems()" [value]="product">{{ product }}</ng-option>
+</ng-select>

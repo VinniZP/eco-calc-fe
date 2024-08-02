@@ -1,0 +1,3 @@
+.is-static ::ng-deep .ng-select-container {
+  border-color: var(--fallback-wa, oklch(var(--wa) / 1));
+}
