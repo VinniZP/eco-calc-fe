@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('just for test 2');
+    console.log('just for test 3');
     const data = JSON.parse(localStorage.getItem('conf') || '{}');
     patchState(this.userConfigStore, data);
     combineLatest([
