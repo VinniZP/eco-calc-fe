@@ -14,6 +14,9 @@
         cache: "no-store",
       };
 
+      // append timestamp to url to prevent caching
+      url = url + "?t=" + new Date().getTime();
+
       const response = await fetch(url, myInit);
       if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText);
