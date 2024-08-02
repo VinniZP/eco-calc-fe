@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Load External HTML</title>
+  </head>
+  <body>
+    <div id="content"></div>
+  </body>
+  <script>
+    async function fetchHtml(url) {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+      return await response.text();
+    }
+
+    function replaceHeadAndBody(newDoc) {
+      // Replace head
+      document.head.innerHTML = newDoc.head.innerHTML;
+
+      // Replace body
+      document.body.innerHTML = newDoc.body.innerHTML;
+      reexecuteScripts(document.head);
+      reexecuteScripts(document.body);
+    }
+
+    async function loadExternalHtml(url) {
+      try {
+        let htmlContent = await fetchHtml(url);
+        htmlContent = htmlContent.replace(/\/plugins\/EcoCalculator\//g, "https://vinnizp.github.io/eco-calc-fe/");
+
+        // Parse the fetched HTML content
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlContent, "text/html");
+
+        // Replace the current head and body with the fetched ones
+        replaceHeadAndBody(doc);
+      } catch (error) {
+        console.error("Failed to load external HTML:", error);
+      }
+    }
+
+    function reexecuteScripts(element) {
+      const scripts = element.querySelectorAll("script");
+      scripts.forEach((oldScript) => {
+        const newScript = document.createElement("script");
+        newScript.text = oldScript.textContent;
+        Array.from(oldScript.attributes).forEach((attr) => newScript.setAttribute(attr.name, attr.value));
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+      });
+    }
+
+    // Call the function to load the HTML content
+    loadExternalHtml("https://vinnizp.github.io/eco-calc-fe/index.html");
+  </script>
+</html>
