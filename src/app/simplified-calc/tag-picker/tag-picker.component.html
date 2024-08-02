@@ -3,7 +3,7 @@
   tp="Выберите предмет, который будет использоваться в качестве тега"
   [class.is-static]="static()"
   [ngModel]="product()"
-  (ngModelChange)="product.set($event)"
+  (ngModelChange)="modelChange($event)"
   [placeholder]="'Тег: ' + tag()"
 >
   <ng-option [value]="null">Тег: {{ tag() }}</ng-option>

@@ -21,4 +21,8 @@ export class TagPickerComponent {
   possibleItems = computed(() => {
     return this.itemsStore.tagsToItemNameMap()[this.tag()] || [];
   });
+
+  modelChange($event: any) {
+    this.product.set($event?.$ngOptionValue !== null ? $event : null);
+  }
 }
