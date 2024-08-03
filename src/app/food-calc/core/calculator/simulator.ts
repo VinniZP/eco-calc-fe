@@ -33,12 +33,9 @@ export class FoodSimulator {
   }
 
   findBestFood(possibleFood: FoodItem[], count = 5) {
-    console.log(possibleFood);
     const topFoods = this.findTopFoods(possibleFood, this.state, 5);
-    console.log(topFoods);
-    let bestCombination = { foodItems: [] as FoodItem[], total: 0 };
 
-    const combinationResults: any[] = [];
+    let bestCombination = { foodItems: [] as FoodItem[], total: 0 };
 
     topFoods.forEach((topFood) => {
       const combinations = this.generateCombinations(
@@ -51,14 +48,11 @@ export class FoodSimulator {
         combination.forEach((foodItem) => simulatedState.addFood(foodItem));
         const total = this.totalCalculator.calculateTotal(simulatedState, this.foodToTaste);
 
-        combinationResults.push({ foodItems: combination, total });
-
         if (total > bestCombination.total) {
           bestCombination = { foodItems: combination, total };
         }
       });
     });
-    console.log(combinationResults);
     return bestCombination;
   }
 
