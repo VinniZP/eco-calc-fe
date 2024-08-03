@@ -19,6 +19,8 @@ import { StomachData, Testiness, UserStore } from '../data/user';
 import { FoodService } from '../services/food.service';
 import { UserService } from '../services/user.service';
 import { DonutComponent } from '../ui/donut/donut.component';
+import { FoodCalculator } from './core/calculator/calculator';
+import { FoodSimulator } from './core/calculator/simulator';
 import { FoodCalcConfig } from './core/config';
 import { Nutrients } from './core/nutrients';
 import { FoodItem, Stomach } from './core/stomach';
@@ -414,5 +416,53 @@ export class FoodCalcComponent {
         },
       );
     });
+  }
+
+  eatBest(count = 5) {
+    const calc = new FoodCalculator(
+      this.stomach.food,
+      this.stomachData().testiness,
+      FoodCalcConfig,
+    );
+    this.stomach.content().forEach((c) => {
+      calc.state.addFood(this.stomach.food.find((f) => f.name === c)!);
+    });
+    calc.calculate();
+
+    const simulator = new FoodSimulator(
+      calc.state,
+      this.stomach.food,
+      this.stomachData().testiness,
+      FoodCalcConfig,
+    );
+    const availableFood = this.stomach.food.filter((f) => {
+      let satisfied =
+        f.calories >= this.stomach.minCalories() &&
+        f.nutrients.nutrientTotal() >= this.stomach.minNutrients() &&
+        (this.stomach.foodToTaste.get(f.name) || 0) >= this.stomach.minTestiness();
+      return satisfied && (!this.availableInStore() || this.unusedOffers()[f.name] > 0);
+    });
+    const res = simulator.findBestFood(availableFood, count);
+
+    const eatAsync = () => {
+      setTimeout(() => {
+        if (!this.stomach.calculating()) {
+          const food = res.foodItems.pop();
+          if (!food) {
+            return;
+          }
+          this.stomach.eat(food.name);
+
+          this.customEated.update((e) => ({
+            ...e,
+            [food.name]: (e[food.name] || 0) + 1,
+          }));
+          eatAsync();
+        } else {
+          eatAsync();
+        }
+      }, 30);
+    };
+    eatAsync();
   }
 }
