@@ -150,22 +150,28 @@ export class FoodCalcComponent {
   costPer1000Calories = computed(() => {
     this.stomach.refresh.listen();
     const offers = this.shopsStore.allOffers();
-    const content = this.stomachContent();
+    const contentCalories = this.contentCalories();
 
-    const calc = content.reduce(
-      (acc, food) => {
-        const storeFood = offers.filter((o) => o.itemName === food && !o.buying);
-        const avgPrice =
-          storeFood.reduce((acc, o) => acc + parseFloat(o.price), 0) / storeFood.length || 0;
-        acc.calories += this.stomach.foodToCalories.get(food) || 0;
-        acc.cost += avgPrice;
+    const calc = contentCalories.reduce(
+      (acc, row) => {
+        let storeFood = offers.filter((o) => o.itemName === row.name && !o.buying);
+        const prices = storeFood.map((o) => +o.price);
+        const filteredPrices = filterOutliers(prices);
+        storeFood = storeFood.filter((v) => filteredPrices.includes(+v.price));
+        const avgPrice = storeFood.reduce((acc, v) => acc + +v.price, 0) / storeFood.length;
+        const foodCalories = this.stomach.foodToCalories.get(row.name) || 0;
+        const pricePer1Calorie = foodCalories ? avgPrice / foodCalories : 0;
+        acc.cost += pricePer1Calorie * row.calories;
+        acc.calories += row.calories;
         return acc;
       },
-      { calories: 0, cost: 0 },
+      { cost: 0, calories: 0 },
     );
+
     if (calc.calories === 0) {
       return 0;
     }
+
     return (calc.cost / calc.calories) * 1000;
   });
 
@@ -465,4 +471,16 @@ export class FoodCalcComponent {
     };
     eatAsync();
   }
+}
+
+function filterOutliers(prices: number[]) {
+  if (prices.length <= 2) {
+    const maxPrice = Math.max(...prices);
+    const minPrice = Math.min(...prices);
+
+    if (maxPrice > minPrice * 10) {
+      return prices.filter((price) => price !== maxPrice);
+    }
+  }
+  return prices;
 }
