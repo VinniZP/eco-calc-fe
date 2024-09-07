@@ -41,4 +41,14 @@ export class AppComponent implements OnInit {
       this.loadingState.set(false);
     });
   }
+
+  reloadShopsAndUser() {
+    this.loadingState.set(true);
+    combineLatest([
+      this.shopsService.load(),
+      this.userService.load(),
+    ]).subscribe(() => {
+      this.loadingState.set(false);
+    });
+  }
 }
