@@ -5,7 +5,7 @@ import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 export type Item = { id: string; name: string; displayName: string; tags: string[] };
 
 export const ItemsStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: 'root', protectedState: false },
   withEntities<Item>(),
   withComputed((store) => ({
     tagsToItemNameMap: computed(() => {

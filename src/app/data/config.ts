@@ -33,7 +33,7 @@ type UserConfig = {
 };
 
 export const UserConfigStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: 'root', protectedState: false },
   withState<UserConfig>({
     selectedSkills: [],
     caloriesCost: 0,

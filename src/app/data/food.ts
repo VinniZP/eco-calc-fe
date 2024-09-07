@@ -15,7 +15,7 @@ export type Food = {
 };
 
 export const FoodStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: 'root', protectedState: false },
   withEntities<Food>(),
   withMethods((store) => {
     return {

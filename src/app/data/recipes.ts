@@ -36,7 +36,7 @@ export type Recipe = {
 };
 
 export const RecipesStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: 'root', protectedState: false },
   withEntities<Recipe>(),
   withComputed((store) => ({
     skills: computed(() => {

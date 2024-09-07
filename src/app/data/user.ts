@@ -21,7 +21,7 @@ export interface User {
 }
 
 export const UserStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: 'root', protectedState: false },
   withState<User>({ name: '', skills: [], stomach: { content: [], testiness: [] } }),
   withMethods((store) => ({
     setUser(user: User) {

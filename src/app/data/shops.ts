@@ -23,7 +23,7 @@ export type Shop = {
 };
 
 export const ShopsStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: 'root', protectedState: false },
   withEntities<Shop>(),
   withMethods((store) => {
     return {
