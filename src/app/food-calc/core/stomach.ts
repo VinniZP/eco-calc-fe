@@ -231,24 +231,51 @@ export class Stomach {
   }
 
   simulateFor(foodName: string) {
-    const foodItem = this.food.find((item) => item.name === foodName);
+    const foodItem = this.getFoodItem(foodName);
     if (!foodItem) {
-      return {
-        value: 0,
-        varietyMult: 0,
-        testinessMult: 0,
-        balanceMult: 0,
-        nutrients: 0,
-        finalNutrients: 0,
-      };
+      return this.getDefaultSimulationResult();
     }
+
+    const nutrients = this.calculateNutrients(foodItem);
+    const balanceMult = calculateBalance(nutrients);
+    const varietyMult = this.calculateVarietyMultiplier(foodName, foodItem);
+    const testinessMult = this.calculateTestinessMultiplier(foodName, foodItem);
+
+    return {
+      value: this.calculateValue(nutrients, balanceMult, varietyMult, testinessMult),
+      nutrients: this.calculateFoodNutrients(foodItem, foodName),
+      finalNutrients: nutrients.nutrientTotal(),
+      balanceMult,
+      varietyMult,
+      testinessMult,
+    };
+  }
+
+  private getFoodItem(foodName: string) {
+    return this.food.find((item) => item.name === foodName);
+  }
+
+  private getDefaultSimulationResult() {
+    return {
+      value: 0,
+      varietyMult: 0,
+      testinessMult: 0,
+      balanceMult: 0,
+      nutrients: 0,
+      finalNutrients: 0,
+    };
+  }
+
+  private calculateNutrients(foodItem: any) {
     let nutrients = Nutrients.add(
       this.nutrients,
       Nutrients.multiply(foodItem.nutrients, foodItem.calories),
     );
-    nutrients = Nutrients.multiply(nutrients, 1 / (this.totalCals() + foodItem.calories));
-    const balanceMult = calculateBalance(nutrients);
-    const varietyMult = calculateVariety([
+    return Nutrients.multiply(nutrients, 1 / (this.totalCals() + foodItem.calories));
+  }
+
+  private calculateVarietyMultiplier(foodName: string, foodItem: any) {
+    return calculateVariety([
       ...this.contentCaloriesList(),
       {
         name: foodName,
@@ -256,25 +283,26 @@ export class Stomach {
         taste: this.foodToTaste.get(foodName) || 1,
       },
     ]);
+  }
+
+  private calculateTestinessMultiplier(foodName: string, foodItem: any) {
     const modifiedContentCalories = { ...this.contentCalories() };
     modifiedContentCalories[foodName] =
       (modifiedContentCalories[foodName] || 0) + foodItem.calories;
-    const testinessMult = calculateTestiness(
+    return calculateTestiness(
       modifiedContentCalories,
       this.foodToTaste,
       this.totalCals() + foodItem.calories,
     );
+  }
 
-    return {
-      value:
-        nutrients.nutrientTotal() * balanceMult * varietyMult * testinessMult * 1.3 +
-        FoodCalcConfig.foodBaseValue,
-      nutrients: foodItem.nutrients.nutrientTotal() * (this.foodToTaste.get(foodName) || 1),
-      finalNutrients: nutrients.nutrientTotal(),
-      balanceMult,
-      varietyMult,
-      testinessMult,
-    };
+  private calculateValue(nutrients: any, balanceMult: number, varietyMult: number, testinessMult: number) {
+    return nutrients.nutrientTotal() * balanceMult * varietyMult * testinessMult * 1.3 +
+      FoodCalcConfig.foodBaseValue;
+  }
+
+  private calculateFoodNutrients(foodItem: any, foodName: string) {
+    return foodItem.nutrients.nutrientTotal() * (this.foodToTaste.get(foodName) || 1);
   }
 }
 

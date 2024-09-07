@@ -1,0 +1,46 @@
+<h4 class="text-md text-primary">{{ shop().name }}</h4>
+<div class="flex gap-4">
+  <div class="w-full">
+    <p class="mb-2">Продает</p>
+    <table class="table table-compact table-zebra border border-base-100">
+      <thead>
+        <tr>
+          <th>Товар</th>
+          <th>Цена</th>
+          <th>Количество</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (offer of sellOffers(); track $index) {
+          <tr [class.text-gray-500]="offer.quantity === 0">
+            <td>{{ offer.itemName }}</td>
+            <td>{{ offer.price }}</td>
+            <td>{{ offer.quantity }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="w-full">
+    <p class="mb-2">Покупает</p>
+    <table class="table table-compact table-zebra border border-base-100">
+      <thead>
+        <tr>
+          <th>Товар</th>
+          <th>Цена</th>
+          <th>Количество</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (offer of buyOffers(); track $index) {
+          <tr [class.text-gray-500]="offer.quantity === 0">
+            <td>{{ offer.itemName }}</td>
+            <td>{{ offer.price }}</td>
+            <td>{{ offer.quantity }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

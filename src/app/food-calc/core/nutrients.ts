@@ -23,21 +23,15 @@ export class Nutrients {
   }
 
   maxNutrientType(): keyof NutrientsType {
-    const maxValue = Math.max(this.carbs, this.protein, this.fat, this.vitamins);
-    if (maxValue === this.carbs) return 'carbs';
-    if (maxValue === this.protein) return 'protein';
-    if (maxValue === this.fat) return 'fat';
-    if (maxValue === this.vitamins) return 'vitamins';
-    return 'carbs';
+    const nutrients = this.values();
+    const maxIndex = nutrients.indexOf(Math.max(...nutrients));
+    return Nutrients.properties()[maxIndex];
   }
 
   minNutrientType(): keyof NutrientsType {
-    const minValue = Math.min(this.carbs, this.protein, this.fat, this.vitamins);
-    if (minValue === this.carbs) return 'carbs';
-    if (minValue === this.protein) return 'protein';
-    if (minValue === this.fat) return 'fat';
-    if (minValue === this.vitamins) return 'vitamins';
-    return 'carbs';
+    const nutrients = this.values();
+    const minIndex = nutrients.indexOf(Math.min(...nutrients));
+    return Nutrients.properties()[minIndex];
   }
 
   nutrientBalance(): number {

@@ -1,0 +1,33 @@
+<p class="text-success px-2 py-4">{{ item() }}</p>
+<table class="table table-zebra table-md">
+  <thead>
+    <tr>
+      <th>Магазин</th>
+      <th width="100">Цена</th>
+      <th width="100">Количество</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td colspan="3" class="text-success">Продажа</td>
+    </tr>
+    @for (offer of sellingOffers(); track $index) {
+      <tr [class.text-gray-500]="offer.quantity === 0">
+        <td>{{ offer.shop | stripTags }}</td>
+        <td>{{ offer.price }}</td>
+        <td>{{ offer.quantity }}</td>
+      </tr>
+    }
+    <tr>
+      <td colspan="3" class="text-warning">Покупка</td>
+    </tr>
+    @for (offer of buyingOffers(); track $index) {
+      <tr [class.text-gray-500]="offer.quantity === 0">
+        <td>{{ offer.shop | stripTags }}</td>
+        <td>{{ offer.price }}</td>
+        <td>{{ offer.quantity }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

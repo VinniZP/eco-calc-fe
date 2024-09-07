@@ -41,6 +41,7 @@ export const ShopsStore = signalStore(
             [] as (ShopOffer & { shop: string })[],
           );
       },
+
       filterByItemName(itemName: string): Shop[] {
         return store
           .entities()
