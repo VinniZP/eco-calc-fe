@@ -1,16 +1,26 @@
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export function getSession() {
-  const token = localStorage.getItem('authtoken');
-  const tokenType = localStorage.getItem('authtokentype');
-  if (token && tokenType) {
-    return {
-      token,
-      tokenType,
-    };
+export function getSession(): Record<string, string> {
+  const storedData = localStorage.getItem('worldTicketData');
+
+  if (!storedData) {
+    return {};
   }
-  return null;
+
+  try {
+    const parsedData = JSON.parse(storedData);
+    
+    if (parsedData.worldTicket) {
+      return {
+        'X-Auth-Token': parsedData.worldTicket
+      };
+    }
+
+    return {};
+  } catch {
+    return {};
+  }
 }
 
 export function authInterceptor(
@@ -19,12 +29,7 @@ export function authInterceptor(
 ): Observable<HttpEvent<unknown>> {
   const session = getSession();
   if (session) {
-    req = req.clone({
-      setHeaders: {
-        'x-auth-token': `${session.token}`,
-        'x-auth-token-type': `${session.tokenType}`,
-      },
-    });
+    req = req.clone(session);
   }
   return next(req);
 }
