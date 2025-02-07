@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export function getSession() {
+export function getSession(): Record<string, string> {
   const storedData = localStorage.getItem('worldTicketData');
 
   if (!storedData) {
