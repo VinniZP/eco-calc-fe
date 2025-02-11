@@ -296,9 +296,16 @@ export class Stomach {
     );
   }
 
-  private calculateValue(nutrients: any, balanceMult: number, varietyMult: number, testinessMult: number) {
-    return nutrients.nutrientTotal() * balanceMult * varietyMult * testinessMult * 1.3 +
-      FoodCalcConfig.foodBaseValue;
+  private calculateValue(
+    nutrients: any,
+    balanceMult: number,
+    varietyMult: number,
+    testinessMult: number,
+  ) {
+    return (
+      nutrients.nutrientTotal() * balanceMult * varietyMult * testinessMult * 1.3 +
+      FoodCalcConfig.foodBaseValue
+    );
   }
 
   private calculateFoodNutrients(foodItem: any, foodName: string) {

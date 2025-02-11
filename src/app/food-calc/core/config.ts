@@ -7,5 +7,5 @@ export const FoodCalcConfig = {
   varietyInputHalflife: 20, //After 20 types of food, we get halfway closer to the max value.
   varietyOutputAtMin: 1, //Minimum multiplier is 1
   varietyOutputLimit: 1.55,
-  foodBaseValue: 4,
+  foodBaseValue: 12,
 };
