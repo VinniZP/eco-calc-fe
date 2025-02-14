@@ -60,19 +60,30 @@ export class FoodSimulator {
   findBestFoodAlternative(possibleFood: FoodItem[], count = 5) {
     const memo = new Map<string, number>();
     let bestCombination = { foodItems: [] as FoodItem[], total: 0 };
-    const maxTime = 30000; // Max 22 seconds of computation
+    const maxTime = 15000;
     const startTime = Date.now();
-    const batchSize = 10000; // Process in batches to prevent UI freezing
     let processedCount = 0;
 
     // Pre-calculate initial state total for optimization
     const initialTotal = this.totalCalculator.calculateTotal(this.state, this.foodToTaste);
 
-    // Sort foods by their individual value for better performance
-    const sortedFoods = this.calculateIndividualValues(possibleFood);
+    // Sort and pre-calculate individual values for better performance
+    const foodValues = possibleFood
+      .map((food) => {
+        const state = this.state.copy();
+        state.addFood(food);
+        return {
+          food,
+          value: this.totalCalculator.calculateTotal(state, this.foodToTaste),
+          calories: this.foodToCalories.get(food.name) || 0,
+        };
+      })
+      .sort((a, b) => b.value - a.value);
 
-    // Track count of each food in current combination
-    const foodCounts = new Map<string, number>();
+    // Take top 50% of foods for better performance while maintaining quality
+    const sortedFoods = foodValues
+      .slice(0, Math.max(5, Math.floor(foodValues.length * 0.5)))
+      .map((item) => item.food);
 
     const findCombinationRecursive = (
       currentFoods: FoodItem[],
@@ -80,60 +91,71 @@ export class FoodSimulator {
       currentState: StomachState,
       currentTotal: number,
       remainingCount: number,
+      depth = 0,
     ) => {
-      // Check time limit and batch size
+      // Time check only every 1000 operations for better performance
       processedCount++;
-      if (Date.now() - startTime > maxTime || processedCount % batchSize === 0) {
-        return false; // Signal to stop processing
+      if (processedCount % 1000 === 0 && Date.now() - startTime > maxTime) {
+        return false;
       }
 
-      // Early stopping if we can't beat the best combination
-      const potentialGain = this.estimateMaxPotentialGain(availableFoods, remainingCount);
-      if (currentTotal + potentialGain <= bestCombination.total) {
+      // If we have exactly count items, check if it's better than current best
+      if (currentFoods.length === count) {
+        if (currentTotal > bestCombination.total) {
+          bestCombination = { foodItems: [...currentFoods], total: currentTotal };
+        }
         return true;
       }
 
-      // Check if current combination is better
-      if (currentTotal > bestCombination.total) {
-        bestCombination = { foodItems: [...currentFoods], total: currentTotal };
-      }
-
-      if (remainingCount === 0) {
+      // If we can't reach count items, skip this branch
+      if (currentFoods.length + remainingCount < count) {
         return true;
       }
 
-      // Try adding each available food
+      // Early stopping with more aggressive pruning
+      if (
+        currentTotal + this.estimateMaxPotentialGain(availableFoods, remainingCount, depth) <=
+        bestCombination.total
+      ) {
+        return true;
+      }
+
+      // Try each food with optimized amounts
       for (let i = 0; i < availableFoods.length; i++) {
         const food = availableFoods[i];
-        const currentCount = foodCounts.get(food.name) || 0;
+        const maxAmount = Math.min(remainingCount, count - currentFoods.length);
 
-        // Try adding this food 1 to remainingCount times
-        for (let amount = 1; amount <= remainingCount; amount++) {
-          const newState = currentState.copy();
+        // Try different amounts of current food
+        for (let amount = 1; amount <= maxAmount; amount++) {
           const newFoods = Array(amount).fill(food);
-          newFoods.forEach((f) => newState.addFood(f));
-
           const stateKey = this.getStateKey([...currentFoods, ...newFoods]);
+
           if (memo.has(stateKey)) {
             const cachedTotal = memo.get(stateKey)!;
             if (cachedTotal <= currentTotal) continue;
           }
 
+          const newState = currentState.copy();
+          // Batch add foods for better performance
+          for (let j = 0; j < amount; j++) {
+            newState.addFood(food);
+          }
+
           const newTotal = this.totalCalculator.calculateTotal(newState, this.foodToTaste);
-          if (newTotal <= currentTotal) continue; // Skip if doesn't improve
+          if (newTotal <= currentTotal) continue;
 
           memo.set(stateKey, newTotal);
-          foodCounts.set(food.name, currentCount + amount);
 
+          // Recursively try remaining foods
           const shouldContinue = findCombinationRecursive(
             [...currentFoods, ...newFoods],
-            availableFoods.slice(i + 1), // Move to next food type
+            availableFoods.slice(i + 1),
             newState,
             newTotal,
             remainingCount - amount,
+            depth + 1,
           );
 
-          foodCounts.set(food.name, currentCount); // Restore count
           if (!shouldContinue) return false;
         }
       }
@@ -141,13 +163,14 @@ export class FoodSimulator {
       return true;
     };
 
-    findCombinationRecursive([], sortedFoods, this.state.copy(), initialTotal, count);
+    // Initialize with base state
+    const baseState = this.state.copy();
+    findCombinationRecursive([], sortedFoods, baseState, initialTotal, count);
 
-    // If we didn't find any combination, try the best single food
-    if (bestCombination.foodItems.length === 0 && sortedFoods.length > 0) {
+    // If we didn't find a valid combination, use the best food repeated count times
+    if (bestCombination.foodItems.length !== count && sortedFoods.length > 0) {
       const bestFood = sortedFoods[0];
       const state = this.state.copy();
-      // Try adding the best food multiple times
       const foods = Array(count).fill(bestFood);
       foods.forEach((f) => state.addFood(f));
       const total = this.totalCalculator.calculateTotal(state, this.foodToTaste);
@@ -203,13 +226,19 @@ export class FoodSimulator {
       .map((item) => item.food);
   }
 
-  private estimateMaxPotentialGain(remainingFoods: FoodItem[], remainingCount: number): number {
-    const bestFood = remainingFoods[0];
-    if (!bestFood) return 0;
+  private estimateMaxPotentialGain(
+    remainingFoods: FoodItem[],
+    remainingCount: number,
+    depth: number,
+  ): number {
+    if (!remainingFoods.length || remainingCount === 0) return 0;
 
-    // Estimate based on using the best food for all remaining slots
+    const bestFood = remainingFoods[0];
     const bestValue = this.foodToCalories.get(bestFood.name) || 0;
-    return bestValue * remainingCount * 0.9; // 0.9 factor for slight pruning
+
+    // More aggressive pruning based on depth
+    const depthFactor = Math.max(0.5, 1 - depth * 0.1);
+    return bestValue * remainingCount * depthFactor;
   }
 
   private getStateKey(foods: FoodItem[]): string {
