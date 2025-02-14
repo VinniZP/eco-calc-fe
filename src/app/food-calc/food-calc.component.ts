@@ -424,7 +424,7 @@ export class FoodCalcComponent {
     });
   }
 
-  eatBest(count = 5) {
+  eatBest(count = 5, useAlt = false) {
     const calc = new FoodCalculator(
       this.stomach.food,
       this.stomachData().testiness,
@@ -441,6 +441,7 @@ export class FoodCalcComponent {
       this.stomachData().testiness,
       FoodCalcConfig,
     );
+
     const availableFood = this.stomach.food.filter((f) => {
       let satisfied =
         f.calories >= this.stomach.minCalories() &&
@@ -448,7 +449,9 @@ export class FoodCalcComponent {
         (this.stomach.foodToTaste.get(f.name) || 0) >= this.stomach.minTestiness();
       return satisfied && (!this.availableInStore() || this.unusedOffers()[f.name] > 0);
     });
-    const res = simulator.findBestFood(availableFood, count);
+    const res = useAlt
+      ? simulator.findBestFoodAlternative(availableFood, count)
+      : simulator.findBestFood(availableFood, count);
 
     const eatAsync = () => {
       setTimeout(() => {
