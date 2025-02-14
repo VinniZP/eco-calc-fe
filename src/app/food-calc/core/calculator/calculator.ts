@@ -73,6 +73,15 @@ export class TotalCalculator {
     return subtotal * balanceMult * varietyMult * testinessMult * 1.3 + this.config.foodBaseValue;
   }
 
+  calculateSubtotal(state: StomachState) {
+    const contentCalories = state.caloriesPerFood;
+    const normalizedNutrients = Nutrients.multiply(
+      state.nutrients,
+      1 / this.totalCalories(state, contentCalories),
+    );
+    return normalizedNutrients.nutrientTotal();
+  }
+
   calculateBalanceMult(normalizedNutrients: Nutrients): number {
     const values = normalizedNutrients.values();
     const min = Math.min(...values);

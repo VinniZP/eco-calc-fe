@@ -1,5 +1,6 @@
 import { Testiness } from '../../../data/user';
 import { FoodCalcConfig } from '../config';
+import { Nutrients } from '../nutrients';
 import { FoodItem, TastinessMult } from '../stomach';
 import { TotalCalculator } from './calculator';
 import { StomachState } from './state';
@@ -60,12 +61,44 @@ export class FoodSimulator {
   findBestFoodAlternative(possibleFood: FoodItem[], count = 5) {
     const memo = new Map<string, number>();
     let bestCombination = { foodItems: [] as FoodItem[], total: 0 };
-    const maxTime = 15000;
+    const maxTime = 20000;
     const startTime = Date.now();
     let processedCount = 0;
 
+    // Determine strategy at the start
+    const initialBalance = this.state.nutrients.nutrientBalance();
+    console.log('Initial balance:', initialBalance);
+
+    let targetNutrient: keyof Nutrients | null = null;
+    if (initialBalance > 0.99) {
+      targetNutrient = this.state.nutrients.minNutrientType();
+      console.log('Targeting nutrient:', targetNutrient);
+    }
+
+    // Helper function to calculate total based on chosen strategy
+    const calculateAdjustedTotal = (state: StomachState): number => {
+      const total = this.totalCalculator.calculateTotal(state, this.foodToTaste);
+      const subtotal = this.totalCalculator.calculateSubtotal(state);
+
+      if (targetNutrient) {
+        // Use consistent nutrient targeting strategy
+        switch (targetNutrient) {
+          case 'vitamins':
+            return state.nutrients.vitamins * 1000;
+          case 'protein':
+            return state.nutrients.protein * 800;
+          case 'carbs':
+            return state.nutrients.carbs * 800;
+          case 'fat':
+            return state.nutrients.fat * 800;
+        }
+      }
+
+      return total + subtotal * 2;
+    };
+
     // Pre-calculate initial state total for optimization
-    const initialTotal = this.totalCalculator.calculateTotal(this.state, this.foodToTaste);
+    const initialTotal = calculateAdjustedTotal(this.state);
 
     // Sort and pre-calculate individual values for better performance
     const foodValues = possibleFood
@@ -74,58 +107,52 @@ export class FoodSimulator {
         state.addFood(food);
         return {
           food,
-          value: this.totalCalculator.calculateTotal(state, this.foodToTaste),
+          value: calculateAdjustedTotal(state),
           calories: this.foodToCalories.get(food.name) || 0,
         };
       })
       .sort((a, b) => b.value - a.value);
 
-    // Take top 50% of foods for better performance while maintaining quality
-    const sortedFoods = foodValues
-      .slice(0, Math.max(5, Math.floor(foodValues.length * 0.5)))
-      .map((item) => item.food);
+    // Take top foods based on strategy
+    const topCount = targetNutrient
+      ? Math.max(20, Math.floor(foodValues.length * 0.95)) // Take more foods when targeting nutrients
+      : Math.max(15, Math.floor(foodValues.length * 0.9));
 
-    const findCombinationRecursive = (
+    const sortedFoods = foodValues.slice(0, topCount).map((item) => item.food);
+
+    const generateCombinations = (
       currentFoods: FoodItem[],
       availableFoods: FoodItem[],
       currentState: StomachState,
       currentTotal: number,
       remainingCount: number,
-      depth = 0,
-    ) => {
-      // Time check only every 1000 operations for better performance
+      startIndex = 0,
+    ): void => {
       processedCount++;
-      if (processedCount % 1000 === 0 && Date.now() - startTime > maxTime) {
-        return false;
+
+      if (Date.now() - startTime > maxTime) {
+        return;
       }
 
-      // If we have exactly count items, check if it's better than current best
       if (currentFoods.length === count) {
-        if (currentTotal > bestCombination.total) {
-          bestCombination = { foodItems: [...currentFoods], total: currentTotal };
+        const adjustedTotal = calculateAdjustedTotal(currentState);
+        if (adjustedTotal > bestCombination.total) {
+          bestCombination = { foodItems: [...currentFoods], total: adjustedTotal };
         }
-        return true;
+        return;
       }
 
-      // If we can't reach count items, skip this branch
-      if (currentFoods.length + remainingCount < count) {
-        return true;
+      if (currentFoods.length + (availableFoods.length - startIndex) < count) {
+        return;
       }
 
-      // Early stopping with more aggressive pruning
-      if (
-        currentTotal + this.estimateMaxPotentialGain(availableFoods, remainingCount, depth) <=
-        bestCombination.total
-      ) {
-        return true;
-      }
-
-      // Try each food with optimized amounts
-      for (let i = 0; i < availableFoods.length; i++) {
+      for (let i = startIndex; i < availableFoods.length; i++) {
         const food = availableFoods[i];
-        const maxAmount = Math.min(remainingCount, count - currentFoods.length);
+        // Allow more of the same food when targeting nutrients
+        const maxAmount = targetNutrient
+          ? Math.min(4, count - currentFoods.length)
+          : Math.min(3, count - currentFoods.length);
 
-        // Try different amounts of current food
         for (let amount = 1; amount <= maxAmount; amount++) {
           const newFoods = Array(amount).fill(food);
           const stateKey = this.getStateKey([...currentFoods, ...newFoods]);
@@ -136,47 +163,44 @@ export class FoodSimulator {
           }
 
           const newState = currentState.copy();
-          // Batch add foods for better performance
           for (let j = 0; j < amount; j++) {
             newState.addFood(food);
           }
 
-          const newTotal = this.totalCalculator.calculateTotal(newState, this.foodToTaste);
-          if (newTotal <= currentTotal) continue;
-
+          const newTotal = calculateAdjustedTotal(newState);
           memo.set(stateKey, newTotal);
 
-          // Recursively try remaining foods
-          const shouldContinue = findCombinationRecursive(
+          generateCombinations(
             [...currentFoods, ...newFoods],
-            availableFoods.slice(i + 1),
+            availableFoods,
             newState,
             newTotal,
             remainingCount - amount,
-            depth + 1,
+            i + 1,
           );
-
-          if (!shouldContinue) return false;
         }
       }
-
-      return true;
     };
 
-    // Initialize with base state
-    const baseState = this.state.copy();
-    findCombinationRecursive([], sortedFoods, baseState, initialTotal, count);
+    // Generate combinations until time runs out
+    while (Date.now() - startTime <= maxTime) {
+      for (let startIdx = 0; startIdx < sortedFoods.length; startIdx++) {
+        if (Date.now() - startTime > maxTime) break;
 
-    // If we didn't find a valid combination, use the best food repeated count times
-    if (bestCombination.foodItems.length !== count && sortedFoods.length > 0) {
-      const bestFood = sortedFoods[0];
-      const state = this.state.copy();
-      const foods = Array(count).fill(bestFood);
-      foods.forEach((f) => state.addFood(f));
-      const total = this.totalCalculator.calculateTotal(state, this.foodToTaste);
-      bestCombination = { foodItems: foods, total };
+        const baseState = this.state.copy();
+        generateCombinations([], sortedFoods, baseState, initialTotal, count, startIdx);
+      }
+
+      // Only shuffle if not targeting specific nutrient
+      if (!targetNutrient) {
+        sortedFoods.sort(() => Math.random() - 0.5);
+      }
     }
 
+    console.log(`Processed combinations: ${processedCount}`);
+    if (targetNutrient) {
+      console.log(`Targeted nutrient: ${targetNutrient}`);
+    }
     return bestCombination;
   }
 

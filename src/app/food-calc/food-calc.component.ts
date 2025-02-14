@@ -453,6 +453,10 @@ export class FoodCalcComponent {
       ? simulator.findBestFoodAlternative(availableFood, count)
       : simulator.findBestFood(availableFood, count);
 
+    if (res.foodItems.every((v) => v.name === res.foodItems[0]?.name)) {
+      res.foodItems = new Array(3).fill(res.foodItems[0]);
+    }
+
     const eatAsync = () => {
       setTimeout(() => {
         if (!this.stomach.calculating()) {
