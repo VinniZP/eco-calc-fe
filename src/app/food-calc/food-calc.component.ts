@@ -209,9 +209,14 @@ export class FoodCalcComponent {
         allowSignalWrites: true,
       },
     );
+    const config = localStorage.getItem('foodCalcConfig');
+    if (config) {
+      this.config.patchValue(JSON.parse(config));
+    }
     this.config.valueChanges
       .pipe(startWith(this.config.value), debounceTime(100), takeUntilDestroyed())
       .subscribe((value) => {
+        localStorage.setItem('foodCalcConfig', JSON.stringify(value));
         if (!this.config.valid) return;
         if (value.minTestiness && !isNaN(+value.minTestiness)) {
           this.stomach.minTestiness.set(+value.minTestiness);
@@ -261,6 +266,7 @@ export class FoodCalcComponent {
       ...e,
       [item.name]: (e[item.name] || 0) + 1,
     }));
+    this.applyEasterEgg();
   }
 
   eatCalories(number: number) {
@@ -281,6 +287,7 @@ export class FoodCalcComponent {
             return;
           }
           this.stomach.eat(food);
+          this.applyEasterEgg();
 
           this.customEated.update((e) => ({
             ...e,
@@ -328,6 +335,7 @@ export class FoodCalcComponent {
             return;
           }
           this.stomach.eat(food[0].name);
+          this.applyEasterEgg();
 
           this.customEated.update((e) => ({
             ...e,
@@ -381,6 +389,7 @@ export class FoodCalcComponent {
           }
           executed++;
           this.stomach.eat(food[0].name);
+          this.applyEasterEgg();
 
           this.customEated.update((e) => ({
             ...e,
@@ -465,6 +474,7 @@ export class FoodCalcComponent {
             return;
           }
           this.stomach.eat(food.name);
+          this.applyEasterEgg();
 
           this.customEated.update((e) => ({
             ...e,
@@ -477,6 +487,46 @@ export class FoodCalcComponent {
       }, 30);
     };
     eatAsync();
+  }
+
+  applyEasterEgg() {
+    const userName = this.userStore.name().toLowerCase();
+    const isEnabled = Math.random() < 0.001; // 1% chance
+    console.log('isEnabled', isEnabled);
+    if (
+      isEnabled &&
+      (userName.includes('hainer') || userName === 'sever' || userName === 'vinni')
+    ) {
+      const easterNames = [
+        'Сумка с хуями',
+        'Пиздатый кекс',
+        'Охуенный бутер',
+        'Ебанутый салат',
+        'Пирожок с приколом',
+        'Адская вкусняшка',
+        'Стремный суп',
+        'Ядреный борщ',
+        'Угарный десерт',
+        'Отпадный шашлык',
+        'Забористая шаурма',
+        'Чумовая пицца',
+        'Безумный рамен',
+        'Дерзкий ролл',
+        'Бешеный бургер',
+        'Злой хачапури',
+        'Отмороженный стейк',
+        'Упоротый плов',
+        'Дикий шурпа',
+        'Ядовитый том-ям',
+        'Взрывной фалафель',
+        'Стрёмная уха',
+      ];
+      const randomName = easterNames[Math.floor(Math.random() * easterNames.length)];
+      this.customEated.update((e) => ({
+        ...e,
+        [randomName]: (e[randomName] || 0) + 1,
+      }));
+    }
   }
 }
 
