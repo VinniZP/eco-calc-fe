@@ -495,7 +495,10 @@ export class FoodCalcComponent {
     console.log('isEnabled', isEnabled);
     if (
       isEnabled &&
-      (userName.includes('hainer') || userName === 'sever' || userName === 'vinni')
+      (userName.includes('hainer') ||
+        userName.includes('ugava') ||
+        userName === 'sever' ||
+        userName === 'vinni')
     ) {
       const easterNames = [
         'Сумка с хуями',
