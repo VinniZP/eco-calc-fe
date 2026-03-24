@@ -1,48 +1,54 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { filter } from 'rxjs';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { form, FormField, required, pattern } from '@angular/forms/signals';
 import { UserConfigStore } from '../../data/config';
 import { CardComponent, FormFieldComponent, InputDirective } from '../../shared/ui';
 
 @Component({
     selector: 'app-prices-settings',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [ReactiveFormsModule, CardComponent, FormFieldComponent, InputDirective],
+    imports: [FormField, CardComponent, FormFieldComponent, InputDirective],
     templateUrl: './prices-settings.component.html',
     styleUrl: './prices-settings.component.scss'
 })
 export class PricesSettingsComponent {
-  form = new FormGroup({
-    // decimal validator
-    caloriesCost: new FormControl(0, [Validators.required, Validators.pattern(/^\d*\.?\d{0,2}$/)]),
-    margin: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
-  });
   userConfigStore = inject(UserConfigStore);
-  destroyRef = inject(DestroyRef);
   margins = [0, 10, 15, 20, 25, 30, 40, 50, 75];
 
+  configModel = signal({
+    caloriesCost: 0,
+    margin: 0,
+  });
+
+  configForm = form(this.configModel, (schemaPath) => {
+    required(schemaPath.caloriesCost, { message: 'Required' });
+    pattern(schemaPath.caloriesCost, /^\d*\.?\d{0,2}$/, { message: 'Invalid decimal format' });
+    required(schemaPath.margin, { message: 'Required' });
+    pattern(schemaPath.margin, /^\d+$/, { message: 'Must be an integer' });
+  });
+
   constructor() {
-    effect((onCleanup) => {
-      const timer = setTimeout(() => {
-        this.form.patchValue({
-          caloriesCost: this.userConfigStore.caloriesCost(),
-          margin: this.userConfigStore.margin(),
-        });
-      }, 300);
-      onCleanup(() => clearTimeout(timer));
+    // Sync store values into the model signal
+    effect(() => {
+      this.configModel.set({
+        caloriesCost: this.userConfigStore.caloriesCost(),
+        margin: this.userConfigStore.margin(),
+      });
     });
 
-    this.form.valueChanges
-      .pipe(
-        filter(() => this.form.valid),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe((value) => {
+    // Sync valid form values back to the store
+    let initialized = false;
+    effect(() => {
+      const model = this.configModel();
+      if (!initialized) {
+        initialized = true;
+        return;
+      }
+      if (this.configForm().valid()) {
         this.userConfigStore.updateConfig({
-          caloriesCost: parseFloat(value.caloriesCost?.toString() ?? ''),
-          margin: parseInt(value.margin?.toString() ?? '', 10),
+          caloriesCost: parseFloat(model.caloriesCost.toString()),
+          margin: parseInt(model.margin.toString(), 10),
         });
-      });
+      }
+    });
   }
 }

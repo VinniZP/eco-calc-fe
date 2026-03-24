@@ -1,5 +1,5 @@
 <app-form-field [label]="skill().skill">
-  <select class="select select-bordered w-14 max-w-xs select-sm" [ngModel]="skill().level" (ngModelChange)="changeLevel($event)">
+  <select class="select select-bordered w-14 max-w-xs select-sm" [value]="skill().level" (change)="changeLevel(+$any($event.target).value)">
     <option [value]="1">1</option>
     <option [value]="2">2</option>
     <option [value]="3">3</option>
@@ -11,6 +11,6 @@
 </app-form-field>
 @if(skill().level >= 6) {
   <app-form-field label="Чистое рабочее место">
-    <input type="checkbox" appToggle [ngModel]="skill().lavish" (ngModelChange)="changeLavish($event)" />
+    <input type="checkbox" appToggle [checked]="skill().lavish" (change)="changeLavish($any($event.target).checked)" />
   </app-form-field>
 }

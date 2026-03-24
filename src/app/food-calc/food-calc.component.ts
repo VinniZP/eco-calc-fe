@@ -1,13 +1,8 @@
 import { DecimalPipe, NgClass, PercentPipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, Signal, untracked } from '@angular/core';
-import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { form, FormField, required, pattern } from '@angular/forms/signals';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TippyDirective } from '@ngneat/helipopper';
@@ -45,7 +40,7 @@ import { TestinessPipe } from './testiness.pipe';
         PercentPipe,
         SlicePipe,
         TippyDirective,
-        ReactiveFormsModule,
+        FormField,
         NgSelectModule,
         ButtonDirective,
         InputDirective,
@@ -63,14 +58,18 @@ export class FoodCalcComponent {
   stomach = inject(Stomach);
   foodService = inject(FoodService);
 
-  config = new FormGroup({
-    minTestiness: new FormControl(0.7, [
-      Validators.required,
-      Validators.pattern(/^\d*\.?\d{0,2}$/),
-    ]),
-    minCalories: new FormControl(100, [Validators.required, Validators.pattern(/^\d+$/)]),
-    minNutrients: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
-    availableInStore: new FormControl(true),
+  configModel = signal({
+    minTestiness: 0.7 as number,
+    minCalories: '100',
+    minNutrients: '0',
+    availableInStore: true,
+  });
+
+  configForm = form(this.configModel, (schemaPath) => {
+    required(schemaPath.minCalories, { message: 'Required' });
+    pattern(schemaPath.minCalories, /^\d+$/, { message: 'Must be integer' });
+    required(schemaPath.minNutrients, { message: 'Required' });
+    pattern(schemaPath.minNutrients, /^\d+$/, { message: 'Must be integer' });
   });
 
   availableInStore = signal(true);
@@ -213,28 +212,26 @@ export class FoodCalcComponent {
         });
       },
     );
-    const config = localStorage.getItem('foodCalcConfig');
-    if (config) {
-      this.config.patchValue(JSON.parse(config));
+    // Load from localStorage
+    const saved = localStorage.getItem('foodCalcConfig');
+    if (saved) {
+      this.configModel.set({ ...this.configModel(), ...JSON.parse(saved) });
     }
-    this.config.valueChanges
-      .pipe(startWith(this.config.value), debounceTime(100), takeUntilDestroyed())
-      .subscribe((value) => {
-        localStorage.setItem('foodCalcConfig', JSON.stringify(value));
-        if (!this.config.valid) return;
-        if (value.minTestiness && !isNaN(+value.minTestiness)) {
-          this.stomach.minTestiness.set(+value.minTestiness);
-        }
-        if (value.minCalories && !isNaN(+value.minCalories)) {
-          this.stomach.minCalories.set(+value.minCalories);
-        }
-        if (value.minNutrients && !isNaN(+value.minNutrients)) {
-          this.stomach.minNutrients.set(+value.minNutrients);
-        }
-        if (value.availableInStore != null) {
-          this.availableInStore.set(value.availableInStore);
-        }
-      });
+
+    // Sync config model to localStorage and stomach
+    effect(() => {
+      const value = this.configModel();
+      localStorage.setItem('foodCalcConfig', JSON.stringify(value));
+      if (!this.configForm().valid()) return;
+      this.stomach.minTestiness.set(+value.minTestiness);
+      if (!Number.isNaN(+value.minCalories)) {
+        this.stomach.minCalories.set(+value.minCalories);
+      }
+      if (!Number.isNaN(+value.minNutrients)) {
+        this.stomach.minNutrients.set(+value.minNutrients);
+      }
+      this.availableInStore.set(value.availableInStore);
+    });
   }
 
   private setFood(entities: Food[], tasteConfig: Testiness[]) {

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { FormFieldComponent, ToggleDirective } from '../../../shared/ui';
 import { SelectedSkill, UserConfigStore } from '../../../data/config';
 
@@ -7,7 +6,7 @@ import { SelectedSkill, UserConfigStore } from '../../../data/config';
     selector: 'app-skill-item',
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block border border-neutral rounded p-2' },
-    imports: [FormsModule, FormFieldComponent, ToggleDirective],
+    imports: [FormFieldComponent, ToggleDirective],
     templateUrl: './skill-item.component.html',
     styleUrl: './skill-item.component.scss'
 })

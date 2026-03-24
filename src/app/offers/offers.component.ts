@@ -11,7 +11,6 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { injectIsIntersecting } from 'ngxtension/inject-is-intersecting';
 import { filter } from 'rxjs/operators';
 import { ShopsStore } from '../data/shops';
@@ -21,7 +20,7 @@ import { OfferComponent } from './offer/offer.component';
 @Component({
     selector: 'app-offers',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [FormsModule, OfferComponent, SlicePipe, InputDirective, ToggleDirective],
+    imports: [OfferComponent, SlicePipe, InputDirective, ToggleDirective],
     templateUrl: './offers.component.html',
     styleUrl: './offers.component.scss'
 })

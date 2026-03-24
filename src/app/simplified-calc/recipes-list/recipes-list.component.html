@@ -1,4 +1,4 @@
-<div class="px-3 py-2 flex items-center gap-3 flex-wrap border-b border-base-content/[0.04]" [formGroup]="filters">
+<div class="px-3 py-2 flex items-center gap-3 flex-wrap border-b border-base-content/[0.04]">
   <h2 class="text-sm font-medium text-base-content/60 shrink-0">
     Рецепты
     <span class="text-base-content/30 font-normal">{{ dataSource.data().length }}</span>
@@ -8,10 +8,11 @@
       <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-base-content/30 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
-      <input type="text" appInput size="sm" bordered placeholder="Поиск по продукту..." formControlName="search" class="!pl-9" />
+      <input type="text" appInput size="sm" bordered placeholder="Поиск по продукту..." [value]="filtersModel().search" (input)="filtersModel.update(m => ({...m, search: $any($event.target).value}))" class="!pl-9" />
     </div>
     <ng-select
-      formControlName="profession"
+      [ngModel]="filtersModel().profession"
+      (ngModelChange)="filtersModel.update(m => ({...m, profession: $event}))"
       class="w-full max-w-[200px]"
       [multiple]="true"
       placeholder="Профессия"
@@ -39,7 +40,8 @@
       </ng-template>
     </ng-select>
     <ng-select
-      formControlName="table"
+      [ngModel]="filtersModel().table"
+      (ngModelChange)="filtersModel.update(m => ({...m, table: $event}))"
       class="w-full max-w-[200px]"
       [multiple]="true"
       placeholder="Верстак"
@@ -68,7 +70,7 @@
     </ng-select>
     @if (dataSource.availableSelling()) {
       <label class="flex items-center h-8 gap-2 cursor-pointer shrink-0">
-        <input type="checkbox" appToggle checked="checked" formControlName="selling" />
+        <input type="checkbox" appToggle checked="checked" [checked]="filtersModel().selling" (change)="filtersModel.update(m => ({...m, selling: $any($event.target).checked}))" />
         <span class="text-sm text-base-content/70">Только мои</span>
       </label>
     }

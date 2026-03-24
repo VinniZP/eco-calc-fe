@@ -12,12 +12,9 @@ import {
   CdkTable,
 } from '@angular/cdk/table';
 import { SlicePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, isDevMode, OnInit, Signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, inject, isDevMode, signal, Signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { debounceTime, startWith } from 'rxjs';
-import { syncFormToLocalStorage } from '../../core/helpers/form';
 import { Recipe, RecipesStore } from '../../data/recipes';
 import { PaginatorComponent } from '../../ui/paginator/paginator.component';
 import { StripTagsPipe } from '../../ui/strip-tags.pipe';
@@ -43,7 +40,6 @@ import { UniqueRecipesPipe } from './unique-recipes.pipe';
         CdkRow,
         CdkHeaderRowDef,
         CdkRowDef,
-        ReactiveFormsModule,
         NgSelectModule,
         FormsModule,
         SlicePipe,
@@ -59,12 +55,12 @@ import { UniqueRecipesPipe } from './unique-recipes.pipe';
     templateUrl: './recipes-list.component.html',
     styleUrl: './recipes-list.component.scss'
 })
-export class RecipesListComponent implements OnInit {
-  filters = new FormGroup({
-    search: new FormControl<string | null>(''),
-    table: new FormControl<string[] | null>([]),
-    profession: new FormControl<string[] | null>([]),
-    selling: new FormControl(false),
+export class RecipesListComponent {
+  filtersModel = signal({
+    search: '' as string,
+    table: [] as string[],
+    profession: [] as string[],
+    selling: false,
   });
 
   displayedColumns = ['displayName', 'craft', 'actions'];
@@ -76,11 +72,26 @@ export class RecipesListComponent implements OnInit {
 
   dataSource = createRecipesDataSource();
 
-  destroyRef = inject(DestroyRef);
   dialogManager = productDialogManager();
 
   constructor() {
-    syncFormToLocalStorage(this.filters, 'recipesFilters');
+    // Load from localStorage
+    const saved = localStorage.getItem('recipesFilters');
+    if (saved) {
+      this.filtersModel.set({ ...this.filtersModel(), ...JSON.parse(saved) });
+    }
+
+    // Sync to localStorage
+    effect(() => {
+      const value = this.filtersModel();
+      localStorage.setItem('recipesFilters', JSON.stringify(value));
+    });
+
+    // Sync to dataSource filter
+    effect(() => {
+      this.dataSource.filter.set(this.filtersModel());
+    });
+
     if (isDevMode()) {
       let opened = false;
       effect(() => {
@@ -92,29 +103,21 @@ export class RecipesListComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.filters.valueChanges
-      .pipe(startWith(this.filters.value), debounceTime(300), takeUntilDestroyed(this.destroyRef))
-      .subscribe((value: any) => {
-        this.dataSource.filter.set(value);
-      });
-  }
-
   changePage($event: number) {
     this.dataSource.pagination.set({ ...this.dataSource.pagination(), page: $event });
   }
 
   filterByProfession($event: string) {
-    const currentValues = this.filters.controls.profession.value || [];
-    if (!currentValues.includes($event)) {
-      this.filters.controls.profession.setValue([...currentValues, $event]);
+    const current = this.filtersModel().profession;
+    if (!current.includes($event)) {
+      this.filtersModel.update(m => ({ ...m, profession: [...current, $event] }));
     }
   }
 
   filterByTable($event: string) {
-    const currentValues = this.filters.controls.table.value || [];
-    if (!currentValues.includes($event)) {
-      this.filters.controls.table.setValue([...currentValues, $event]);
+    const current = this.filtersModel().table;
+    if (!current.includes($event)) {
+      this.filtersModel.update(m => ({ ...m, table: [...current, $event] }));
     }
   }
 }

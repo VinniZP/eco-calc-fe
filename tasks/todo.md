@@ -17,8 +17,8 @@
 | class-variance-authority | — | — | **Add** |
 | Karma + Jasmine | 6.4.0 | **Removed → Vitest** | Remove (→ Vitest) |
 | zone.js | 0.14.10 | **Removed → zoneless** | Remove (→ zoneless) |
-| ReactiveFormsModule | used | used | Remove (→ Signal Forms) |
-| FormsModule (ngModel) | used | used | Remove (→ Signal Forms) |
+| ReactiveFormsModule | used | **Removed** | Remove (→ Signal Forms) |
+| FormsModule (ngModel) | used | **ng-select only** | Remove (→ Signal Forms) |
 | rxjs | 7.8.0 | 7.8.0 | 7.8.2 |
 
 ## Progress
@@ -32,7 +32,7 @@
 - [x] **Phase 6**: Karma → Vitest
 - [x] **Phase 7**: Zoneless migration
 - [x] **Phase 7.5**: Lazy routes — initial bundle 784 KB → 537 KB
-- [ ] **Phase 8**: Signal Forms migration
+- [x] **Phase 8**: Signal Forms migration
 - [ ] **Phase 9**: ng-select → Custom ARIA Select
 - [ ] **Phase 10**: Cleanup (remove Material, animations, etc.)
 
@@ -448,10 +448,17 @@ src/app/shared/ui/
 | `PlayerSettingsCardComponent` | skill select | Add-to-list |
 
 ### Steps
-- [ ] 8.1-8.7 Migrate each component from FormGroup/ngModel → `form()` + `[formField]`
-- [ ] 8.8 Remove `ReactiveFormsModule` and `FormsModule` imports
-- [ ] 8.9 Build + test all forms
-- [ ] 8.10 Commit: `feat: migrate all forms to Angular Signal Forms`
+- [x] 8.1 Migrate `PricesSettingsComponent` — FormGroup → Signal Forms (`form()` + `[formField]` + `pattern`/`required` validators)
+- [x] 8.2 Migrate `FoodCalcComponent` — FormGroup → Signal Forms + `[ngModel]` for ng-select
+- [x] 8.3 Migrate `RecipesListComponent` — FormGroup → plain signal + effects for localStorage/filter sync
+- [x] 8.4 Migrate `OffersComponent` — `[(ngModel)]` → native `[value]`/`(input)` event bindings
+- [x] 8.5 Migrate `ShopsComponent` — `[(ngModel)]` → native event bindings
+- [x] 8.6 Migrate `SkillItemComponent` — `[(ngModel)]` → native event bindings
+- [x] 8.7 `RecipeCalculationsComponent` + `PlayerSettingsCardComponent` — keep FormsModule for ng-select (Phase 9)
+- [x] 8.8 Removed `ReactiveFormsModule` from all components. `FormsModule` remains only for ng-select bindings.
+- [x] 8.9 Deleted unused `syncFormToLocalStorage` helper + empty `core/helpers` directory
+- [x] 8.10 Build + tests pass
+- [x] 8.11 Commit: `feat: migrate forms to Signal Forms and native bindings`
 
 ---
 
