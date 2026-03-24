@@ -1,4 +1,4 @@
-import { DecimalPipe, JsonPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import {
   Component,
   computed,
@@ -61,7 +61,6 @@ const normalizeDecimal = (value: number) => {
         IngredientPriceComponent,
         DecimalPipe,
         TippyDirective,
-        JsonPipe,
         TagPickerComponent,
         BadgeDirective,
         ButtonDirective,

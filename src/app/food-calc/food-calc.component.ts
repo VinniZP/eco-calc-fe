@@ -1,4 +1,4 @@
-import { DecimalPipe, JsonPipe, NgClass, PercentPipe, SlicePipe } from '@angular/common';
+import { DecimalPipe, NgClass, PercentPipe, SlicePipe } from '@angular/common';
 import { Component, computed, effect, inject, signal, Signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -37,7 +37,6 @@ import { TestinessPipe } from './testiness.pipe';
     host: { class: 'block max-h-[calc(100vh-100px)]' },
     imports: [
         FormsModule,
-        JsonPipe,
         TestinessPipe,
         NgClass,
         DecimalPipe,
@@ -505,10 +504,10 @@ export class FoodCalcComponent {
         userName === 'vinni')
     ) {
       const easterNames = [
-        'Сумка с хуями',
-        'Пиздатый кекс',
-        'Охуенный бутер',
-        'Ебанутый салат',
+        'Сумка с сюрпризом',
+        'Легендарный кекс',
+        'Невероятный бутер',
+        'Чокнутый салат',
         'Пирожок с приколом',
         'Адская вкусняшка',
         'Стремный суп',

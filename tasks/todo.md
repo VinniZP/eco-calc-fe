@@ -2,7 +2,7 @@
 
 > Angular 18 → 21, Tailwind 3 → 4, DaisyUI → CVA + Tailwind, Karma → Vitest, Zoneless, Signal Forms, Custom Select
 
-## Current State (after Phase 4)
+## Current State (after Phase 6)
 
 | Package | Before | Now | Target |
 |---------|--------|-----|--------|
@@ -15,7 +15,7 @@
 | tailwindcss | 3.4.6 | **4.2.2** | 4.x |
 | daisyui | 4.12.10 | **5.5.19** | **Remove** |
 | class-variance-authority | — | — | **Add** |
-| Karma + Jasmine | 6.4.0 | 6.4.0 | Remove (→ Vitest) |
+| Karma + Jasmine | 6.4.0 | **Removed → Vitest** | Remove (→ Vitest) |
 | zone.js | 0.14.10 | **0.15.1** | Remove (→ zoneless) |
 | ReactiveFormsModule | used | used | Remove (→ Signal Forms) |
 | FormsModule (ngModel) | used | used | Remove (→ Signal Forms) |
@@ -28,8 +28,8 @@
 - [x] **Phase 3**: Angular 20 → 21 (`f42cc5e`)
 - [x] **Phase 4**: Tailwind 3 → 4 + DaisyUI 4 → 5 (`b4d8e59`)
 - [x] **Phase 5A**: Build UI Kit (CVA + directives + components) (`30bef85`)
-- [ ] **Phase 5B**: Migrate templates from DaisyUI to UI Kit
-- [ ] **Phase 6**: Karma → Vitest
+- [x] **Phase 5B**: Migrate templates from DaisyUI to UI Kit (`7c8182b`)
+- [x] **Phase 6**: Karma → Vitest
 - [ ] **Phase 7**: Zoneless migration
 - [ ] **Phase 8**: Signal Forms migration
 - [ ] **Phase 9**: ng-select → Custom ARIA Select
@@ -388,7 +388,7 @@ src/app/shared/ui/
 - [x] 5B.15 Kept ng-select CSS overrides (still needed until Phase 9 removes ng-select)
 - [x] 5B.16 `ng build` — passes
 - [x] 5B.17 `ng serve` — visual regression check passed (food, calc, shops pages verified)
-- [ ] 5B.18 Commit: `feat: migrate all templates from DaisyUI to UI kit`
+- [x] 5B.18 Commit: `feat: migrate all templates from DaisyUI to UI kit` (`7c8182b`)
 
 ---
 
@@ -397,12 +397,13 @@ src/app/shared/ui/
 **Risk: LOW** (only 2 test files exist)
 
 ### Steps
-- [ ] 6.1 Run migration schematic: `ng generate @angular/core:karma-to-vitest`
-- [ ] 6.2 Remove Karma/Jasmine devDependencies
-- [ ] 6.3 Update `tsconfig.spec.json`
-- [ ] 6.4 Update the 2 spec files
-- [ ] 6.5 `ng test` — verify both tests pass
-- [ ] 6.6 Commit: `chore: migrate from Karma to Vitest`
+- [x] 6.1 Manual migration (schematic not available): install `vitest` + `jsdom`, switch builder to `@angular/build:unit-test`
+- [x] 6.2 Remove Karma/Jasmine devDependencies (`karma`, `karma-*`, `jasmine-core`, `@types/jasmine`)
+- [x] 6.3 Update `tsconfig.spec.json` — replace `jasmine` types with `vitest/globals`
+- [x] 6.4 Update spec files — add required inputs for `OfferComponent`, mock `IntersectionObserver` for `OffersComponent`
+- [x] 6.5 `ng test` — both tests pass
+- [x] 6.6 Also migrated build builder from `@angular-devkit/build-angular:application` to `@angular/build:application`
+- [x] 6.7 Commit: `chore: migrate from Karma to Vitest`
 
 ---
 
