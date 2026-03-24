@@ -18,9 +18,6 @@ import { ShopsStore } from '../data/shops';
 import {
   BadgeDirective,
   ButtonDirective,
-  CardComponent,
-  DividerComponent,
-  FormFieldComponent,
   InputDirective,
   ToggleDirective,
 } from '../shared/ui';
@@ -54,9 +51,6 @@ import { TestinessPipe } from './testiness.pipe';
         InputDirective,
         BadgeDirective,
         ToggleDirective,
-        CardComponent,
-        FormFieldComponent,
-        DividerComponent,
     ],
     templateUrl: './food-calc.component.html',
     styleUrl: './food-calc.component.scss',

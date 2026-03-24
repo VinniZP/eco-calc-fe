@@ -1,46 +1,62 @@
-<h4 class="text-md text-primary">{{ shop().name }}</h4>
-<div class="flex gap-4">
-  <div class="w-full">
-    <p class="mb-2">Продает</p>
-    <table appTable zebra size="compact" class="border border-base-content/[0.06]">
+<!-- Shop header -->
+<div class="px-3 py-2.5 flex items-center gap-3 border-b border-base-content/[0.06]">
+  <h4 class="text-sm font-medium text-primary">{{ shop().name | stripTags }}</h4>
+  <span class="text-sm text-base-content/70">{{ shop().owner }}</span>
+  @if (shop().balance && shop().currency) {
+    <span appBadge size="sm">{{ shop().balance }} {{ shop().currency }}</span>
+  }
+</div>
+
+<!-- Sells section -->
+@if (sellOffers().length) {
+  <div class="border-l-3 border-l-primary/60 mt-2">
+    <div class="px-3 pb-1">
+      <span class="text-sm font-medium text-primary/70">Продает</span>
+    </div>
+    <table appTable size="sm">
       <thead>
         <tr>
           <th>Товар</th>
-          <th>Цена</th>
-          <th>Количество</th>
+          <th class="w-[120px]">Цена</th>
+          <th class="w-[120px]">Количество</th>
         </tr>
       </thead>
       <tbody>
         @for (offer of sellOffers(); track $index) {
-          <tr [class.text-base-content/30]="offer.quantity === 0">
+          <tr>
             <td>{{ offer.itemName }}</td>
-            <td>{{ offer.price }}</td>
+            <td [class.line-through]="offer.quantity === 0">{{ offer.price | number: "0.0-2" }}</td>
             <td>{{ offer.quantity }}</td>
           </tr>
         }
       </tbody>
     </table>
   </div>
+}
 
-  <div class="w-full">
-    <p class="mb-2">Покупает</p>
-    <table appTable zebra size="compact" class="border border-base-content/[0.06]">
+<!-- Buys section -->
+@if (buyOffers().length) {
+  <div class="border-l-3 border-l-warning/60 mt-2">
+    <div class="px-3 pb-1">
+      <span class="text-sm font-medium text-warning/70">Покупает</span>
+    </div>
+    <table appTable size="sm">
       <thead>
         <tr>
           <th>Товар</th>
-          <th>Цена</th>
-          <th>Количество</th>
+          <th class="w-[120px]">Цена</th>
+          <th class="w-[120px]">Количество</th>
         </tr>
       </thead>
       <tbody>
         @for (offer of buyOffers(); track $index) {
-          <tr [class.text-base-content/30]="offer.quantity === 0">
+          <tr>
             <td>{{ offer.itemName }}</td>
-            <td>{{ offer.price }}</td>
+            <td [class.line-through]="offer.quantity === 0">{{ offer.price | number: "0.0-2" }}</td>
             <td>{{ offer.quantity }}</td>
           </tr>
         }
       </tbody>
     </table>
   </div>
-</div>
+}

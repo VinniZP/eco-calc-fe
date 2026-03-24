@@ -1,41 +1,50 @@
-<div class="grid grid-cols-3 px-4 gap-4 max-h-full wrap">
-  <app-card compact class="w-full">
-    <div>
-      <p class="font-bold mt-4 mb-2">Всего съедено: ({{ stomach.totalCals() | number: "0.0-0" }})</p>
-      <p class="font-bold mt-4 mb-2">
-        Цена за 1000 калорий в желудке: ({{ costPer1000Calories() | number: "0.0-2" }})
-      </p>
-      <ul class="overflow-auto max-h-screen">
-        @for (item of contentCalories(); track $index) {
-          <li>
-            {{ item.name }}: {{ item.calories | number: "0.0-0" }}
-            <span
-              appBadge
-              size="xs"
-              [color]="item.taste < 1 ? 'error' : item.taste > 1 ? 'success' : 'info'"
-            >
-              {{ item.taste | testiness }}
-            </span>
-          </li>
-        }
-      </ul>
+<div class="grid grid-cols-3 gap-4 px-4 py-3 wrap">
+  <!-- LEFT — Eaten items -->
+  <div class="rounded-lg border border-base-content/[0.06] bg-base-content/[0.02] overflow-hidden flex flex-col">
+    <div class="px-3 py-2.5 border-b border-base-content/[0.06]">
+      <p class="text-sm font-medium">Всего съедено: <span class="text-primary font-bold">{{ stomach.totalCals() | number: "0.0-0" }}</span></p>
+      <p class="text-sm text-base-content/70">Цена за 1000 калорий: <span class="text-base-content">{{ costPer1000Calories() | number: "0.0-2" }}</span></p>
     </div>
-  </app-card>
-  <app-card compact class="w-full max-h-full">
-    <div class="min-h-1 max-h-full">
+    <ul class="overflow-auto flex-1 px-3 py-2 space-y-1">
+      @for (item of contentCalories(); track $index) {
+        <li class="flex items-center justify-between text-sm py-0.5">
+          <span>{{ item.name }}: {{ item.calories | number: "0.0-0" }}</span>
+          <span
+            appBadge
+            size="sm"
+            [color]="item.taste < 1 ? 'error' : item.taste > 1 ? 'success' : 'info'"
+          >
+            {{ item.taste | testiness }}
+          </span>
+        </li>
+      }
+      @empty {
+        <li class="text-sm text-base-content/60 py-4 text-center">Пусто</li>
+      }
+    </ul>
+  </div>
+
+  <!-- MIDDLE — Controls & Recommendations -->
+  <div class="rounded-lg border border-base-content/[0.06] bg-base-content/[0.02] overflow-hidden flex flex-col">
+    <div class="px-3 py-2.5 border-b border-base-content/[0.06] flex items-center justify-between">
+      <span class="text-sm font-medium">Настройки</span>
       <button
         appButton
         intent="warning"
-        size="sm"
+        size="xs"
         (click)="reset()"
         tp="Данные с сервера обновляются не чаче чем раз в 30 секунд"
       >
-        Сбросить / Обновить данные
+        Сбросить
       </button>
-      <div [formGroup]="config">
-        <app-form-field label="Минимальная вкусность">
+    </div>
+    <div class="flex-1 overflow-auto px-3 py-2 space-y-3" [formGroup]="config">
+      <!-- Config controls -->
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <div class="flex items-center gap-2">
+          <span class="text-sm text-base-content/70">Вкусность:</span>
           <ng-select
-            class="w-40"
+            class="w-[140px]"
             formControlName="minTestiness"
             [clearable]="false"
           >
@@ -47,89 +56,105 @@
             <ng-option [value]="1.2"><span class="text-success">Отлично</span></ng-option>
             <ng-option [value]="1.3"><span class="text-success">Великолепно</span></ng-option>
           </ng-select>
-        </app-form-field>
-        <app-form-field label="Минимум калорий">
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-sm text-base-content/70">Мин. калорий:</span>
           <input
             type="text"
             appInput
             size="sm"
             bordered
             [error]="config.controls.minCalories.invalid"
-            class="w-32"
+            class="w-20"
             formControlName="minCalories"
           />
-        </app-form-field>
-        <app-form-field label="Минимум нутриентов">
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-sm text-base-content/70">Мин. нутриентов:</span>
           <input
             type="text"
             appInput
             size="sm"
             bordered
             [error]="config.controls.minNutrients.invalid"
-            class="w-32"
+            class="w-20"
             formControlName="minNutrients"
           />
-        </app-form-field>
-        <div class="flex items-center h-8 gap-2">
+        </div>
+        <label class="flex items-center gap-2 cursor-pointer">
           <input type="checkbox" appToggle checked="checked" formControlName="availableInStore" />
-          <span>Только доступное в магазине</span>
-        </div>
-        <div class="flex flex-wrap gap-2 mt-2">
-          <button appButton size="xs" (click)="eatCalories(10000)">Съесть 10 000 калорий</button>
-          <button appButton size="xs" (click)="eatCalories(100000)">Съесть 100 000 калорий</button>
-          <button appButton intent="accent" size="xs" (click)="eatVariety()">Съесть вариативность</button>
-          <button appButton intent="accent" size="xs" (click)="eatNutrition()">Поднять нутриенты</button>
-          <button
-            appButton
-            intent="warning"
-            size="xs"
-            (click)="eatBest(15)"
-            tp="Могут попасться блюда, которых в продаже не достаточно"
-          >
-            Подобрать 15 лучших блюд
-          </button>
-          <button
-            appButton
-            intent="warning"
-            size="xs"
-            (click)="eatBest(15, true)"
-            tp="Могут попасться блюда, которых в продаже не достаточно. Может нагрузить компьютер"
-          >
-            Подобрать 15 лучших блюд (альтернатива)
-          </button>
-        </div>
-        <app-divider />
-        <p class="mb-2">Рекомендовано съесть:</p>
+          <span class="text-sm text-base-content/70">Только в магазине</span>
+        </label>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex flex-wrap gap-2">
+        <button appButton size="xs" (click)="eatCalories(10000)">Съесть 10 000 кал</button>
+        <button appButton size="xs" (click)="eatCalories(100000)">Съесть 100 000 кал</button>
+        <button appButton intent="accent" size="xs" (click)="eatVariety()">Вариативность</button>
+        <button appButton intent="accent" size="xs" (click)="eatNutrition()">Нутриенты</button>
+        <button
+          appButton
+          intent="warning"
+          size="xs"
+          (click)="eatBest(15)"
+          tp="Могут попасться блюда, которых в продаже не достаточно"
+        >
+          15 лучших
+        </button>
+        <button
+          appButton
+          intent="warning"
+          size="xs"
+          (click)="eatBest(15, true)"
+          tp="Могут попасться блюда, которых в продаже не достаточно. Может нагрузить компьютер"
+        >
+          15 лучших (альт.)
+        </button>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="border-t border-base-content/[0.06] pt-3">
+        <p class="text-sm font-medium mb-2">Рекомендовано съесть:</p>
         <div class="flex flex-col gap-1 overflow-auto max-h-40">
           @for (item of nextToEat() | slice: 0 : 10; track $index) {
-            <p class="flex justify-between odd:bg-base-100">
-              <span
-                >{{ item.name }}:
+            <div class="flex items-center justify-between text-sm py-0.5">
+              <span>
+                {{ item.name }}:
                 <span [ngClass]="item.value < stomach.total() ? 'text-error' : 'text-success'" [tp]="tpContent">
                   {{ item.value | number: "0.0-1" }}
                 </span>
                 <ng-template #tpContent>
                   <p>Нутриенты: {{ item.nutrients | number: "0.0-2" }}</p>
                   <p>Баланс: {{ item.balanceMult - 1 | number: "0.0-2" }}</p>
-                  <p>Вариативнось: {{ item.varietyMult - 1 | number: "0.0-2" }}</p>
-                  <p>Вкусность: {{ item.varietyMult - 1 | number: "0.0-2" }}</p>
+                  <p>Вариативность: {{ item.varietyMult - 1 | number: "0.0-2" }}</p>
+                  <p>Вкусность: {{ item.testinessMult - 1 | number: "0.0-2" }}</p>
                 </ng-template>
               </span>
               <button appButton intent="success" size="xs" (click)="eatCustom(item)" [disabled]="stomach.calculating()">
                 Съесть
               </button>
-            </p>
+            </div>
+          }
+          @empty {
+            <p class="text-sm text-base-content/60">Нажмите кнопку выше для расчёта</p>
           }
         </div>
-        <app-divider />
-        <p>Съедено в симуляторе: <button appButton size="xs" (click)="copyByList()">скопировать</button></p>
+      </div>
+
+      <!-- Eaten by shop -->
+      <div class="border-t border-base-content/[0.06] pt-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-sm font-medium">Съедено в симуляторе:</span>
+          <button appButton size="xs" (click)="copyByList()">скопировать</button>
+        </div>
         <div class="overflow-auto space-y-2">
           @for (shop of customEatedByShop(); track shop.shop) {
             <div>
-              <p class="text-warning">Магазин {{ shop.shop }}</p>
+              <p class="text-sm text-warning/80 font-medium">Магазин {{ shop.shop }}</p>
               @for (eated of shop.data; track eated.name) {
-                <p>
-                  {{ eated.name }}: <span appBadge size="xs" color="success">{{ eated.count }}</span>
+                <p class="text-sm flex items-center gap-2 py-0.5">
+                  {{ eated.name }} <span appBadge size="sm" color="success">{{ eated.count }}</span>
                 </p>
               }
             </div>
@@ -137,28 +162,32 @@
         </div>
       </div>
     </div>
-  </app-card>
-  <app-card compact class="w-full max-h-full">
-    <div class="min-h-1 max-h-full">
-      <span card-title>Статистика</span>
+  </div>
+
+  <!-- RIGHT — Statistics -->
+  <div class="rounded-lg border border-base-content/[0.06] bg-base-content/[0.02] overflow-hidden">
+    <div class="px-3 py-2.5 border-b border-base-content/[0.06]">
+      <span class="text-sm font-medium">Статистика</span>
+    </div>
+    <div class="px-3 py-3 space-y-3">
       <div class="flex gap-3 items-center">
-        <app-donut class="w-[80px]" [items]="stomach.toGraph()"></app-donut>
-        <div class="whitespace-nowrap">
+        <app-donut class="w-[80px] shrink-0" [items]="stomach.toGraph()"></app-donut>
+        <div class="whitespace-nowrap text-sm">
           @for (item of stomach.toGraph(); track item.name) {
             <p [style.color]="item.color">{{ item.name }}: {{ item.count | number: "0.1-1" }}</p>
           }
-          <p>Промежуточный итог: {{ stomach.subtotal() | number: "0.0-1" }}</p>
+          <p class="text-base-content/70 mt-1">Промежуточный итог: {{ stomach.subtotal() | number: "0.0-1" }}</p>
         </div>
       </div>
-      <div>
-        <p>Баланс: {{ stomach.balanceMult() - 1 | percent }}</p>
-        <p>Вариативность: {{ stomach.varietyMult() - 1 | percent }}</p>
-        <p>Вкусность: {{ stomach.testinessMult() - 1 | percent }}</p>
-        <p>Потребности <span class="text-xs">(условимся что всегда 3)</span>: {{ 0.3 | percent }}</p>
-        <p>
-          <b>Всего: {{ stomach.total() | number: "0.0-1" }}</b>
+      <div class="border-t border-base-content/[0.06] pt-3 text-sm space-y-1">
+        <p>Баланс: <span class="text-base-content">{{ stomach.balanceMult() - 1 | percent }}</span></p>
+        <p>Вариативность: <span class="text-base-content">{{ stomach.varietyMult() - 1 | percent }}</span></p>
+        <p>Вкусность: <span class="text-base-content">{{ stomach.testinessMult() - 1 | percent }}</span></p>
+        <p>Потребности <span class="text-base-content/60">(всегда 3)</span>: {{ 0.3 | percent }}</p>
+        <p class="pt-2 border-t border-base-content/[0.06] font-bold text-primary text-base">
+          Всего: {{ stomach.total() | number: "0.0-1" }}
         </p>
       </div>
     </div>
-  </app-card>
+  </div>
 </div>

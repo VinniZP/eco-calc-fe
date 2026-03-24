@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 import { ShopsStore } from '../../data/shops';
 import { TableDirective } from '../../shared/ui';
@@ -5,8 +6,8 @@ import { StripTagsPipe } from '../../ui/strip-tags.pipe';
 
 @Component({
     selector: 'app-offer',
-    host: { class: 'block border border-base-content/[0.08] bg-base-300 rounded-xl shadow-md shadow-black/15' },
-    imports: [StripTagsPipe, TableDirective],
+    host: { class: 'block rounded-lg border border-base-content/[0.06] bg-base-content/[0.02] overflow-hidden' },
+    imports: [StripTagsPipe, TableDirective, DecimalPipe],
     templateUrl: './offer.component.html',
     styleUrl: './offer.component.scss'
 })

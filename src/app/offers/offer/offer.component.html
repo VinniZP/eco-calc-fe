@@ -1,33 +1,58 @@
-<p class="text-primary font-medium px-3 py-3">{{ item() }}</p>
-<table appTable zebra size="md">
-  <thead>
-    <tr>
-      <th>Магазин</th>
-      <th width="100">Цена</th>
-      <th width="100">Количество</th>
-    </tr>
-  </thead>
+<!-- Item header -->
+<div class="px-3 py-2.5 border-b border-base-content/[0.06]">
+  <span class="text-sm font-medium text-primary">{{ item() }}</span>
+</div>
 
-  <tbody>
-    <tr>
-      <td colspan="3" class="text-success">Продажа</td>
-    </tr>
-    @for (offer of sellingOffers(); track $index) {
-      <tr [class.text-base-content/30]="offer.quantity === 0">
-        <td>{{ offer.shop | stripTags }}</td>
-        <td>{{ offer.price }}</td>
-        <td>{{ offer.quantity }}</td>
-      </tr>
-    }
-    <tr>
-      <td colspan="3" class="text-warning">Покупка</td>
-    </tr>
-    @for (offer of buyingOffers(); track $index) {
-      <tr [class.text-base-content/30]="offer.quantity === 0">
-        <td>{{ offer.shop | stripTags }}</td>
-        <td>{{ offer.price }}</td>
-        <td>{{ offer.quantity }}</td>
-      </tr>
-    }
-  </tbody>
-</table>
+<!-- Selling offers -->
+@if (sellingOffers().length) {
+  <div class="border-l-3 border-l-primary/60 mt-2">
+    <div class="px-3 pb-1">
+      <span class="text-sm font-medium text-primary/70">Продажа</span>
+    </div>
+    <table appTable size="sm">
+      <thead>
+        <tr>
+          <th>Магазин</th>
+          <th class="w-[120px]">Цена</th>
+          <th class="w-[120px]">Количество</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (offer of sellingOffers(); track $index) {
+          <tr>
+            <td>{{ offer.shop | stripTags }}</td>
+            <td [class.line-through]="offer.quantity === 0">{{ offer.price | number: "0.0-2" }}</td>
+            <td>{{ offer.quantity }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+<!-- Buying offers -->
+@if (buyingOffers().length) {
+  <div class="border-l-3 border-l-warning/60 mt-2">
+    <div class="px-3 pb-1">
+      <span class="text-sm font-medium text-warning/70">Покупка</span>
+    </div>
+    <table appTable size="sm">
+      <thead>
+        <tr>
+          <th>Магазин</th>
+          <th class="w-[120px]">Цена</th>
+          <th class="w-[120px]">Количество</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (offer of buyingOffers(); track $index) {
+          <tr>
+            <td>{{ offer.shop | stripTags }}</td>
+            <td [class.line-through]="offer.quantity === 0">{{ offer.price | number: "0.0-2" }}</td>
+            <td>{{ offer.quantity }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
