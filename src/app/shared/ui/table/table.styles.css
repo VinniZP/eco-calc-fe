@@ -1,0 +1,40 @@
+@reference "tailwindcss";
+
+table[appTable] th {
+  @apply px-3 py-2 text-left text-sm font-semibold text-base-content/70;
+}
+
+table[appTable] td {
+  @apply px-3 py-2 text-sm;
+}
+
+/* Size variants */
+table[appTable][data-size='compact'] th,
+table[appTable][data-size='compact'] td {
+  @apply px-2 py-1 text-xs;
+}
+
+table[appTable][data-size='sm'] th,
+table[appTable][data-size='sm'] td {
+  @apply px-2 py-1.5 text-sm;
+}
+
+table[appTable][data-size='md'] th,
+table[appTable][data-size='md'] td {
+  @apply px-3 py-2 text-sm;
+}
+
+/* Zebra striping */
+table[appTable][data-zebra] tbody tr:nth-child(even) {
+  @apply bg-base-200/50;
+}
+
+/* Bordered */
+table[appTable][data-bordered] {
+  @apply border border-base-content/20;
+}
+
+table[appTable][data-bordered] th,
+table[appTable][data-bordered] td {
+  @apply border border-base-content/10;
+}
