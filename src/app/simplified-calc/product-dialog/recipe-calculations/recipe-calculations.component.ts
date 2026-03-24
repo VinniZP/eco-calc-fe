@@ -70,6 +70,14 @@ const normalizeDecimal = (value: number) => {
     templateUrl: './recipe-calculations.component.html'
 })
 export class RecipeCalculationsComponent implements OnInit {
+  protected inputValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
+
+  protected inputChecked(event: Event): boolean {
+    return (event.target as HTMLInputElement).checked;
+  }
+
   userConfigStore = inject(UserConfigStore);
   injector = inject(Injector);
   productName = input.required<string>();

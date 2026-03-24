@@ -58,6 +58,14 @@ export class OffersComponent implements AfterViewInit {
     );
   }
 
+  protected inputValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
+
+  protected inputChecked(event: Event): boolean {
+    return (event.target as HTMLInputElement).checked;
+  }
+
   ngAfterViewInit() {
     const el = this.scrollTrigger()?.nativeElement;
     if (!el) return;

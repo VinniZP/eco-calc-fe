@@ -1,5 +1,5 @@
 <app-form-field [label]="skill().skill">
-  <select appSelect size="sm" class="w-14" [value]="skill().level" (change)="changeLevel(+$any($event.target).value)">
+  <select appSelect size="sm" class="w-14" [value]="skill().level" (change)="changeLevel(+inputValue($event))">
     <option [value]="1">1</option>
     <option [value]="2">2</option>
     <option [value]="3">3</option>
@@ -11,6 +11,6 @@
 </app-form-field>
 @if(skill().level >= 6) {
   <app-form-field label="Чистое рабочее место">
-    <input type="checkbox" appToggle [checked]="skill().lavish" (change)="changeLavish($any($event.target).checked)" />
+    <input type="checkbox" appToggle [checked]="skill().lavish" (change)="changeLavish(inputChecked($event))" />
   </app-form-field>
 }

@@ -43,7 +43,7 @@
       <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
         <div class="flex items-center gap-2">
           <span class="text-sm text-base-content/70">Вкусность:</span>
-          <select appSelect size="sm" class="w-[140px]" [value]="configModel().minTestiness" (change)="configModel.update(m => ({...m, minTestiness: +$any($event.target).value}))">
+          <select appSelect size="sm" class="w-[140px]" [value]="configModel().minTestiness" (change)="configModel.update(m => ({...m, minTestiness: +inputValue($event)}))">
             <option [value]="0.7">Худшее</option>
             <option [value]="0.8">Отвратительно</option>
             <option [value]="0.9">Плохо</option>

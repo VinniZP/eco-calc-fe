@@ -29,6 +29,14 @@ import { UniqueRecipesPipe } from './unique-recipes.pipe';
     templateUrl: './recipes-list.component.html'
 })
 export class RecipesListComponent {
+  protected inputValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
+
+  protected inputChecked(event: Event): boolean {
+    return (event.target as HTMLInputElement).checked;
+  }
+
   filtersModel = signal({
     search: '' as string,
     table: [] as string[],

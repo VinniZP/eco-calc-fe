@@ -49,6 +49,10 @@ import { TestinessPipe } from './testiness.pipe';
     providers: [Stomach]
 })
 export class FoodCalcComponent {
+  protected inputValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
+
   userStore = inject(UserStore);
   foodStore = inject(FoodStore);
   shopsStore = inject(ShopsStore);

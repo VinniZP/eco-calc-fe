@@ -18,4 +18,8 @@ export class ShopsComponent {
       .entities()
       .filter((shop) => shop.name.toLowerCase().includes(this.search().toLowerCase())),
   );
+
+  protected inputValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
 }

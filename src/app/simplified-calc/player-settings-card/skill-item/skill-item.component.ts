@@ -15,6 +15,14 @@ export class SkillItemComponent {
   skill = input.required<SelectedSkill>();
   userConfigStore = inject(UserConfigStore);
 
+  protected inputValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
+
+  protected inputChecked(event: Event): boolean {
+    return (event.target as HTMLInputElement).checked;
+  }
+
   changeLevel($event: number) {
     const newVar: { level: number; lavish?: boolean } = { level: $event };
     if (newVar.level < 6) {

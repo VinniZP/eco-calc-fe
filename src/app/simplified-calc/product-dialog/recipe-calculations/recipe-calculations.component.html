@@ -11,7 +11,7 @@
     </div>
     <div class="flex items-center gap-2">
       <span class="text-sm text-base-content/70">Профессия:</span>
-      <select appSelect size="sm" class="w-[140px]" [value]="level()" (change)="level.set(+$any($event.target).value)">
+      <select appSelect size="sm" class="w-[140px]" [value]="level()" (change)="level.set(+inputValue($event))">
         @for (l of [1,2,3,4,5,6,7]; track l) {
           <option [value]="l">Уровень {{ l }}</option>
         }
@@ -22,7 +22,7 @@
         type="checkbox"
         appToggle
         [checked]="lavish()"
-        (change)="lavish.set($any($event.target).checked)"
+        (change)="lavish.set(inputChecked($event))"
       />
       <span class="text-sm text-base-content/70">Чистое рабочее место</span>
     </label>
