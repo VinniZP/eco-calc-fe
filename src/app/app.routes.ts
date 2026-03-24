@@ -1,25 +1,21 @@
 import { Routes } from '@angular/router';
-import { FoodCalcComponent } from './food-calc/food-calc.component';
-import { OffersComponent } from './offers/offers.component';
-import { ShopsComponent } from './shops/shops.component';
-import { SimplifiedCalcComponent } from './simplified-calc/simplified-calc.component';
 
 export const routes: Routes = [
   {
     path: 'price',
-    component: SimplifiedCalcComponent,
+    loadComponent: () => import('./simplified-calc/simplified-calc.component').then(m => m.SimplifiedCalcComponent),
   },
   {
     path: 'food',
-    component: FoodCalcComponent,
+    loadComponent: () => import('./food-calc/food-calc.component').then(m => m.FoodCalcComponent),
   },
   {
     path: 'shops',
-    component: ShopsComponent,
+    loadComponent: () => import('./shops/shops.component').then(m => m.ShopsComponent),
   },
   {
     path: 'offers',
-    component: OffersComponent,
+    loadComponent: () => import('./offers/offers.component').then(m => m.OffersComponent),
   },
   {
     path: '**',

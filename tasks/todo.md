@@ -31,6 +31,7 @@
 - [x] **Phase 5B**: Migrate templates from DaisyUI to UI Kit (`7c8182b`)
 - [x] **Phase 6**: Karma → Vitest
 - [x] **Phase 7**: Zoneless migration
+- [x] **Phase 7.5**: Lazy routes — initial bundle 784 KB → 537 KB
 - [ ] **Phase 8**: Signal Forms migration
 - [ ] **Phase 9**: ng-select → Custom ARIA Select
 - [ ] **Phase 10**: Cleanup (remove Material, animations, etc.)
