@@ -11,14 +11,10 @@ import {
   CdkRowDef,
   CdkTable,
 } from '@angular/cdk/table';
-import { SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, effect, inject, isDevMode, signal, Signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { Recipe, RecipesStore } from '../../data/recipes';
 import { PaginatorComponent } from '../../ui/paginator/paginator.component';
-import { StripTagsPipe } from '../../ui/strip-tags.pipe';
-import { InputDirective, TableDirective, ToggleDirective } from '../../shared/ui';
+import { InputDirective, MultiSelectComponent, TableDirective, ToggleDirective } from '../../shared/ui';
 import { productDialogManager } from '../product-dialog/dialog-manager';
 import { ProductLinkComponent } from '../product-link/product-link.component';
 import { ProfessionLineComponent } from './profession-line/profession-line.component';
@@ -40,14 +36,11 @@ import { UniqueRecipesPipe } from './unique-recipes.pipe';
         CdkRow,
         CdkHeaderRowDef,
         CdkRowDef,
-        NgSelectModule,
-        FormsModule,
-        SlicePipe,
+        MultiSelectComponent,
         PaginatorComponent,
         ProductLinkComponent,
         ProfessionLineComponent,
         UniqueRecipesPipe,
-        StripTagsPipe,
         InputDirective,
         TableDirective,
         ToggleDirective,
@@ -62,6 +55,8 @@ export class RecipesListComponent {
     profession: [] as string[],
     selling: false,
   });
+
+  stripTagsFn = (s: string) => s.replace(/<[^>]*>/g, '');
 
   displayedColumns = ['displayName', 'craft', 'actions'];
 

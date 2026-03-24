@@ -29,74 +29,7 @@
 @import "tippy.js/themes/translucent.css";
 @import "tippy.js/animations/scale.css";
 
-@import "@ng-select/ng-select/themes/default.theme.css";
-
 @import "./app/shared/ui/table/table.styles.css";
-
-.ng-select .ng-select-container {
-  min-height: 32px !important;
-  font-size: 14px;
-  color: var(--color-neutral-content);
-}
-
-.ng-select .ng-select-container {
-  background-color: var(--color-base-200);
-  border-color: oklch(from var(--color-base-content) l c h / 0.2);
-  color: var(--color-base-content);
-}
-.ng-select.ng-select-opened > .ng-select-container {
-  background-color: var(--color-base-200);
-  border-color: oklch(from var(--color-base-content) l c h / 0.2);
-  color: var(--color-base-content);
-}
-
-.ng-dropdown-panel {
-  background-color: var(--color-base-200);
-  border-color: oklch(from var(--color-base-content) l c h / 0.2);
-  color: var(--color-base-content);
-  font-size: 14px;
-}
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  background-color: var(--color-base-200) !important;
-  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
-  color: var(--color-base-content) !important;
-  padding-top: 4px !important;
-  padding-bottom: 4px !important;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  background-color: var(--color-base-100) !important;
-  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
-  color: var(--color-base-content) !important;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
-  background-color: var(--color-base-100) !important;
-  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
-  color: var(--color-base-content) !important;
-}
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected:hover {
-  background-color: var(--color-base-100) !important;
-  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
-  color: var(--color-base-content) !important;
-}
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input > input {
-  color: var(--color-base-content);
-}
-
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
-  background-color: var(--color-base-100);
-  border-color: oklch(from var(--color-base-content) l c h / 0.2);
-  color: var(--color-base-content);
-}
-
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon {
-  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
-}
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon:hover {
-  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
-  background-color: var(--color-base-300) !important;
-}
 
 html,
 body {

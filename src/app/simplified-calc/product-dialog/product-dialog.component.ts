@@ -1,12 +1,10 @@
 import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Inject, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { TippyDirective } from '@ngneat/helipopper';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
-import { BadgeDirective, ButtonDirective } from '../../shared/ui';
+import { BadgeDirective, ButtonDirective, SelectComponent, SelectOptionDirective } from '../../shared/ui';
 import { ProductLinkComponent } from '../product-link/product-link.component';
 import { RecipeCalculationsComponent } from './recipe-calculations/recipe-calculations.component';
 
@@ -19,8 +17,8 @@ interface DialogData {
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block bg-base-100 w-full h-full max-w-full rounded-xl border border-base-content/[0.08] shadow-2xl shadow-black/40 max-h-[95vh] overflow-y-auto min-h-[50vh]' },
     imports: [
-        NgSelectModule,
-        FormsModule,
+        SelectComponent,
+        SelectOptionDirective,
         RecipeCalculationsComponent,
         ProductLinkComponent,
         SlicePipe,
@@ -37,7 +35,7 @@ export class ProductDialogComponent implements OnInit {
   recipes: Recipe[] = this.recipesStore.getRecipesForProduct(this.data.product);
   usedIn: string[] = this.recipesStore.usedInProducts(this.data.product);
   showEnd = 5;
-  selectedRecipe = signal<Recipe | undefined>(undefined);
+  selectedRecipe = signal<Recipe | null>(null);
 
   constructor(
     @Inject(DIALOG_DATA) public data: DialogData,
@@ -67,7 +65,6 @@ export class ProductDialogComponent implements OnInit {
     };
   }
 
-  selectRecipe($event: Recipe | undefined) {
-    this.selectedRecipe.set($event);
-  }
+  trackById = (r: Recipe) => r.id;
+  recipeLabel = (r: Recipe) => r.displayName;
 }

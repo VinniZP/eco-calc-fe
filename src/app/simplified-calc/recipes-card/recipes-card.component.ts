@@ -1,13 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Signal, viewChild } from '@angular/core';
-import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, Signal, untracked } from '@angular/core';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
-import { CardComponent, DividerComponent } from '../../shared/ui';
+import { CardComponent, DividerComponent, SelectComponent } from '../../shared/ui';
 
 @Component({
     selector: 'app-recipes-card',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgSelectModule, CardComponent, DividerComponent],
+    imports: [SelectComponent, CardComponent, DividerComponent],
     templateUrl: './recipes-card.component.html',
     styleUrl: './recipes-card.component.scss'
 })
@@ -15,7 +14,6 @@ export class RecipesCardComponent {
   recipesStore = inject(RecipesStore);
   userConfigStore = inject(UserConfigStore);
   recipes: Signal<Recipe[]> = this.recipesStore.entities;
-  select = viewChild(NgSelectComponent);
   enabledRecipes: Signal<Recipe[]> = computed(() => {
     return this.userConfigStore
       .enabledRecipes()
@@ -23,10 +21,19 @@ export class RecipesCardComponent {
       .filter((v) => v) as Recipe[];
   });
 
-  onChange($event: string) {
-    if ($event) {
-      this.select()?.clearModel();
-      this.userConfigStore.enableRecipe($event);
-    }
+  selectedRecipeId = signal<Recipe | null>(null);
+  trackById = (r: Recipe) => r.id;
+  recipeLabel = (r: Recipe) => r.displayName;
+
+  constructor() {
+    effect(() => {
+      const recipe = this.selectedRecipeId();
+      if (recipe) {
+        untracked(() => {
+          this.userConfigStore.enableRecipe(recipe.id);
+          this.selectedRecipeId.set(null);
+        });
+      }
+    });
   }
 }

@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, model } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { TippyDirective } from '@ngneat/helipopper';
 import { ItemsStore } from '../../data/items';
+import { SelectComponent } from '../../shared/ui';
 
 @Component({
   selector: 'app-tag-picker',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgSelectModule, FormsModule, TippyDirective],
+  imports: [SelectComponent, TippyDirective],
   templateUrl: './tag-picker.component.html',
   styleUrl: './tag-picker.component.scss',
 })
@@ -21,7 +20,6 @@ export class TagPickerComponent {
     return this.itemsStore.tagsToItemNameMap()[this.tag()] || [];
   });
 
-  modelChange($event: any) {
-    this.product.set($event?.$ngOptionValue !== null ? $event : null);
-  }
+  selectOptions = computed(() => [null, ...this.possibleItems()]);
+  labelFn = (item: string | null) => item ?? 'Тег: ' + this.tag();
 }

@@ -10,64 +10,23 @@
       </svg>
       <input type="text" appInput size="sm" bordered placeholder="Поиск по продукту..." [value]="filtersModel().search" (input)="filtersModel.update(m => ({...m, search: $any($event.target).value}))" class="!pl-9" />
     </div>
-    <ng-select
-      [ngModel]="filtersModel().profession"
-      (ngModelChange)="filtersModel.update(m => ({...m, profession: $event}))"
+    <app-multi-select
       class="w-full max-w-[200px]"
-      [multiple]="true"
+      [value]="filtersModel().profession"
+      (valueChange)="filtersModel.update(m => ({...m, profession: $event}))"
+      [options]="skills()"
+      [labelFn]="stripTagsFn"
       placeholder="Профессия"
-      [closeOnSelect]="false"
-    >
-      @for (skill of skills(); track skill) {
-        <ng-option [value]="skill">{{ skill | stripTags }}</ng-option>
-      }
-      <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-        <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }" />
-        {{ item | stripTags }}
-      </ng-template>
-      <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-        @for (item of items | slice: 0 : 2; track item) {
-          <div class="ng-value">
-            <span class="ng-value-label">{{ item | stripTags }}</span>
-            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-          </div>
-        }
-        @if (items.length > 2) {
-          <div class="ng-value">
-            <span class="ng-value-label">еще {{ items.length - 2 }}...</span>
-          </div>
-        }
-      </ng-template>
-    </ng-select>
-    <ng-select
-      [ngModel]="filtersModel().table"
-      (ngModelChange)="filtersModel.update(m => ({...m, table: $event}))"
+      size="sm"
+    />
+    <app-multi-select
       class="w-full max-w-[200px]"
-      [multiple]="true"
+      [value]="filtersModel().table"
+      (valueChange)="filtersModel.update(m => ({...m, table: $event}))"
+      [options]="tables()"
       placeholder="Верстак"
-      [closeOnSelect]="false"
-    >
-      @for (table of tables(); track table) {
-        <ng-option [value]="table">{{ table }}</ng-option>
-      }
-      <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-        <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }" />
-        {{ item }}
-      </ng-template>
-      <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-        @for (item of items | slice: 0 : 2; track item) {
-          <div class="ng-value">
-            <span class="ng-value-label">{{ item }}</span>
-            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-          </div>
-        }
-        @if (items.length > 2) {
-          <div class="ng-value">
-            <span class="ng-value-label">еще {{ items.length - 2 }}...</span>
-          </div>
-        }
-      </ng-template>
-    </ng-select>
+      size="sm"
+    />
     @if (dataSource.availableSelling()) {
       <label class="flex items-center h-8 gap-2 cursor-pointer shrink-0">
         <input type="checkbox" appToggle checked="checked" [checked]="filtersModel().selling" (change)="filtersModel.update(m => ({...m, selling: $any($event.target).checked}))" />

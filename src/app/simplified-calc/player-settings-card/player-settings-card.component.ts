@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, Signal, viewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
-import { CardComponent, DividerComponent } from '../../shared/ui';
+import { ChangeDetectionStrategy, Component, effect, inject, signal, Signal, untracked } from '@angular/core';
+import { CardComponent, DividerComponent, SelectComponent } from '../../shared/ui';
 import { SelectedSkill, UserConfigStore } from '../../data/config';
 import { RecipesStore } from '../../data/recipes';
 import { SkillItemComponent } from './skill-item/skill-item.component';
@@ -9,7 +7,7 @@ import { SkillItemComponent } from './skill-item/skill-item.component';
 @Component({
     selector: 'app-player-settings-card',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [FormsModule, NgSelectModule, SkillItemComponent, CardComponent, DividerComponent],
+    imports: [SelectComponent, SkillItemComponent, CardComponent, DividerComponent],
     templateUrl: './player-settings-card.component.html',
     styleUrl: './player-settings-card.component.scss'
 })
@@ -19,12 +17,17 @@ export class PlayerSettingsCardComponent {
   skills: Signal<string[]> = this.recipesStore.skills;
   selectedSkills: Signal<SelectedSkill[]> = this.userConfigStore.selectedSkills;
 
-  select = viewChild(NgSelectComponent);
+  selectedSkill = signal<string | null>(null);
 
-  onChange($event: string) {
-    if ($event) {
-      this.select()?.clearModel();
-      this.userConfigStore.enableSkill($event);
-    }
+  constructor() {
+    effect(() => {
+      const skill = this.selectedSkill();
+      if (skill) {
+        untracked(() => {
+          this.userConfigStore.enableSkill(skill);
+          this.selectedSkill.set(null);
+        });
+      }
+    });
   }
 }

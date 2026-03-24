@@ -1,10 +1,12 @@
 <app-card class="w-full">
   <span card-title>Навыки и умения</span>
-  <ng-select (change)="onChange($event)" placeholder="Выберите навык">
-    @for (skill of skills(); track skill) {
-      <ng-option [value]="skill">{{skill}}</ng-option>
-    }
-  </ng-select>
+  <app-select
+    [(value)]="selectedSkill"
+    [options]="skills()"
+    searchable
+    placeholder="Выберите навык"
+    size="sm"
+  />
   @for(skill of selectedSkills(); track skill.skill) {
     <app-skill-item [skill]="skill" />
   }

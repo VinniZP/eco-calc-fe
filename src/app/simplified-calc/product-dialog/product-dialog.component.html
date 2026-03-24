@@ -10,21 +10,25 @@
   <div class="px-4 pt-4 pb-3 space-y-2">
     <div class="flex items-center gap-3">
       <span class="text-sm text-base-content/70 shrink-0">Вариант рецепта</span>
-      <ng-select class="w-full max-w-[420px]" [ngModel]="selectedRecipe()" (ngModelChange)="selectRecipe($event)" placeholder="Выберите рецепт">
-        @for (recipe of recipes; track recipe.id) {
-          <ng-option [value]="recipe">
-            <div class="flex gap-2 items-center">
-              <span>{{ recipe.displayName }}</span>
-              <span appBadge>{{ recipe.craftingTable }}</span>
-              @if (recipe.skillNeeds.length > 0) {
-                <span appBadge
-                  >{{ recipe.skillNeeds[0].name }} ({{ recipe.skillNeeds[0].level }})</span
-                >
-              }
-            </div>
-          </ng-option>
-        }
-      </ng-select>
+      <app-select
+        class="w-full max-w-[420px]"
+        [(value)]="selectedRecipe"
+        [options]="recipes"
+        [trackFn]="trackById"
+        [labelFn]="recipeLabel"
+        searchable
+        placeholder="Выберите рецепт"
+      >
+        <ng-template appSelectOption let-recipe>
+          <div class="flex gap-2 items-center">
+            <span>{{ recipe.displayName }}</span>
+            <span appBadge>{{ recipe.craftingTable }}</span>
+            @if (recipe.skillNeeds.length > 0) {
+              <span appBadge>{{ recipe.skillNeeds[0].name }} ({{ recipe.skillNeeds[0].level }})</span>
+            }
+          </div>
+        </ng-template>
+      </app-select>
     </div>
     @if (usedIn.length) {
       <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1">

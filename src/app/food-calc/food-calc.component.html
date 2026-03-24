@@ -43,20 +43,15 @@
       <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
         <div class="flex items-center gap-2">
           <span class="text-sm text-base-content/70">Вкусность:</span>
-          <ng-select
-            class="w-[140px]"
-            [ngModel]="configModel().minTestiness"
-            (ngModelChange)="configModel.update(m => ({...m, minTestiness: $event}))"
-            [clearable]="false"
-          >
-            <ng-option [value]="0.7"><span class="text-error">Худшее</span></ng-option>
-            <ng-option [value]="0.8"><span class="text-error">Отвратительно</span></ng-option>
-            <ng-option [value]="0.9"><span class="text-error">Плохо</span></ng-option>
-            <ng-option [value]="1">Ок</ng-option>
-            <ng-option [value]="1.1"><span class="text-success">Хорошо</span></ng-option>
-            <ng-option [value]="1.2"><span class="text-success">Отлично</span></ng-option>
-            <ng-option [value]="1.3"><span class="text-success">Великолепно</span></ng-option>
-          </ng-select>
+          <select appSelect size="sm" class="w-[140px]" [value]="configModel().minTestiness" (change)="configModel.update(m => ({...m, minTestiness: +$any($event.target).value}))">
+            <option [value]="0.7">Худшее</option>
+            <option [value]="0.8">Отвратительно</option>
+            <option [value]="0.9">Плохо</option>
+            <option [value]="1">Ок</option>
+            <option [value]="1.1">Хорошо</option>
+            <option [value]="1.2">Отлично</option>
+            <option [value]="1.3">Великолепно</option>
+          </select>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-sm text-base-content/70">Мин. калорий:</span>

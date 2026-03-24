@@ -10,7 +10,7 @@
 | TypeScript | 5.5.3 | **5.9.3** | 5.9.x |
 | @ngrx/signals | 18.0.2 | **21.0.1** | 21.x |
 | ngxtension | 4.0.0 | **7.2.0** | 7.x |
-| @ng-select/ng-select | 13.4.1 | **21.5.2** | **Remove** |
+| @ng-select/ng-select | 13.4.1 | **Removed → @angular/aria** | **Remove** |
 | @ngneat/helipopper | 9.2.1 | **11.1.4** | 12.x |
 | tailwindcss | 3.4.6 | **4.2.2** | 4.x |
 | daisyui | 4.12.10 | **5.5.19** | **Remove** |
@@ -33,7 +33,7 @@
 - [x] **Phase 7**: Zoneless migration
 - [x] **Phase 7.5**: Lazy routes — initial bundle 784 KB → 537 KB
 - [x] **Phase 8**: Signal Forms migration
-- [ ] **Phase 9**: ng-select → Custom ARIA Select
+- [x] **Phase 9**: ng-select → Custom ARIA Select
 - [ ] **Phase 10**: Cleanup (remove Material, animations, etc.)
 
 ## Notable changes made during Phases 1-4
@@ -480,12 +480,18 @@ src/app/shared/ui/
 | 8 | `RecipesCardComponent` | Single | Yes | **Yes** | Recipes |
 
 ### Steps
-- [ ] 9.1 Create `AppSelectComponent` (single) + `AppMultiSelectComponent` (multi) — CVA styled, ARIA compliant
-- [ ] 9.2-9.9 Migrate each ng-select usage
-- [ ] 9.10 Remove `@ng-select/ng-select`
-- [ ] 9.11 Remove ng-select CSS from `src/styles.scss`
-- [ ] 9.12 Build + test every select
-- [ ] 9.13 Commit: `feat: replace ng-select with custom ARIA select components`
+- [x] 9.1 Create `SelectDirective` (native `<select>` styling), `SelectComponent` (custom dropdown with @angular/aria), `MultiSelectComponent` (multi-select with checkboxes)
+- [x] 9.2 Migrate RecipeCalculations (levels) → native `<select appSelect>`
+- [x] 9.3 Migrate FoodCalc (tastiness) → native `<select appSelect>`
+- [x] 9.4 Migrate TagPicker → `<app-select>` with clearable
+- [x] 9.5 Migrate ProductDialog → `<app-select>` with search + custom option template
+- [x] 9.6 Migrate PlayerSettings → `<app-select>` with search
+- [x] 9.7 Migrate RecipesCard → `<app-select>` with search
+- [x] 9.8 Migrate RecipesList (2x) → `<app-multi-select>` with checkbox options
+- [x] 9.9 `npm uninstall @ng-select/ng-select`, remove all ng-select CSS overrides
+- [x] 9.10 Remove FormsModule from all components (fully eliminated)
+- [x] 9.11 Build + tests pass
+- [x] 9.12 Commit: `feat: replace ng-select with custom ARIA select components`
 
 ---
 

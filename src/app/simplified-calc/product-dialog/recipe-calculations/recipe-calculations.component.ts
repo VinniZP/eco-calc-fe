@@ -13,8 +13,7 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select';
+
 import { TippyDirective } from '@ngneat/helipopper';
 import { UserConfigStore } from '../../../data/config';
 import { Recipe } from '../../../data/recipes';
@@ -22,6 +21,7 @@ import {
   BadgeDirective,
   ButtonDirective,
   ButtonGroupComponent,
+  SelectDirective,
   TableDirective,
   ToggleDirective,
 } from '../../../shared/ui';
@@ -57,8 +57,7 @@ const normalizeDecimal = (value: number) => {
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block' },
     imports: [
-        FormsModule,
-        NgSelectModule,
+        SelectDirective,
         ProductLinkComponent,
         IngredientPriceComponent,
         DecimalPipe,

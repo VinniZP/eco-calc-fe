@@ -1,10 +1,10 @@
 import { DecimalPipe, NgClass, PercentPipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, Signal, untracked } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { FormsModule } from '@angular/forms';
+
 import { form, FormField, required, pattern } from '@angular/forms/signals';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NgSelectModule } from '@ng-select/ng-select';
+
 import { TippyDirective } from '@ngneat/helipopper';
 import { createNotifier } from 'ngxtension/create-notifier';
 import { debounceTime, startWith } from 'rxjs';
@@ -14,6 +14,7 @@ import {
   BadgeDirective,
   ButtonDirective,
   InputDirective,
+  SelectDirective,
   ToggleDirective,
 } from '../shared/ui';
 import { StomachData, Testiness, UserStore } from '../data/user';
@@ -32,7 +33,6 @@ import { TestinessPipe } from './testiness.pipe';
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block max-h-[calc(100vh-100px)]' },
     imports: [
-        FormsModule,
         TestinessPipe,
         NgClass,
         DecimalPipe,
@@ -41,7 +41,7 @@ import { TestinessPipe } from './testiness.pipe';
         SlicePipe,
         TippyDirective,
         FormField,
-        NgSelectModule,
+        SelectDirective,
         ButtonDirective,
         InputDirective,
         BadgeDirective,

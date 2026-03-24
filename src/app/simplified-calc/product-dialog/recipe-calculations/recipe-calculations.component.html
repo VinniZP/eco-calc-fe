@@ -11,23 +11,18 @@
     </div>
     <div class="flex items-center gap-2">
       <span class="text-sm text-base-content/70">Профессия:</span>
-      <ng-select class="w-[140px]" [ngModel]="level()" (ngModelChange)="level.set($event)" [clearable]="false">
-        <ng-option [value]="1">Уровень 1</ng-option>
-        <ng-option [value]="2">Уровень 2</ng-option>
-        <ng-option [value]="3">Уровень 3</ng-option>
-        <ng-option [value]="4">Уровень 4</ng-option>
-        <ng-option [value]="5">Уровень 5</ng-option>
-        <ng-option [value]="6">Уровень 6</ng-option>
-        <ng-option [value]="7">Уровень 7</ng-option>
-      </ng-select>
+      <select appSelect size="sm" class="w-[140px]" [value]="level()" (change)="level.set(+$any($event.target).value)">
+        @for (l of [1,2,3,4,5,6,7]; track l) {
+          <option [value]="l">Уровень {{ l }}</option>
+        }
+      </select>
     </div>
     <label class="flex items-center gap-2 cursor-pointer">
       <input
         type="checkbox"
         appToggle
-        checked="checked"
-        [ngModel]="lavish()"
-        (ngModelChange)="lavish.set($event)"
+        [checked]="lavish()"
+        (change)="lavish.set($any($event.target).checked)"
       />
       <span class="text-sm text-base-content/70">Чистое рабочее место</span>
     </label>

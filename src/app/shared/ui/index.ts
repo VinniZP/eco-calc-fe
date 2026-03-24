@@ -37,3 +37,11 @@ export { LoadingComponent } from './loading/loading.component';
 
 // Navbar
 export { NavbarComponent } from './navbar/navbar.component';
+
+// Select
+export { SelectDirective } from './select/select.directive';
+export { SelectComponent } from './select/select.component';
+export { SelectOptionDirective } from './select/select-option.directive';
+
+// Multi Select
+export { MultiSelectComponent } from './multi-select/multi-select.component';
