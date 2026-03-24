@@ -46,8 +46,14 @@ import { SelectOptionDirective } from './select-option.directive';
       tabindex="0"
       (keydown)="onTriggerKeydown($event)"
     >
-      @if (selectedLabel()) {
-        <span class="truncate">{{ selectedLabel() }}</span>
+      @if (value() != null) {
+        @if (optionTpl() && selectedItem()) {
+          <div class="truncate">
+            <ng-container *ngTemplateOutlet="optionTpl()!; context: { $implicit: selectedItem() }" />
+          </div>
+        } @else {
+          <span class="truncate">{{ selectedLabel() }}</span>
+        }
       } @else {
         <span class="truncate text-base-content/40">{{ placeholder() }}</span>
       }
@@ -134,12 +140,15 @@ export class  SelectComponent<T = any> {
     return opts.filter(item => this.getLabel(item).toLowerCase().includes(query));
   });
 
-  protected readonly selectedLabel = computed(() => {
+  protected readonly selectedItem = computed(() => {
     const val = this.value();
-    if (val == null) return '';
-    const opts = this.options();
-    const found = opts.find(item => this.trackItem(item) === this.trackItem(val as T));
-    return found != null ? this.getLabel(found) : '';
+    if (val == null) return null;
+    return this.options().find(item => this.trackItem(item) === this.trackItem(val as T)) ?? null;
+  });
+
+  protected readonly selectedLabel = computed(() => {
+    const item = this.selectedItem();
+    return item != null ? this.getLabel(item) : '';
   });
 
   protected readonly triggerWidth = computed(() =>
