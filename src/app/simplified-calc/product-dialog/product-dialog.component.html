@@ -20,7 +20,7 @@
         placeholder="Выберите рецепт"
       >
         <ng-template appSelectOption let-recipe>
-          <div class="flex gap-2 items-center">
+          <div class="flex gap-1.5 items-center flex-wrap">
             <span>{{ recipe.displayName }}</span>
             <span appBadge>{{ recipe.craftingTable }}</span>
             @if (recipe.skillNeeds.length > 0) {

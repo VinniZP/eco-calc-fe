@@ -97,7 +97,7 @@ import { SelectOptionDirective } from './select-option.directive';
               ngOption
               [value]="item"
               (click)="select(item)"
-              class="px-3 py-2 text-sm cursor-pointer"
+              class="px-3 py-2 text-sm cursor-pointer wrap-break-word"
             >
               @if (optionTpl()) {
                 <ng-container *ngTemplateOutlet="optionTpl()!; context: { $implicit: item }" />
@@ -149,8 +149,8 @@ export class  SelectComponent<T = any> {
   protected readonly triggerClass = computed(() => {
     const sizeClass = this.size() === 'sm' ? 'h-8 px-3' : 'h-10 px-4';
     return cn(
-      'flex items-center gap-2 w-full bg-base-200/80 border border-base-content/15 rounded text-base-content text-sm cursor-pointer transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/60 focus:bg-base-200',
+      'flex items-center gap-2 w-full bg-base-200/80 border border-base-content/15 rounded text-base-content text-sm cursor-pointer transition-all duration-200 wrap-break-word',
+      'focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/40',
       sizeClass,
     );
   });
