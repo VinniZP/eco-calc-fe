@@ -8,6 +8,7 @@ import { RecipesService } from './services/recipes.service';
 import { ShopsService } from './services/shops.service';
 import { UserService } from './services/user.service';
 import { NavbarComponent, ButtonDirective, LoadingComponent } from './shared/ui';
+import { ToastService } from './shared/toast.service';
 
 @Component({
     selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
   shopsService = inject(ShopsService);
   userService = inject(UserService);
   userConfigStore = inject(UserConfigStore);
+  toastService = inject(ToastService);
   loadingState = signal(true);
 
   constructor() {

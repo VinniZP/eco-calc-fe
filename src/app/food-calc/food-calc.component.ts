@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, S
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 import { form, FormField, required, pattern } from '@angular/forms/signals';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../shared/toast.service';
 
 import { TippyDirective } from '@ngneat/helipopper';
 import { createNotifier } from 'ngxtension/create-notifier';
@@ -417,7 +417,7 @@ export class FoodCalcComponent {
     navigator.clipboard.writeText(lines.join('\n').trim());
   }
 
-  matSnackbarService = inject(MatSnackBar);
+  toastService = inject(ToastService);
   reset() {
     this.userService.load().subscribe((res) => {
       this.customEated.set({});
@@ -425,12 +425,9 @@ export class FoodCalcComponent {
       this.stomach.refresh.notify();
       this.reset$.notify();
 
-      this.matSnackbarService.open(
-        res ? 'Данные обновлены, желудок очищен' : `Ваш желудок очищен`,
-        undefined,
-        {
-          duration: 1000,
-        },
+      this.toastService.show(
+        res ? 'Данные обновлены, желудок очищен' : 'Ваш желудок очищен',
+        1000,
       );
     });
   }

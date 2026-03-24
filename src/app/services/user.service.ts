@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, of, tap } from 'rxjs';
 import { UserStore } from '../data/user';
 
@@ -11,8 +10,6 @@ export class UserService {
   http = inject(HttpClient);
   userStore = inject(UserStore);
   lastUpdate: Date | null = null;
-
-  matSnackbarService = inject(MatSnackBar);
 
   load() {
     const seconds = 15;

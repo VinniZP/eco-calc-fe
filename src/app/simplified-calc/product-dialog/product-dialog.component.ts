@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { SlicePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, Inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
@@ -32,15 +32,12 @@ interface DialogData {
 export class ProductDialogComponent implements OnInit {
   userConfigStore = inject(UserConfigStore);
   recipesStore = inject(RecipesStore);
+  data = inject<DialogData>(DIALOG_DATA);
+  ref = inject(DialogRef);
   recipes: Recipe[] = this.recipesStore.getRecipesForProduct(this.data.product);
   usedIn: string[] = this.recipesStore.usedInProducts(this.data.product);
   showEnd = 5;
   selectedRecipe = signal<Recipe | null>(null);
-
-  constructor(
-    @Inject(DIALOG_DATA) public data: DialogData,
-    public ref: DialogRef,
-  ) {}
 
   ngOnInit() {
     const recipeName = this.userConfigStore.getProductSettings(this.data.product)?.recipeName;

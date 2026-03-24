@@ -34,7 +34,7 @@
 - [x] **Phase 7.5**: Lazy routes — initial bundle 784 KB → 537 KB
 - [x] **Phase 8**: Signal Forms migration
 - [x] **Phase 9**: ng-select → Custom ARIA Select
-- [ ] **Phase 10**: Cleanup (remove Material, animations, etc.)
+- [x] **Phase 10**: Cleanup (remove Material, animations, etc.)
 
 ## Notable changes made during Phases 1-4
 
@@ -497,13 +497,15 @@ src/app/shared/ui/
 
 ## Phase 10: Cleanup
 
-- [ ] 10.1 Remove `@angular/material` + `@angular/cdk` — replace `MatSnackBar` with CVA toast
-- [ ] 10.2 Remove `@angular/animations` if only used for Material
-- [ ] 10.3 Remove prebuilt Material theme from `angular.json`
-- [ ] 10.4 Remove `useDefineForClassFields: false` and `experimentalDecorators: true` from tsconfig
-- [ ] 10.5 Bump `rxjs` to `~7.8.2`
-- [ ] 10.6 Final production build — verify budget
-- [ ] 10.7 Commit: `chore: remove Angular Material, cleanup config`
+- [x] 10.1 Replace `MatSnackBar` with signal-based `ToastService` (2 usages)
+- [x] 10.2 Remove `@angular/material` package
+- [x] 10.3 Remove `@angular/animations` + `provideAnimationsAsync()`
+- [x] 10.4 Remove prebuilt Material theme from `angular.json`
+- [x] 10.5 Remove `useDefineForClassFields: false` and `experimentalDecorators: true` from tsconfig
+- [x] 10.6 Bump `rxjs` to `~7.8.2`
+- [x] 10.7 Final build — **496 KB initial (under 500 KB budget!)**, zero warnings
+- [x] 10.8 Tests pass
+- [x] 10.9 Commit: `chore: remove Angular Material, cleanup config`
 
 ---
 

@@ -21,3 +21,9 @@
 @if (loadingState()) {
   <app-loading />
 }
+
+@if (toastService.toast(); as toast) {
+  <div class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-base-300 text-base-content text-sm px-4 py-2 rounded-lg shadow-lg border border-base-content/10 z-50 animate-fade-in">
+    {{ toast.message }}
+  </div>
+}
