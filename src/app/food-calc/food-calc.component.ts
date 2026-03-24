@@ -28,6 +28,7 @@ import { TestinessPipe } from './testiness.pipe';
 
 @Component({
     selector: 'app-food-calc',
+    host: { class: 'block max-h-[calc(100vh-100px)]' },
     imports: [
         FormsModule,
         JsonPipe,

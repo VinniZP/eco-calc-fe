@@ -46,6 +46,7 @@ const normalizeDecimal = (value: number) => {
 
 @Component({
     selector: 'app-recipe-calculations',
+    host: { class: 'block' },
     imports: [
         FormsModule,
         NgSelectModule,

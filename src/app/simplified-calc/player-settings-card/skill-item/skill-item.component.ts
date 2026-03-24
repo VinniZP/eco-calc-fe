@@ -4,6 +4,7 @@ import { SelectedSkill, UserConfigStore } from '../../../data/config';
 
 @Component({
     selector: 'app-skill-item',
+    host: { class: 'block border border-neutral rounded p-2' },
     imports: [FormsModule],
     templateUrl: './skill-item.component.html',
     styleUrl: './skill-item.component.scss'

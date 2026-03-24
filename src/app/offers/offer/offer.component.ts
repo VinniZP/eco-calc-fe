@@ -4,6 +4,7 @@ import { StripTagsPipe } from '../../ui/strip-tags.pipe';
 
 @Component({
     selector: 'app-offer',
+    host: { class: 'block border border-gray-700 bg-base-300 rounded-lg shadow-md' },
     imports: [StripTagsPipe],
     templateUrl: './offer.component.html',
     styleUrl: './offer.component.scss'

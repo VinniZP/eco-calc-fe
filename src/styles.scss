@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: dark --default;
+}
 
 @import "@angular/cdk/overlay-prebuilt.css";
 
@@ -9,53 +10,83 @@
 @import "tippy.js/animations/scale.css";
 
 @import "@ng-select/ng-select/themes/default.theme.css";
-@import "styles/ng-select";
+
+:root {
+  --color-primary: #4ade80;
+  --color-secondary: #ff3700;
+  --color-accent: #00DBFF;
+  --color-neutral: #060606;
+  --color-base-100: #232a2b;
+  --color-base-200: #1c2223;
+  --color-base-300: #161b1c;
+  --color-info: #00d7ff;
+  --color-success: #00f7a4;
+  --color-warning: #ffc200;
+  --color-error: #ff6f74;
+}
 
 .ng-select .ng-select-container {
   min-height: 32px !important;
   font-size: 14px;
-  @apply text-neutral-content;
+  color: var(--color-neutral-content);
 }
 
 .ng-select .ng-select-container {
-  @apply bg-base-200 border-base-content/20 text-base-content;
+  background-color: var(--color-base-200);
+  border-color: oklch(from var(--color-base-content) l c h / 0.2);
+  color: var(--color-base-content);
 }
 .ng-select.ng-select-opened > .ng-select-container {
-  @apply bg-base-200 border-base-content/20 text-base-content;
+  background-color: var(--color-base-200);
+  border-color: oklch(from var(--color-base-content) l c h / 0.2);
+  color: var(--color-base-content);
 }
 
 .ng-dropdown-panel {
-  @apply bg-base-200 border-base-content/20 text-base-content;
+  background-color: var(--color-base-200);
+  border-color: oklch(from var(--color-base-content) l c h / 0.2);
+  color: var(--color-base-content);
   font-size: 14px;
 }
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  @apply bg-base-200 border-base-content/20 text-base-content  #{!important};
+  background-color: var(--color-base-200) !important;
+  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
+  color: var(--color-base-content) !important;
   padding-top: 4px !important;
   padding-bottom: 4px !important;
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  @apply bg-base-100 border-base-content/20 text-base-content  #{!important};
+  background-color: var(--color-base-100) !important;
+  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
+  color: var(--color-base-content) !important;
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
-  @apply bg-base-100 border-base-content/20 text-base-content  #{!important};
+  background-color: var(--color-base-100) !important;
+  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
+  color: var(--color-base-content) !important;
   &:hover {
-    @apply bg-base-100 border-base-content/20 text-base-content  #{!important};
+    background-color: var(--color-base-100) !important;
+    border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
+    color: var(--color-base-content) !important;
   }
 }
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input > input {
-  @apply text-base-content;
+  color: var(--color-base-content);
 }
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
-  @apply bg-base-100 border-base-content/20 text-base-content;
+  background-color: var(--color-base-100);
+  border-color: oklch(from var(--color-base-content) l c h / 0.2);
+  color: var(--color-base-content);
 }
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon {
-  @apply border-base-content/20 #{!important};
+  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
   &:hover {
-    @apply border-base-content/20 bg-base-300 #{!important};
+    border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
+    background-color: var(--color-base-300) !important;
   }
 }
 

@@ -15,6 +15,7 @@ interface DialogData {
 
 @Component({
     selector: 'app-product-dialog',
+    host: { class: 'block bg-base-100 w-full h-full max-w-full rounded shadow-2xl max-h-[95vh] overflow-y-auto min-h-[50vh]' },
     imports: [
         NgSelectModule,
         FormsModule,
