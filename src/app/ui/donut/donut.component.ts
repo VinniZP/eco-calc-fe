@@ -1,11 +1,10 @@
-import { NgForOf } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 
 @Component({
-    selector: 'app-donut',
-    imports: [NgForOf],
-    templateUrl: './donut.component.html',
-    styleUrl: './donut.component.scss'
+  selector: 'app-donut',
+  imports: [],
+  templateUrl: './donut.component.html',
+  styleUrl: './donut.component.scss',
 })
 export class DonutComponent {
   items = input([

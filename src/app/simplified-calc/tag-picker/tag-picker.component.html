@@ -8,5 +8,7 @@
   [placeholder]="'Тег: ' + tag()"
 >
   <ng-option [value]="null">Тег: {{ tag() }}</ng-option>
-  <ng-option *ngFor="let product of possibleItems()" [value]="product">{{ product }}</ng-option>
+  @for (product of possibleItems(); track product) {
+    <ng-option [value]="product">{{ product }}</ng-option>
+  }
 </ng-select>
