@@ -14,18 +14,17 @@ interface DialogData {
 }
 
 @Component({
-  selector: 'app-product-dialog',
-  standalone: true,
-  imports: [
-    NgSelectModule,
-    FormsModule,
-    RecipeCalculationsComponent,
-    ProductLinkComponent,
-    SlicePipe,
-    TippyDirective,
-  ],
-  templateUrl: './product-dialog.component.html',
-  styleUrl: './product-dialog.component.scss',
+    selector: 'app-product-dialog',
+    imports: [
+        NgSelectModule,
+        FormsModule,
+        RecipeCalculationsComponent,
+        ProductLinkComponent,
+        SlicePipe,
+        TippyDirective,
+    ],
+    templateUrl: './product-dialog.component.html',
+    styleUrl: './product-dialog.component.scss'
 })
 export class ProductDialogComponent implements OnInit {
   userConfigStore = inject(UserConfigStore);

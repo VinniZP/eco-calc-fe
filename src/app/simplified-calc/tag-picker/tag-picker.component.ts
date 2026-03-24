@@ -6,11 +6,10 @@ import { TippyDirective } from '@ngneat/helipopper';
 import { ItemsStore } from '../../data/items';
 
 @Component({
-  selector: 'app-tag-picker',
-  standalone: true,
-  imports: [NgSelectModule, FormsModule, NgForOf, TippyDirective],
-  templateUrl: './tag-picker.component.html',
-  styleUrl: './tag-picker.component.scss',
+    selector: 'app-tag-picker',
+    imports: [NgSelectModule, FormsModule, NgForOf, TippyDirective],
+    templateUrl: './tag-picker.component.html',
+    styleUrl: './tag-picker.component.scss'
 })
 export class TagPickerComponent {
   tag = input.required<string>();

@@ -2,11 +2,10 @@ import { Component, computed, input } from '@angular/core';
 import { Shop } from '../../data/shops';
 
 @Component({
-  selector: 'app-shop',
-  standalone: true,
-  imports: [],
-  templateUrl: './shop.component.html',
-  styleUrl: './shop.component.scss',
+    selector: 'app-shop',
+    imports: [],
+    templateUrl: './shop.component.html',
+    styleUrl: './shop.component.scss'
 })
 export class ShopComponent {
   shop = input.required<Shop>();

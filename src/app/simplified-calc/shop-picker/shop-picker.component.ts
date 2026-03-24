@@ -9,11 +9,10 @@ interface DialogData {
 }
 
 @Component({
-  selector: 'app-shop-picker',
-  standalone: true,
-  imports: [StripTagsPipe],
-  templateUrl: './shop-picker.component.html',
-  styleUrl: './shop-picker.component.scss',
+    selector: 'app-shop-picker',
+    imports: [StripTagsPipe],
+    templateUrl: './shop-picker.component.html',
+    styleUrl: './shop-picker.component.scss'
 })
 export class ShopPickerComponent {
   data = inject<DialogData>(DIALOG_DATA);

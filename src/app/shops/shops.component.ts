@@ -4,11 +4,10 @@ import { ShopsStore } from '../data/shops';
 import { ShopComponent } from './shop/shop.component';
 
 @Component({
-  selector: 'app-shops',
-  standalone: true,
-  imports: [ShopComponent, FormsModule],
-  templateUrl: './shops.component.html',
-  styleUrl: './shops.component.scss',
+    selector: 'app-shops',
+    imports: [ShopComponent, FormsModule],
+    templateUrl: './shops.component.html',
+    styleUrl: './shops.component.scss'
 })
 export class ShopsComponent {
   shopsStore = inject(ShopsStore);

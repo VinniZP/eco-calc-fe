@@ -4,11 +4,10 @@ import { RecipesStore } from '../../data/recipes';
 import { productDialogManager } from '../product-dialog/dialog-manager';
 
 @Component({
-  selector: 'app-product-link',
-  standalone: true,
-  imports: [TippyDirective],
-  templateUrl: './product-link.component.html',
-  styleUrl: './product-link.component.scss',
+    selector: 'app-product-link',
+    imports: [TippyDirective],
+    templateUrl: './product-link.component.html',
+    styleUrl: './product-link.component.scss'
 })
 export class ProductLinkComponent {
   dialogManager = productDialogManager();

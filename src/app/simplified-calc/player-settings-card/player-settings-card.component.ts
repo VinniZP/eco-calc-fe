@@ -6,11 +6,10 @@ import { RecipesStore } from '../../data/recipes';
 import { SkillItemComponent } from './skill-item/skill-item.component';
 
 @Component({
-  selector: 'app-player-settings-card',
-  standalone: true,
-  imports: [FormsModule, NgSelectModule, SkillItemComponent],
-  templateUrl: './player-settings-card.component.html',
-  styleUrl: './player-settings-card.component.scss',
+    selector: 'app-player-settings-card',
+    imports: [FormsModule, NgSelectModule, SkillItemComponent],
+    templateUrl: './player-settings-card.component.html',
+    styleUrl: './player-settings-card.component.scss'
 })
 export class PlayerSettingsCardComponent {
   userConfigStore = inject(UserConfigStore);

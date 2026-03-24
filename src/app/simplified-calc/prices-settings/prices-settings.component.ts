@@ -5,11 +5,10 @@ import { filter } from 'rxjs';
 import { UserConfigStore } from '../../data/config';
 
 @Component({
-  selector: 'app-prices-settings',
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  templateUrl: './prices-settings.component.html',
-  styleUrl: './prices-settings.component.scss',
+    selector: 'app-prices-settings',
+    imports: [ReactiveFormsModule],
+    templateUrl: './prices-settings.component.html',
+    styleUrl: './prices-settings.component.scss'
 })
 export class PricesSettingsComponent {
   form = new FormGroup({

@@ -4,11 +4,10 @@ import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
 
 @Component({
-  selector: 'app-recipes-card',
-  standalone: true,
-  imports: [NgSelectModule],
-  templateUrl: './recipes-card.component.html',
-  styleUrl: './recipes-card.component.scss',
+    selector: 'app-recipes-card',
+    imports: [NgSelectModule],
+    templateUrl: './recipes-card.component.html',
+    styleUrl: './recipes-card.component.scss'
 })
 export class RecipesCardComponent {
   recipesStore = inject(RecipesStore);

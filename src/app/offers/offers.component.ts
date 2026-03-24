@@ -17,11 +17,10 @@ import { ShopsStore } from '../data/shops';
 import { OfferComponent } from './offer/offer.component';
 
 @Component({
-  selector: 'app-offers',
-  standalone: true,
-  imports: [FormsModule, OfferComponent, SlicePipe],
-  templateUrl: './offers.component.html',
-  styleUrl: './offers.component.scss',
+    selector: 'app-offers',
+    imports: [FormsModule, OfferComponent, SlicePipe],
+    templateUrl: './offers.component.html',
+    styleUrl: './offers.component.scss'
 })
 export class OffersComponent implements OnInit {
   shopsStore = inject(ShopsStore);
@@ -56,7 +55,6 @@ export class OffersComponent implements OnInit {
         this.onlyAvailable();
         this.itemsToShow.set(10);
       },
-      { allowSignalWrites: true },
     );
   }
 

@@ -3,11 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { SelectedSkill, UserConfigStore } from '../../../data/config';
 
 @Component({
-  selector: 'app-skill-item',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './skill-item.component.html',
-  styleUrl: './skill-item.component.scss',
+    selector: 'app-skill-item',
+    imports: [FormsModule],
+    templateUrl: './skill-item.component.html',
+    styleUrl: './skill-item.component.scss'
 })
 export class SkillItemComponent {
   skill = input.required<SelectedSkill>();

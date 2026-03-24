@@ -6,11 +6,10 @@ import { ShopIconComponent } from '../../ui/shop-icon.component';
 import { shopDialogManager } from '../shop-picker/dialog-manager';
 
 @Component({
-  selector: 'app-ingredient-price',
-  standalone: true,
-  imports: [ShopIconComponent, TippyDirective],
-  templateUrl: './ingredient-price.component.html',
-  styleUrl: './ingredient-price.component.scss',
+    selector: 'app-ingredient-price',
+    imports: [ShopIconComponent, TippyDirective],
+    templateUrl: './ingredient-price.component.html',
+    styleUrl: './ingredient-price.component.scss'
 })
 export class IngredientPriceComponent {
   item = input.required<string>();

@@ -9,11 +9,10 @@ import { ShopsService } from './services/shops.service';
 import { UserService } from './services/user.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'app-root',
+    imports: [RouterOutlet, RouterLink, RouterLinkActive],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   itemsService = inject(ItemsService);

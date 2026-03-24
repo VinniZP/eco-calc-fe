@@ -45,20 +45,19 @@ const normalizeDecimal = (value: number) => {
 };
 
 @Component({
-  selector: 'app-recipe-calculations',
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgSelectModule,
-    ProductLinkComponent,
-    IngredientPriceComponent,
-    DecimalPipe,
-    TippyDirective,
-    JsonPipe,
-    TagPickerComponent,
-  ],
-  templateUrl: './recipe-calculations.component.html',
-  styleUrl: './recipe-calculations.component.scss',
+    selector: 'app-recipe-calculations',
+    imports: [
+        FormsModule,
+        NgSelectModule,
+        ProductLinkComponent,
+        IngredientPriceComponent,
+        DecimalPipe,
+        TippyDirective,
+        JsonPipe,
+        TagPickerComponent,
+    ],
+    templateUrl: './recipe-calculations.component.html',
+    styleUrl: './recipe-calculations.component.scss'
 })
 export class RecipeCalculationsComponent implements OnInit {
   userConfigStore = inject(UserConfigStore);
@@ -202,7 +201,6 @@ export class RecipeCalculationsComponent implements OnInit {
             }
           });
         },
-        { allowSignalWrites: true },
       );
       effect(
         () => {
@@ -216,7 +214,6 @@ export class RecipeCalculationsComponent implements OnInit {
             });
           });
         },
-        { allowSignalWrites: true },
       );
       effect(
         () => {
@@ -236,9 +233,6 @@ export class RecipeCalculationsComponent implements OnInit {
               recipeName: recipe1.name,
             });
           });
-        },
-        {
-          allowSignalWrites: true,
         },
       );
     });

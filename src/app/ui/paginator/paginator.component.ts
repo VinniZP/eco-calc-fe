@@ -1,11 +1,10 @@
 import { Component, computed, input, output } from '@angular/core';
 
 @Component({
-  selector: 'app-paginator',
-  standalone: true,
-  imports: [],
-  templateUrl: './paginator.component.html',
-  styleUrl: './paginator.component.scss',
+    selector: 'app-paginator',
+    imports: [],
+    templateUrl: './paginator.component.html',
+    styleUrl: './paginator.component.scss'
 })
 export class PaginatorComponent {
   page = input(1);

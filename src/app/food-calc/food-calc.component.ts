@@ -27,24 +27,23 @@ import { FoodItem, Stomach } from './core/stomach';
 import { TestinessPipe } from './testiness.pipe';
 
 @Component({
-  selector: 'app-food-calc',
-  standalone: true,
-  imports: [
-    FormsModule,
-    JsonPipe,
-    TestinessPipe,
-    NgClass,
-    DecimalPipe,
-    DonutComponent,
-    PercentPipe,
-    SlicePipe,
-    TippyDirective,
-    ReactiveFormsModule,
-    NgSelectModule,
-  ],
-  templateUrl: './food-calc.component.html',
-  styleUrl: './food-calc.component.scss',
-  providers: [Stomach],
+    selector: 'app-food-calc',
+    imports: [
+        FormsModule,
+        JsonPipe,
+        TestinessPipe,
+        NgClass,
+        DecimalPipe,
+        DonutComponent,
+        PercentPipe,
+        SlicePipe,
+        TippyDirective,
+        ReactiveFormsModule,
+        NgSelectModule,
+    ],
+    templateUrl: './food-calc.component.html',
+    styleUrl: './food-calc.component.scss',
+    providers: [Stomach]
 })
 export class FoodCalcComponent {
   userStore = inject(UserStore);
@@ -189,9 +188,6 @@ export class FoodCalcComponent {
           this.setFood(entities, tasteConfig);
         });
       },
-      {
-        allowSignalWrites: true,
-      },
     );
     effect(
       () => {
@@ -204,9 +200,6 @@ export class FoodCalcComponent {
               .map((c) => c.name),
           );
         });
-      },
-      {
-        allowSignalWrites: true,
       },
     );
     const config = localStorage.getItem('foodCalcConfig');
