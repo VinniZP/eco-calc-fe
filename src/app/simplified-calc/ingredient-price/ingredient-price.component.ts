@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
-import { InputDirective } from '../../shared/ui';
+import { InputDirective } from '../../shared/ui/input/input.directive';
 import { UserConfigStore } from '../../data/config';
 import { ShopsStore } from '../../data/shops';
 import { ShopIconComponent } from '../../ui/shop-icon.component';

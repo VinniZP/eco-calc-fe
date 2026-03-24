@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, Signal } from '@angular/core';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
-import { CardComponent, DividerComponent, SelectComponent } from '../../shared/ui';
+import { CardComponent } from '../../shared/ui/card/card.component';
+import { DividerComponent } from '../../shared/ui/divider/divider.component';
+import { SelectComponent } from '../../shared/ui/select/select.component';
 
 @Component({
     selector: 'app-recipes-card',

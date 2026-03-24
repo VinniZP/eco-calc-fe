@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { ShopsStore } from '../../data/shops';
-import { TableDirective } from '../../shared/ui';
+import { TableDirective } from '../../shared/ui/table/table.directive';
 import { StripTagsPipe } from '../../ui/strip-tags.pipe';
 
 @Component({

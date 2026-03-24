@@ -14,7 +14,8 @@ import {
 import { injectIsIntersecting } from 'ngxtension/inject-is-intersecting';
 import { filter } from 'rxjs/operators';
 import { ShopsStore } from '../data/shops';
-import { InputDirective, ToggleDirective } from '../shared/ui';
+import { InputDirective } from '../shared/ui/input/input.directive';
+import { ToggleDirective } from '../shared/ui/toggle/toggle.directive';
 import { OfferComponent } from './offer/offer.component';
 
 @Component({

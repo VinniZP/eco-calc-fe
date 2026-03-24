@@ -17,14 +17,12 @@ import {
 import { TippyDirective } from '@ngneat/helipopper';
 import { UserConfigStore } from '../../../data/config';
 import { Recipe } from '../../../data/recipes';
-import {
-  BadgeDirective,
-  ButtonDirective,
-  ButtonGroupComponent,
-  SelectDirective,
-  TableDirective,
-  ToggleDirective,
-} from '../../../shared/ui';
+import { BadgeDirective } from '../../../shared/ui/badge/badge.directive';
+import { ButtonDirective } from '../../../shared/ui/button/button.directive';
+import { ButtonGroupComponent } from '../../../shared/ui/button-group/button-group.component';
+import { SelectDirective } from '../../../shared/ui/select/select.directive';
+import { TableDirective } from '../../../shared/ui/table/table.directive';
+import { ToggleDirective } from '../../../shared/ui/toggle/toggle.directive';
 import { IngredientPriceComponent } from '../../ingredient-price/ingredient-price.component';
 import { ProductLinkComponent } from '../../product-link/product-link.component';
 import { TagPickerComponent } from '../../tag-picker/tag-picker.component';

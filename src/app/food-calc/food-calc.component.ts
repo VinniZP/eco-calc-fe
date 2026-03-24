@@ -10,13 +10,11 @@ import { createNotifier } from 'ngxtension/create-notifier';
 import { debounceTime, startWith } from 'rxjs';
 import { Food, FoodStore } from '../data/food';
 import { ShopsStore } from '../data/shops';
-import {
-  BadgeDirective,
-  ButtonDirective,
-  InputDirective,
-  SelectDirective,
-  ToggleDirective,
-} from '../shared/ui';
+import { BadgeDirective } from '../shared/ui/badge/badge.directive';
+import { ButtonDirective } from '../shared/ui/button/button.directive';
+import { InputDirective } from '../shared/ui/input/input.directive';
+import { SelectDirective } from '../shared/ui/select/select.directive';
+import { ToggleDirective } from '../shared/ui/toggle/toggle.directive';
 import { StomachData, Testiness, UserStore } from '../data/user';
 import { FoodService } from '../services/food.service';
 import { UserService } from '../services/user.service';

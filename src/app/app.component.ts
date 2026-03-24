@@ -7,7 +7,9 @@ import { ItemsService } from './services/items.service';
 import { RecipesService } from './services/recipes.service';
 import { ShopsService } from './services/shops.service';
 import { UserService } from './services/user.service';
-import { NavbarComponent, ButtonDirective, LoadingComponent } from './shared/ui';
+import { ButtonDirective } from './shared/ui/button/button.directive';
+import { LoadingComponent } from './shared/ui/loading/loading.component';
+import { NavbarComponent } from './shared/ui/navbar/navbar.component';
 import { ToastService } from './shared/toast.service';
 
 @Component({

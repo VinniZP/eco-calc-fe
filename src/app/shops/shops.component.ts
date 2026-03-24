@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ShopsStore } from '../data/shops';
-import { InputDirective } from '../shared/ui';
+import { InputDirective } from '../shared/ui/input/input.directive';
 import { ShopComponent } from './shop/shop.component';
 
 @Component({

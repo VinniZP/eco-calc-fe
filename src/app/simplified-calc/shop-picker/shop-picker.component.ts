@@ -2,7 +2,9 @@ import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core';
 import { of } from 'rxjs';
 import { Shop, ShopsStore } from '../../data/shops';
-import { ButtonDirective, DividerComponent, TableDirective } from '../../shared/ui';
+import { ButtonDirective } from '../../shared/ui/button/button.directive';
+import { DividerComponent } from '../../shared/ui/divider/divider.component';
+import { TableDirective } from '../../shared/ui/table/table.directive';
 import { StripTagsPipe } from '../../ui/strip-tags.pipe';
 
 interface DialogData {

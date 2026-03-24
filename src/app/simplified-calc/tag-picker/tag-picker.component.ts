@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, model } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
 import { ItemsStore } from '../../data/items';
-import { SelectComponent } from '../../shared/ui';
+import { SelectComponent } from '../../shared/ui/select/select.component';
 
 @Component({
   selector: 'app-tag-picker',

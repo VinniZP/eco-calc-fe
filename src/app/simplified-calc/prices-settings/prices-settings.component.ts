@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { form, FormField, required, pattern } from '@angular/forms/signals';
 import { UserConfigStore } from '../../data/config';
-import { CardComponent, FormFieldComponent, InputDirective } from '../../shared/ui';
+import { CardComponent } from '../../shared/ui/card/card.component';
+import { FormFieldComponent } from '../../shared/ui/form-field/form-field.component';
+import { InputDirective } from '../../shared/ui/input/input.directive';
 
 @Component({
     selector: 'app-prices-settings',

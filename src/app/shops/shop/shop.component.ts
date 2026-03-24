@@ -1,7 +1,8 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Shop } from '../../data/shops';
-import { BadgeDirective, TableDirective } from '../../shared/ui';
+import { BadgeDirective } from '../../shared/ui/badge/badge.directive';
+import { TableDirective } from '../../shared/ui/table/table.directive';
 import { StripTagsPipe } from '../../ui/strip-tags.pipe';
 
 @Component({

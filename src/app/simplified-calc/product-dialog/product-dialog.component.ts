@@ -4,7 +4,10 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { TippyDirective } from '@ngneat/helipopper';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
-import { BadgeDirective, ButtonDirective, SelectComponent, SelectOptionDirective } from '../../shared/ui';
+import { BadgeDirective } from '../../shared/ui/badge/badge.directive';
+import { ButtonDirective } from '../../shared/ui/button/button.directive';
+import { SelectOptionDirective } from '../../shared/ui/select/select-option.directive';
+import { SelectComponent } from '../../shared/ui/select/select.component';
 import { ProductLinkComponent } from '../product-link/product-link.component';
 import { RecipeCalculationsComponent } from './recipe-calculations/recipe-calculations.component';
 

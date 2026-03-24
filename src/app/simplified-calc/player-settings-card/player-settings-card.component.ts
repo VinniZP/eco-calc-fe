@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal, Signal } from '@angular/core';
-import { CardComponent, DividerComponent, SelectComponent } from '../../shared/ui';
+import { CardComponent } from '../../shared/ui/card/card.component';
+import { DividerComponent } from '../../shared/ui/divider/divider.component';
+import { SelectComponent } from '../../shared/ui/select/select.component';
 import { SelectedSkill, UserConfigStore } from '../../data/config';
 import { RecipesStore } from '../../data/recipes';
 import { SkillItemComponent } from './skill-item/skill-item.component';

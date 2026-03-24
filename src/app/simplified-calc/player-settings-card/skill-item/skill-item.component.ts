@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { FormFieldComponent, ToggleDirective } from '../../../shared/ui';
+import { FormFieldComponent } from '../../../shared/ui/form-field/form-field.component';
+import { ToggleDirective } from '../../../shared/ui/toggle/toggle.directive';
 import { SelectedSkill, UserConfigStore } from '../../../data/config';
 
 @Component({
