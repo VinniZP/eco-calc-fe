@@ -48,7 +48,7 @@ import { SelectOptionDirective } from './select-option.directive';
     >
       @if (value() != null) {
         @if (optionTpl() && selectedItem()) {
-          <div class="truncate">
+          <div class="flex items-center gap-1.5 min-w-0 flex-wrap">
             <ng-container *ngTemplateOutlet="optionTpl()!; context: { $implicit: selectedItem() }" />
           </div>
         } @else {
@@ -156,9 +156,9 @@ export class  SelectComponent<T = any> {
   );
 
   protected readonly triggerClass = computed(() => {
-    const sizeClass = this.size() === 'sm' ? 'h-8 px-3' : 'h-10 px-4';
+    const sizeClass = this.size() === 'sm' ? 'min-h-8 px-3 py-1' : 'min-h-10 px-4 py-1.5';
     return cn(
-      'flex items-center gap-2 w-full bg-base-200/80 border border-base-content/15 rounded text-base-content text-sm cursor-pointer transition-all duration-200 wrap-break-word',
+      'flex items-center gap-2 w-full bg-base-200/80 border border-base-content/15 rounded text-base-content text-sm cursor-pointer transition-all duration-200',
       'focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/40',
       sizeClass,
     );
