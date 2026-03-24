@@ -22,6 +22,7 @@ import { cn } from '../cn';
     :host { display: block; }
     [ngOption][data-active='true'] { background-color: oklch(from var(--color-base-content) l c h / 0.1); }
     [ngOption][aria-selected='true'] { background-color: oklch(from var(--color-primary) l c h / 0.15); }
+    .select-panel { scrollbar-width: thin; scrollbar-color: oklch(from var(--color-base-content) l c h / 0.2) transparent; }
   `,
   template: `
     <div
@@ -66,13 +67,13 @@ import { cn } from '../cn';
       [cdkConnectedOverlayWidth]="triggerWidth()"
       (overlayOutsideClick)="close()"
     >
-      <div ngListbox multi selectionMode="explicit" class="bg-base-200 border border-base-content/15 rounded shadow-lg mt-1 max-h-60 overflow-auto">
+      <div ngListbox multi selectionMode="explicit" class="select-panel bg-base-200 border border-base-content/15 rounded shadow-lg mt-1 max-h-60 overflow-y-auto overflow-x-hidden">
         @for (item of options(); track trackItem(item)) {
           <div
             ngOption
             [value]="item"
             (click)="toggleItem(item)"
-            class="px-3 py-2 text-sm cursor-pointer flex items-center gap-2"
+            class="px-3 py-2 text-sm cursor-pointer flex items-center gap-2 break-all"
           >
             <div [class]="checkboxClass(item)">
               @if (isSelected(item)) {

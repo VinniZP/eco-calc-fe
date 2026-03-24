@@ -32,6 +32,7 @@ import { SelectOptionDirective } from './select-option.directive';
     :host { display: block; }
     [ngOption][data-active='true'] { background-color: oklch(from var(--color-base-content) l c h / 0.1); }
     [ngOption][aria-selected='true'] { background-color: oklch(from var(--color-primary) l c h / 0.2); color: var(--color-primary); }
+    .select-panel { scrollbar-width: thin; scrollbar-color: oklch(from var(--color-base-content) l c h / 0.2) transparent; }
   `,
   template: `
     <div
@@ -97,13 +98,13 @@ import { SelectOptionDirective } from './select-option.directive';
           />
         }
 
-        <div ngListbox selectionMode="explicit" class="max-h-60 overflow-auto" (keydown)="onPanelKeydown($event)">
+        <div ngListbox selectionMode="explicit" class="select-panel max-h-60 overflow-y-auto overflow-x-hidden" (keydown)="onPanelKeydown($event)">
           @for (item of filteredOptions(); track trackItem(item)) {
             <div
               ngOption
               [value]="item"
               (click)="select(item)"
-              class="px-3 py-2 text-sm cursor-pointer wrap-break-word"
+              class="px-3 py-2 text-sm cursor-pointer break-all"
             >
               @if (optionTpl()) {
                 <ng-container *ngTemplateOutlet="optionTpl()!; context: { $implicit: item }" />
