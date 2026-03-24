@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { FormFieldComponent } from '../../../shared/ui/form-field/form-field.component';
+import { SelectDirective } from '../../../shared/ui/select/select.directive';
 import { ToggleDirective } from '../../../shared/ui/toggle/toggle.directive';
 import { SelectedSkill, UserConfigStore } from '../../../data/config';
 
@@ -7,9 +8,8 @@ import { SelectedSkill, UserConfigStore } from '../../../data/config';
     selector: 'app-skill-item',
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block border border-neutral rounded p-2' },
-    imports: [FormFieldComponent, ToggleDirective],
-    templateUrl: './skill-item.component.html',
-    styleUrl: './skill-item.component.scss'
+    imports: [FormFieldComponent, SelectDirective, ToggleDirective],
+    templateUrl: './skill-item.component.html'
 })
 export class SkillItemComponent {
   skill = input.required<SelectedSkill>();

@@ -2,19 +2,15 @@
 export { cn } from './cn';
 
 // Button
-export { button, type ButtonIntent, type ButtonSize, type ButtonShape, type ButtonVariants } from './button/button.variants';
 export { ButtonDirective } from './button/button.directive';
 
 // Input
-export { inputVariants, type InputSize, type InputVariants } from './input/input.variants';
 export { InputDirective } from './input/input.directive';
 
 // Badge
-export { badge, type BadgeColor, type BadgeSize, type BadgeVariants } from './badge/badge.variants';
 export { BadgeDirective } from './badge/badge.directive';
 
 // Table
-export { TABLE_BASE, type TableSize } from './table/table.variants';
 export { TableDirective } from './table/table.directive';
 
 // Toggle

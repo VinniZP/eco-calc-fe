@@ -2,559 +2,214 @@
 
 > Angular 18 → 21, Tailwind 3 → 4, DaisyUI → CVA + Tailwind, Karma → Vitest, Zoneless, Signal Forms, Custom Select
 
-## Current State (after Phase 6)
+## Current State (after Phase 11)
 
-| Package | Before | Now | Target |
-|---------|--------|-----|--------|
-| @angular/* | 18.2.3 | **21.2.5** | 21.x |
-| TypeScript | 5.5.3 | **5.9.3** | 5.9.x |
-| @ngrx/signals | 18.0.2 | **21.0.1** | 21.x |
-| ngxtension | 4.0.0 | **7.2.0** | 7.x |
-| @ng-select/ng-select | 13.4.1 | **Removed → @angular/aria** | **Remove** |
-| @ngneat/helipopper | 9.2.1 | **11.1.4** | 12.x |
-| tailwindcss | 3.4.6 | **4.2.2** | 4.x |
-| daisyui | 4.12.10 | **5.5.19** | **Remove** |
-| @angular/cdk (table) | used | **Removed** | Remove (overlay/dialog still used) |
-| tailwind-merge | default | **custom config** | Minimal class groups only |
-| class-variance-authority | — | — | **Add** |
-| Karma + Jasmine | 6.4.0 | **Removed → Vitest** | Remove (→ Vitest) |
-| zone.js | 0.14.10 | **Removed → zoneless** | Remove (→ zoneless) |
-| ReactiveFormsModule | used | **Removed** | Remove (→ Signal Forms) |
-| FormsModule (ngModel) | used | **ng-select only** | Remove (→ Signal Forms) |
-| rxjs | 7.8.0 | 7.8.0 | 7.8.2 |
+| Metric | Value |
+|--------|-------|
+| Angular | 21.2.5 |
+| Initial bundle | 359 KB / 94.5 KB gzip |
+| Tests | 2/2 passing |
+| Build | Zero warnings |
 
-## Progress
+## Completed Phases
 
-- [x] **Phase 1**: Angular 18 → 19 (`1dea365`)
-- [x] **Phase 2**: Angular 19 → 20 (`0b087b9`)
-- [x] **Phase 3**: Angular 20 → 21 (`f42cc5e`)
-- [x] **Phase 4**: Tailwind 3 → 4 + DaisyUI 4 → 5 (`b4d8e59`)
-- [x] **Phase 5A**: Build UI Kit (CVA + directives + components) (`30bef85`)
-- [x] **Phase 5B**: Migrate templates from DaisyUI to UI Kit (`7c8182b`)
+- [x] **Phase 1**: Angular 18 → 19
+- [x] **Phase 2**: Angular 19 → 20
+- [x] **Phase 3**: Angular 20 → 21
+- [x] **Phase 4**: Tailwind 3 → 4 + DaisyUI 4 → 5
+- [x] **Phase 5A**: Build UI Kit (CVA + directives + components)
+- [x] **Phase 5B**: Migrate templates from DaisyUI to UI Kit
 - [x] **Phase 6**: Karma → Vitest
 - [x] **Phase 7**: Zoneless migration
 - [x] **Phase 7.5**: Lazy routes — initial bundle 784 KB → 537 KB
 - [x] **Phase 8**: Signal Forms migration
 - [x] **Phase 9**: ng-select → Custom ARIA Select
 - [x] **Phase 10**: Cleanup (remove Material, animations, etc.)
-
-## Notable changes made during Phases 1-4
-
-- Removed `standalone: true` from all 21 components (Angular 19 default)
-- Removed deprecated `allowSignalWrites: true` from 6 effects
-- Added `provideTippyLoader`/`provideTippyConfig` (helipopper v11 requirement)
-- Migrated `moduleResolution` from `"node"` to `"bundler"` (Angular 20 migration)
-- Auto-migrated remaining `*ngIf`/`*ngFor` to block control flow (Angular 21 migration)
-- Migrated `:host { @apply ... }` to Angular `host: { class: '...' }` bindings
-- Replaced SCSS `@apply` with `!important` hacks with plain CSS vars in global styles
-- Deleted `tailwind.config.js`, added `.postcssrc.json` for Tailwind v4
-- Custom dark theme via `:root` CSS variable overrides on DaisyUI 5's `dark` base theme
+- [x] **Phase 11**: Bundle optimization (CdkTable removal, custom tailwind-merge)
 
 ---
 
-## Phase 5A: Build UI Kit (Components + Directives + CVA)
+## Phase 12: Quick Wins — Dependency Cleanup & Code Quality
 
-**Risk: LOW** | No templates changed yet — just creating the kit
+**Risk: LOW** | Small, safe changes
 
-### What changes
-- Install `class-variance-authority`, `tailwind-merge`, `clsx`
-- Create `cn()` utility (shadcn pattern: `clsx` + `tailwind-merge`)
-- Build reusable Angular components and directives backed by CVA
-- Define design tokens via Tailwind `@theme`
-- Everything in `src/app/shared/ui/`
+### 12A: Remove unused dependencies
+- [ ] 12A.1 `npm uninstall @angular/platform-browser-dynamic` — not imported anywhere (standalone API)
+- [ ] 12A.2 `npm uninstall ngxtension` — zero imports in src/
+- [ ] 12A.3 Verify build + tests pass
+- [ ] 12A.4 Commit
 
-### Design tokens (`@theme` block in `src/styles.css`)
+### 12B: Remove dead code & fix bugs
+- [ ] 12B.1 Remove unused CVA exports from `shared/ui/index.ts` (`button`, `inputVariants`, `badge`, `TABLE_BASE`) — only directives use them internally
+- [ ] 12B.2 Fix `card.component.ts` dead `compact` input — `cn(this.compact() ? 'p-2' : 'p-2')` both branches identical
+- [ ] 12B.3 Fix `config.ts:97` — `getItemPrices(product: number)` param should be `string` (keys are strings)
+- [ ] 12B.4 Remove empty `withHooks({ onInit() {}, onDestroy() {} })` in `config.ts`
+- [ ] 12B.5 Remove unused `--color-secondary` and `--color-secondary-content` from `@theme` in `styles.css`
+- [ ] 12B.6 Remove empty SCSS files (15 files have no content)
+- [ ] 12B.7 Fix remaining DaisyUI classes in `skill-item.component.html` — `select select-bordered select-sm` → `appSelect`
+- [ ] 12B.8 Verify build + tests pass
+- [ ] 12B.9 Commit
 
-Replace DaisyUI semantic colors with custom Tailwind tokens:
-```
---color-base-100/200/300    (surface hierarchy)
---color-primary/secondary/accent/neutral
---color-info/success/warning/error
---color-base-content/neutral-content/primary-content
-```
-
-### UI Kit architecture
-
-```
-src/app/shared/ui/
-├── cn.ts                          // cn() utility: clsx + tailwind-merge
-│
-├── button/
-│   ├── button.variants.ts         // CVA: intent (primary|ghost|outline|warning|accent|success|link), size (xs|sm|md), shape (default|circle)
-│   └── button.directive.ts        // appButton directive: [appButton]="{intent, size}" → applies CVA classes to host
-│
-├── input/
-│   ├── input.variants.ts          // CVA: size (xs|sm|md), bordered (bool), error (bool)
-│   └── input.directive.ts         // appInput directive: [appInput]="{size}" [error]="bool" → applies to <input>
-│
-├── badge/
-│   ├── badge.variants.ts          // CVA: color (neutral|success|error|info), size (xs|sm|md)
-│   └── badge.directive.ts         // appBadge directive
-│
-├── card/
-│   └── card.component.ts          // Component: <app-card [compact]="bool"> with ng-content, handles card/card-body/card-title
-│
-├── table/
-│   ├── table.variants.ts          // CVA: zebra (bool), size (compact|sm|md), bordered (bool)
-│   └── table.directive.ts         // appTable directive: applies to <table>
-│
-├── toggle/
-│   └── toggle.directive.ts        // appToggle directive: applies custom toggle styles to <input type="checkbox">
-│
-├── button-group/
-│   └── button-group.component.ts  // Component: <app-button-group> wrapping join-item radio buttons
-│
-├── divider/
-│   └── divider.component.ts       // Component: <app-divider [spacing]="'sm'|'md'|'none'">
-│
-├── loading/
-│   └── loading.component.ts       // Component: <app-loading> full-screen overlay with spinner
-│
-├── navbar/
-│   └── navbar.component.ts        // Component: <app-navbar> with ng-content for links
-│
-└── form-field/
-    └── form-field.component.ts    // Component: <app-form-field [label]="string"> wrapping form-control layout
-```
-
-### Design principles
-
-1. **Three layers, each independently usable**:
-   - **CVA functions** — pure functions, no Angular dependency. Can be called anywhere: templates, computed(), tests.
-   - **Directives** — reactive wrappers that compute classes from signal inputs and apply to host. Always re-export the CVA function.
-   - **Components** — only when you need template structure (ng-content slots, projected layout).
-
-2. **Directives augment, never replace** the host element:
-   - Selector restricts to correct element: `button[appButton], a[appButton]` — not bare `[appButton]`
-   - Consumer `class="w-full mt-2"` merges cleanly via `cn()` — directive never stomps user classes
-   - Angular merges `host: { '[class]': 'expr' }` with static `class` attributes automatically
-
-3. **Boolean inputs use `booleanAttribute` transform** — attribute-only syntax works:
-   ```html
-   <input appInput bordered />          <!-- bordered = true -->
-   <table appTable zebra bordered />    <!-- both true -->
-   ```
-
-4. **Every input has a sensible default** — bare directive works with zero config:
-   ```html
-   <button appButton>Submit</button>    <!-- intent='primary', size='md' -->
-   ```
-
-5. **CVA functions are always exported** — consumers can bypass the directive when they need to:
-   ```typescript
-   // In a computed() or template
-   btnClass = computed(() => button({ intent: 'ghost', size: 'sm' }));
-   ```
-
-### Layer 1: `cn()` utility (shadcn pattern)
-
-```typescript
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-export function cn(...inputs: ClassValue[]) { return twMerge(clsx(inputs)); }
-```
-
-`cn()` solves the class conflict problem: `cn('px-4 py-2', 'px-6')` → `'px-6 py-2'`. Used in every CVA function and directive.
-
-### Layer 2: CVA functions
-
-Pure variant maps. No Angular imports. Each lives in `*.variants.ts`:
-
-```typescript
-// button.variants.ts
-export const button = cva(
-  'inline-flex items-center justify-center font-medium transition-colors cursor-pointer
-   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary
-   disabled:opacity-50 disabled:pointer-events-none',
-  {
-    variants: {
-      intent: {
-        primary:  'bg-primary text-primary-content hover:bg-primary/80',
-        ghost:    'bg-transparent hover:bg-base-200',
-        outline:  'border border-current bg-transparent hover:bg-base-200',
-        warning:  'bg-warning text-warning-content hover:bg-warning/80',
-        // ...
-      },
-      size: {
-        xs: 'h-6 px-2 text-xs rounded',
-        sm: 'h-8 px-3 text-sm rounded',
-        md: 'h-10 px-4 text-base rounded-lg',
-      },
-      shape: {
-        default: '',
-        circle: '!rounded-full !p-0 aspect-square',
-      },
-    },
-    defaultVariants: { intent: 'primary', size: 'md', shape: 'default' },
-  }
-);
-```
-
-### Layer 3: Directives
-
-Reactive wrappers. Each input is a standalone signal input. `computed()` derives the class string. Host binding applies it.
-
-```typescript
-// button.directive.ts
-@Directive({ selector: 'button[appButton], a[appButton]' })
-export class ButtonDirective {
-  readonly intent = input<ButtonIntent>('primary');
-  readonly size = input<ButtonSize>('md');
-  readonly shape = input<'default' | 'circle'>('default');
-  readonly active = input(false, { transform: booleanAttribute });
-
-  private readonly el = inject(ElementRef);
-  private readonly renderer = inject(Renderer2);
-
-  // Consumer classes from the static class="" attribute
-  private readonly userClasses = this.el.nativeElement.getAttribute('class') ?? '';
-
-  readonly hostClass = computed(() => cn(
-    button({ intent: this.intent(), size: this.size(), shape: this.shape() }),
-    this.active() && 'ring-2 ring-primary/50',
-    this.userClasses,
-  ));
-
-  host: { '[class]': 'hostClass()' }
-}
-```
-
-**Selector design rationale:**
-| Directive | Selector | Why |
-|-----------|----------|-----|
-| `ButtonDirective` | `button[appButton], a[appButton]` | Only on clickable elements — preserves native semantics |
-| `InputDirective` | `input[appInput]` | Only on `<input>` — never on textarea/select |
-| `BadgeDirective` | `[appBadge]` | Any inline element — `<span>`, `<div>`, etc. |
-| `TableDirective` | `table[appTable]` | Only on `<table>` — child `td`/`th` styled via CSS descendant selectors |
-| `ToggleDirective` | `input[type="checkbox"][appToggle]` | Restrict to checkboxes only |
-
-### Layer 4: Components (structural)
-
-Only when `ng-content` / template structure is needed. Minimal — most are thin wrappers.
-
-**Card** — needs title/body structure:
-```html
-<app-card [compact]="true">
-  <span card-title>Settings</span>
-  <!-- body content projected into card-body div -->
-</app-card>
-```
-Internally: renders `<div class="rounded-lg bg-base-300 shadow-xl">` + `<div class="p-4">` for body, optional title.
-
-**FormField** — label + control layout:
-```html
-<app-form-field label="Margin">
-  <input appInput size="sm" bordered />
-</app-form-field>
-```
-Internally: `flex items-center justify-between gap-2` wrapper with label on left, projected content on right.
-
-**ButtonGroup** — join group for radio-style selectors:
-```html
-<app-button-group [(value)]="craftAmount" [options]="[1, 10, 100]" size="sm" />
-```
-Signal model input. Renders joined buttons internally. No ng-content needed — data-driven.
-
-**Divider** — thin horizontal rule:
-```html
-<app-divider spacing="sm" />
-```
-
-**Loading** — full-screen overlay:
-```html
-@if (loading()) { <app-loading /> }
-```
-
-### Table styling strategy
-
-The `TableDirective` applies classes to `<table>`. Child elements (`th`, `td`, `tr`) are styled via **CSS descendant selectors** in a small stylesheet, not via additional directives:
-
-```css
-/* table.styles.css — loaded by TableDirective */
-table[appTable] th { @apply px-3 py-2 text-left text-sm font-semibold; }
-table[appTable] td { @apply px-3 py-2 text-sm; }
-table[appTable][data-zebra] tr:nth-child(even) { @apply bg-base-200/50; }
-table[appTable][data-bordered] { @apply border border-base-300; }
-```
-
-This avoids directive-per-cell overhead. The `zebra`/`bordered` boolean inputs set `data-*` attributes on the host for CSS targeting.
-
-### File structure
-
-```
-src/app/shared/ui/
-├── cn.ts                              // cn() utility
-├── button/
-│   ├── button.variants.ts             // CVA function + types
-│   └── button.directive.ts            // ButtonDirective
-├── input/
-│   ├── input.variants.ts
-│   └── input.directive.ts
-├── badge/
-│   ├── badge.variants.ts
-│   └── badge.directive.ts
-├── table/
-│   ├── table.variants.ts
-│   ├── table.directive.ts
-│   └── table.styles.css               // descendant selectors for th/td/tr
-├── toggle/
-│   └── toggle.directive.ts            // self-contained, no CVA needed (single variant)
-├── card/
-│   └── card.component.ts              // inline template
-├── form-field/
-│   └── form-field.component.ts        // inline template
-├── button-group/
-│   └── button-group.component.ts      // inline template, data-driven
-├── divider/
-│   └── divider.component.ts           // inline template
-├── loading/
-│   └── loading.component.ts           // inline template
-└── index.ts                           // barrel export
-```
-
-### Steps
-
-- [x] 5A.1 `npm i class-variance-authority tailwind-merge clsx`
-- [x] 5A.2 Create `cn.ts` utility
-- [ ] 5A.3 Define design tokens in `@theme` block (colors, radii, sizing to match current DaisyUI look)
-- [x] 5A.4 Create `button.variants.ts` + `ButtonDirective`
-  - Variants: intent (primary|ghost|outline|warning|accent|success|link), size (xs|sm|md), shape (default|circle)
-  - Conditional: active, disabled states
-- [x] 5A.5 Create `input.variants.ts` + `InputDirective`
-  - Variants: size (xs|sm|md), bordered (bool)
-  - Input: `[error]` for validation state
-- [x] 5A.6 Create `badge.variants.ts` + `BadgeDirective`
-  - Variants: color (neutral|success|error|info), size (xs|sm|md)
-- [x] 5A.7 Create `table.variants.ts` + `TableDirective`
-  - Variants: zebra (bool), size (compact|sm|md), bordered (bool)
-- [x] 5A.8 Create `ToggleDirective` — custom checkbox toggle styling
-- [x] 5A.9 Create `CardComponent` — `<app-card>` with title slot and body layout
-- [x] 5A.10 Create `FormFieldComponent` — `<app-form-field [label]>` inline layout wrapper
-- [x] 5A.11 Create `ButtonGroupComponent` — `<app-button-group>` for radio-style join groups
-- [x] 5A.12 Create `DividerComponent` — `<app-divider [spacing]>`
-- [x] 5A.13 Create `LoadingComponent` — `<app-loading>` full-screen overlay
-- [x] 5A.14 Create `NavbarComponent` — `<app-navbar>` with content projection
-- [x] 5A.15 `ng build` — verify kit compiles (no templates changed yet)
-- [x] 5A.16 Commit: `feat: add UI kit with CVA components and directives` (`30bef85`)
+### 12C: Fix array mutations in config store
+- [ ] 12C.1 `config.ts:58-61` — replace `selected.splice(found, 1)` with `.filter()`
+- [ ] 12C.2 `config.ts:68-74` — replace direct array index mutation with `.map()`
+- [ ] 12C.3 `config.ts:86-88` — replace `enabled.splice(found, 1)` with `.filter()`
+- [ ] 12C.4 Fix `!=` → `!==` comparison (line 59)
+- [ ] 12C.5 Commit
 
 ---
 
-## Phase 5B: Migrate templates from DaisyUI to UI Kit
+## Phase 13: Type Safety — Eliminate `$any()` Casts
 
-**Risk: HIGH** | Every template touched — visual regressions possible
+**Risk: LOW** | Template-only changes
 
-### What changes
-- Replace all DaisyUI classes in templates with UI kit directives/components
-- Remove `@plugin "daisyui"` and `npm uninstall daisyui`
-- Remove ng-select DaisyUI-themed CSS overrides
+10 `$any($event.target).value` / `.checked` casts across 6 files. Replace with type-safe event handler methods.
 
-### DaisyUI usage to replace (by template)
-
-| Template | DaisyUI patterns | UI kit replacements |
-|----------|-----------------|---------------------|
-| `app.component.html` | navbar, btn-ghost, btn-primary, loading | `<app-navbar>`, `appButton`, `<app-loading>` |
-| `recipes-list.component.html` | table-zebra, input-bordered, btn-outline, form-control | `appTable`, `appInput`, `appButton`, `<app-form-field>` |
-| `recipe-calculations.component.html` | join/join-item, btn-outline, badge, toggle, form-control, table | `<app-button-group>`, `appButton`, `appBadge`, `appToggle`, `<app-form-field>`, `appTable` |
-| `food-calc.component.html` | card, btn-warning/primary/accent/success, input-bordered, toggle, badge, divider, form-control | `<app-card>`, `appButton`, `appInput`, `appToggle`, `appBadge`, `<app-divider>`, `<app-form-field>` |
-| `product-dialog.component.html` | btn-circle, badge, divider | `appButton`, `appBadge`, `<app-divider>` |
-| `offers.component.html` | card, input-bordered, toggle, table-zebra | `<app-card>`, `appInput`, `appToggle`, `appTable` |
-| `shops.component.html` | card, input-bordered, divider | `<app-card>`, `appInput`, `<app-divider>` |
-| `shop.component.html` | table-compact | `appTable` |
-| `offer.component.html` | table-zebra-md | `appTable` |
-| `shop-picker.component.html` | table-bordered, divider | `appTable`, `<app-divider>` |
-| `prices-settings.component.html` | card, input-bordered, form-control | `<app-card>`, `appInput`, `<app-form-field>` |
-| `player-settings-card.component.html` | card, divider | `<app-card>`, `<app-divider>` |
-| `recipes-card.component.html` | card, divider | `<app-card>`, `<app-divider>` |
-| `skill-item.component.html` | select, toggle, form-control | native select (CVA), `appToggle`, `<app-form-field>` |
-| `ingredient-price.component.html` | input-xs | `appInput` |
-| `product-link.component.html` | btn-outline (conditional btn-warning) | `appButton` |
-| `profession-line.component.html` | btn-outline | `appButton` |
-| `paginator.component.html` | btn (conditional btn-active, btn-disabled) | `appButton` |
-| `simplified-calc.component.html` | (layout only, no DaisyUI) | No change |
-
-### Steps
-
-- [x] 5B.1 Migrate `app.component.html` — navbar, loading, nav buttons
-- [x] 5B.2 Migrate `recipes-list.component.html` — table, inputs, buttons, form controls
-- [x] 5B.3 Migrate `recipe-calculations.component.html` — join groups, badges, toggles, buttons, tables
-- [x] 5B.4 Migrate `food-calc.component.html` — cards, buttons, inputs, toggles, badges, dividers
-- [x] 5B.5 Migrate `product-dialog.component.html` — close button, badges, dividers
-- [x] 5B.6 Migrate `offers.component.html` + `offer.component.html` — cards, inputs, toggles, tables
-- [x] 5B.7 Migrate `shops.component.html` + `shop.component.html` — cards, inputs, tables
-- [x] 5B.8 Migrate `shop-picker.component.html` — table, dividers
-- [x] 5B.9 Migrate `prices-settings.component.html` — card, inputs, form fields
-- [x] 5B.10 Migrate `player-settings-card.component.html` + `skill-item.component.html` — cards, selects, toggles
-- [x] 5B.11 Migrate `recipes-card.component.html` — card, divider
-- [x] 5B.12 Migrate remaining: `ingredient-price`, `product-link`, `profession-line`, `paginator`
-- [x] 5B.13 Remove `@plugin "daisyui"`, rename `styles.scss` → `styles.css`, add `@theme` design tokens
-- [x] 5B.14 `npm uninstall daisyui`
-- [x] 5B.15 Kept ng-select CSS overrides (still needed until Phase 9 removes ng-select)
-- [x] 5B.16 `ng build` — passes
-- [x] 5B.17 `ng serve` — visual regression check passed (food, calc, shops pages verified)
-- [x] 5B.18 Commit: `feat: migrate all templates from DaisyUI to UI kit` (`7c8182b`)
+- [ ] 13.1 Create shared utility: `asInputValue(event: Event): string` and `asChecked(event: Event): boolean`
+- [ ] 13.2 Migrate `recipes-list.component.html` (2 casts)
+- [ ] 13.3 Migrate `skill-item.component.html` (2 casts)
+- [ ] 13.4 Migrate `recipe-calculations.component.html` (2 casts)
+- [ ] 13.5 Migrate `shops.component.html` (1 cast)
+- [ ] 13.6 Migrate `offers.component.html` (2 casts)
+- [ ] 13.7 Migrate `food-calc.component.html` (1 cast)
+- [ ] 13.8 Verify build + tests pass
+- [ ] 13.9 Commit
 
 ---
 
-## Phase 6: Karma → Vitest
+## Phase 14: Remove CDK — Native Dialog + CSS Popover
 
-**Risk: LOW** (only 2 test files exist)
+**Risk: MEDIUM** | Removes ~40-60 KB from bundle
 
-### Steps
-- [x] 6.1 Manual migration (schematic not available): install `vitest` + `jsdom`, switch builder to `@angular/build:unit-test`
-- [x] 6.2 Remove Karma/Jasmine devDependencies (`karma`, `karma-*`, `jasmine-core`, `@types/jasmine`)
-- [x] 6.3 Update `tsconfig.spec.json` — replace `jasmine` types with `vitest/globals`
-- [x] 6.4 Update spec files — add required inputs for `OfferComponent`, mock `IntersectionObserver` for `OffersComponent`
-- [x] 6.5 `ng test` — both tests pass
-- [x] 6.6 Also migrated build builder from `@angular-devkit/build-angular:application` to `@angular/build:application`
-- [x] 6.7 Commit: `chore: migrate from Karma to Vitest`
+### 14A: Replace CDK Dialog with native `<dialog>`
+- [ ] 14A.1 Create `DialogService` — lightweight wrapper around native `<dialog>` with signal-based API, `open()`, `close(returnValue)`, focus trap
+- [ ] 14A.2 Migrate `product-dialog` — replace `Dialog`/`DialogRef`/`DIALOG_DATA` with native dialog + inputs
+- [ ] 14A.3 Migrate `shop-picker` — same pattern, preserve `DialogRef<number | null>` return value behavior
+- [ ] 14A.4 Update `product-link.component.ts` and `ingredient-price.component.ts` (dialog invocation points)
+- [ ] 14A.5 Remove dialog-manager factory functions (2 files)
+- [ ] 14A.6 Verify dialog open/close, return values, focus management
 
----
+### 14B: Replace CDK Overlay with Popover API + anchor positioning
+- [ ] 14B.1 Migrate `select.component.ts` — replace `CdkConnectedOverlay`/`CdkOverlayOrigin` with `popover` attribute + CSS anchor positioning
+- [ ] 14B.2 Migrate `multi-select.component.ts` — same pattern
+- [ ] 14B.3 Handle outside click (backdrop), width matching, keyboard navigation
+- [ ] 14B.4 Remove `@import "@angular/cdk/overlay-prebuilt.css"` from `styles.css`
 
-## Phase 7: Zoneless Migration
-
-**Risk: LOW-MEDIUM**
-
-### Steps
-- [x] 7.1 Add `ChangeDetectionStrategy.OnPush` to all 22 components missing it
-- [x] 7.2 Replace `provideZoneChangeDetection()` with `provideZonelessChangeDetection()` in `main.ts`
-- [x] 7.3 Remove `zone.js` from polyfills in `angular.json`
-- [x] 7.4 Remove `zone.js` dependency (already absent from package.json)
-- [x] 7.5 Build passes — bundle reduced 821 KB → 784 KB (-37 KB)
-- [x] 7.6 Tests pass
-- [x] 7.7 Commit: `chore: migrate to zoneless change detection`
+### 14C: Cleanup
+- [ ] 14C.1 `npm uninstall @angular/cdk`
+- [ ] 14C.2 Verify build + tests pass
+- [ ] 14C.3 Visual regression check on all select dropdowns and dialogs
+- [ ] 14C.4 Commit
 
 ---
 
-## Phase 8: Signal Forms Migration
+## Phase 15: Calculation Optimization
 
-**Risk: MEDIUM** | API is experimental in Angular 21
+**Risk: MEDIUM** | Performance improvements, logic refactoring
 
-### Current forms inventory
+### 15A: Use Set/Map for O(1) lookups (replaces O(n) array searches)
+- [ ] 15A.1 `recipes.data-source.ts:31-48` — convert `table` and `profession` filter arrays to Sets; build `shopOffersByItem` Map for selling filter
+- [ ] 15A.2 `recipes.ts:100-108` — return Maps from `recipesByProduct`/`ingredientInProduct` instead of arrays; replace `find()`/`findIndex()` with `Map.get()`
+- [ ] 15A.3 `shops.ts:45-55` — combine `.some()` + `.filter()` double iteration into single pass
+- [ ] 15A.4 `offers.component.ts:36-49` — pre-lowercase search string, combine dedup + filter into single pass
 
-**Reactive Forms — 3 components:**
+### 15B: Memoize expensive computations
+- [ ] 15B.1 `food-calc.component.ts:161-187` — pre-build `offersByItemName` Map for `costPer1000Calories`; use Set for `filteredPrices`; cache number conversions
+- [ ] 15B.2 `food-calc.component.ts:82-87` — replace `Object.assign({}, ...array.map(...))` with single `reduce()` or `Map`
+- [ ] 15B.3 `food-calc.component.ts:135-155` — cache sorted offers instead of re-sorting per item in `customEatedByShop`
+- [ ] 15B.4 `recipe-calculations.component.ts:93-183` — consolidate 5+ separate iterations over products into single pass
 
-| Component | Controls | Validation | Persistence |
-|-----------|----------|------------|-------------|
-| `RecipesListComponent` | search, table[], profession[], selling | None | localStorage |
-| `FoodCalcComponent` | minTestiness, minCalories, minNutrients, availableInStore | `required`, `pattern` | localStorage |
-| `PricesSettingsComponent` | caloriesCost, margin | `required`, `pattern` | userConfigStore |
+### 15C: Template optimizations
+- [ ] 15C.1 Replace `track $index` with stable identifiers in 8+ `@for` loops (paginator, shop, offer, food-calc, donut)
+- [ ] 15C.2 Move `uniqueRecipes` pipe to computed signal in `recipes-list.component.ts`
+- [ ] 15C.3 Extract repeated `ingredient.name || getOverrideForTag(ingredient.tag)` to computed in recipe-calculations
 
-**Template-Driven (ngModel) — 5 components:**
-
-| Component | Controls | Notes |
-|-----------|----------|-------|
-| `RecipeCalculationsComponent` | craftAmount, module, level, margin, lavish, priceOverride | Already signals internally |
-| `SkillItemComponent` | skill level, lavish checkbox | Simple binding |
-| `OffersComponent` | search, filter | Simple text |
-| `ShopsComponent` | search filter | Simple text |
-| `PlayerSettingsCardComponent` | skill select | Add-to-list |
-
-### Steps
-- [x] 8.1 Migrate `PricesSettingsComponent` — FormGroup → Signal Forms (`form()` + `[formField]` + `pattern`/`required` validators)
-- [x] 8.2 Migrate `FoodCalcComponent` — FormGroup → Signal Forms + `[ngModel]` for ng-select
-- [x] 8.3 Migrate `RecipesListComponent` — FormGroup → plain signal + effects for localStorage/filter sync
-- [x] 8.4 Migrate `OffersComponent` — `[(ngModel)]` → native `[value]`/`(input)` event bindings
-- [x] 8.5 Migrate `ShopsComponent` — `[(ngModel)]` → native event bindings
-- [x] 8.6 Migrate `SkillItemComponent` — `[(ngModel)]` → native event bindings
-- [x] 8.7 `RecipeCalculationsComponent` + `PlayerSettingsCardComponent` — keep FormsModule for ng-select (Phase 9)
-- [x] 8.8 Removed `ReactiveFormsModule` from all components. `FormsModule` remains only for ng-select bindings.
-- [x] 8.9 Deleted unused `syncFormToLocalStorage` helper + empty `core/helpers` directory
-- [x] 8.10 Build + tests pass
-- [x] 8.11 Commit: `feat: migrate forms to Signal Forms and native bindings`
+### 15D: Verify
+- [ ] 15D.1 Build + tests pass
+- [ ] 15D.2 Commit
 
 ---
 
-## Phase 9: Replace ng-select with Custom ARIA Select
+## Phase 16: Architecture — Data/UI Separation
 
-**Risk: MEDIUM-HIGH** | Most labor-intensive phase
+**Risk: MEDIUM-HIGH** | Structural refactoring
 
-### ng-select inventory (8 usages)
+### 16A: Extract business logic from components
+- [ ] 16A.1 Extract `RecipeCalculationService` from `recipe-calculations.component.ts:93-183` — labor cost, ingredient cost, product distribution calculations
+- [ ] 16A.2 Extract `FoodCalculatorService` from `food-calc.component.ts:263-487` — eating algorithms (`eatCalories`, `eatVariety`, `eatNutrition`, `eatBest`)
+- [ ] 16A.3 Extract price parsing utility from `ingredient-price.component.ts:44-55`
+- [ ] 16A.4 Move shop min-price computation from `shop-picker.component.ts:25-32` to `ShopsStore` method
+- [ ] 16A.5 Move offer deduplication from `offers.component.ts:36-49` to `ShopsStore` computed
 
-| # | Component | Type | Search | Virtual Scroll | Data |
-|---|-----------|------|--------|----------------|------|
-| 1 | `TagPickerComponent` | Single | No | No | Item names |
-| 2 | `RecipesListComponent` (profession) | **Multi** | No | No | Skills |
-| 3 | `RecipesListComponent` (table) | **Multi** | No | No | Tables |
-| 4 | `ProductDialogComponent` | Single | Yes | No | Recipes |
-| 5 | `RecipeCalculationsComponent` | Single | No | No | Levels 1-7 |
-| 6 | `FoodCalcComponent` | Single | No | No | Tastiness |
-| 7 | `PlayerSettingsCardComponent` | Single | Yes | No | Skills |
-| 8 | `RecipesCardComponent` | Single | Yes | **Yes** | Recipes |
+### 16B: Centralize persistence
+- [ ] 16B.1 Create `PersistenceService` abstracting localStorage — handles debounced writes, hydration, type-safe keys
+- [ ] 16B.2 Migrate `AppComponent` config persistence (currently un-debounced effect writing full store on every change)
+- [ ] 16B.3 Migrate `RecipesListComponent` filter persistence
+- [ ] 16B.4 Migrate `FoodCalcComponent` config persistence
 
-### Steps
-- [x] 9.1 Create `SelectDirective` (native `<select>` styling), `SelectComponent` (custom dropdown with @angular/aria), `MultiSelectComponent` (multi-select with checkboxes)
-- [x] 9.2 Migrate RecipeCalculations (levels) → native `<select appSelect>`
-- [x] 9.3 Migrate FoodCalc (tastiness) → native `<select appSelect>`
-- [x] 9.4 Migrate TagPicker → `<app-select>` with clearable
-- [x] 9.5 Migrate ProductDialog → `<app-select>` with search + custom option template
-- [x] 9.6 Migrate PlayerSettings → `<app-select>` with search
-- [x] 9.7 Migrate RecipesCard → `<app-select>` with search
-- [x] 9.8 Migrate RecipesList (2x) → `<app-multi-select>` with checkbox options
-- [x] 9.9 `npm uninstall @ng-select/ng-select`, remove all ng-select CSS overrides
-- [x] 9.10 Remove FormsModule from all components (fully eliminated)
-- [x] 9.11 Build + tests pass
-- [x] 9.12 Commit: `feat: replace ng-select with custom ARIA select components`
+### 16C: Consolidate effects
+- [ ] 16C.1 `recipe-calculations.component.ts:207-257` — merge 3 interdependent effects (skill read/write + product settings) into single bidirectional sync effect with proper debounce
+- [ ] 16C.2 `food-calc.component.ts:191-233` — consolidate multiple unrelated constructor effects; remove `untracked()` calls by restructuring dependency graph
+- [ ] 16C.3 `prices-settings.component.ts:30-46` — fix bidirectional form↔store sync (two effects creating ping-pong)
+
+### 16D: Verify
+- [ ] 16D.1 Build + tests pass
+- [ ] 16D.2 Commit
 
 ---
 
-## Phase 10: Cleanup
+## Phase 17: Error Handling & Resilience
 
-- [x] 10.1 Replace `MatSnackBar` with signal-based `ToastService` (2 usages)
-- [x] 10.2 Remove `@angular/material` package
-- [x] 10.3 Remove `@angular/animations` + `provideAnimationsAsync()`
-- [x] 10.4 Remove prebuilt Material theme from `angular.json`
-- [x] 10.5 Remove `useDefineForClassFields: false` and `experimentalDecorators: true` from tsconfig
-- [x] 10.6 Bump `rxjs` to `~7.8.2`
-- [x] 10.7 Final build — **496 KB initial (under 500 KB budget!)**, zero warnings
-- [x] 10.8 Tests pass
-- [x] 10.9 Commit: `chore: remove Angular Material, cleanup config`
+**Risk: LOW-MEDIUM** | Safety improvements
 
----
-
-## Phase 11: Bundle Optimization
-
-- [x] 11.1 Remove CdkTable from recipes-list — replaced with plain `@for` table (CdkRecycleRows was deprecated/no-op, no CDK features were used)
-- [x] 11.2 Replace default `twMerge` with `createTailwindMerge` custom config — only spacing, sizing, colors, border-radius, ring, shadow class groups
-- [x] 11.3 Build verified — **359 KB raw / 94.3 KB gzipped initial** (down from 389 KB / 101.1 KB)
-- [x] 11.4 Commit: `perf: remove CdkTable, use custom tailwind-merge config`
-
-### Savings breakdown
-| Change | Raw | Gzipped |
-|--------|-----|---------|
-| CdkTable removal | -30.3 kB | ~-8 kB |
-| tailwind-merge custom config | -19.8 kB | ~-5 kB |
-| **Total** | **-50.1 kB** | **~-13 kB** |
+- [ ] 17.1 Add `catchError` with fallback to `FoodService`, `ItemsService`, `RecipesService`, `ShopsService` (currently only `UserService` handles errors)
+- [ ] 17.2 Add global HTTP error interceptor for toast notifications on 4xx/5xx
+- [ ] 17.3 Add `takeUntilDestroyed()` to unmanaged subscriptions in `AppComponent:40-47` and `OffersComponent:71`
+- [ ] 17.4 Expose loading signals from services for proper UI feedback
+- [ ] 17.5 Consider lazy data loading per route instead of loading all 4 services on app startup (`AppComponent:40-47` blocks render waiting for all endpoints)
+- [ ] 17.6 Verify build + tests pass
+- [ ] 17.7 Commit
 
 ---
 
-## Final Dependency Target
+## Phase 18: Accessibility
 
-```
-dependencies:
-  @angular/common, compiler, core, forms, platform-browser, router  ^21.x
-  @ngrx/signals          ^21.x
-  @ngneat/helipopper     ^12.x
-  ngxtension             ^7.x
-  rxjs                   ~7.8.2
-  tslib                  ^2.x
+**Risk: LOW** | Template-only changes
 
-devDependencies:
-  @angular/build         ^21.x
-  @angular/cli           ^21.x
-  @angular/compiler-cli  ^21.x
-  class-variance-authority ^0.x
-  prettier               ^3.x
-  prettier-plugin-organize-imports ^4.x
-  tailwindcss            ^4.x
-  typescript             ~5.9.x
+- [ ] 18.1 Add `aria-label` to toggle directive and loading component
+- [ ] 18.2 Add `for` attribute to form-field labels (currently unassociated)
+- [ ] 18.3 Add `aria-label` to icon-only buttons (close button in product-dialog, chevron SVGs in selects)
+- [ ] 18.4 Add arrow key navigation to `ButtonGroupComponent`
+- [ ] 18.5 Replace clickable `<div>` with `<button>` in `recipe-calculations.component.html:159-165`
+- [ ] 18.6 Add `aria-label` to search inputs that only have placeholder text
+- [ ] 18.7 Commit
 
-removed:
-  @angular/animations, @angular/cdk, @angular/material
-  @angular/platform-browser-dynamic
-  @ng-select/ng-select
-  autoprefixer, postcss
-  daisyui
-  jasmine-core, @types/jasmine
-  karma + all karma-*
-  zone.js
-```
+---
+
+## Phase 19: Test Coverage
+
+**Risk: LOW** | Only 2 spec files exist
+
+- [ ] 19.1 Add unit tests for signal stores (RecipesStore computeds, ShopsStore methods, UserConfigStore methods)
+- [ ] 19.2 Add unit tests for recipe calculation logic (after Phase 16A extraction)
+- [ ] 19.3 Add unit tests for food calculator algorithms (after Phase 16A extraction)
+- [ ] 19.4 Add component tests for Select/MultiSelect keyboard navigation
+- [ ] 19.5 Add component tests for Dialog open/close/return value flow
+
+---
+
+## Priority Matrix
+
+| Phase | Impact | Effort | Risk | Bundle Savings |
+|-------|--------|--------|------|----------------|
+| **12: Quick Wins** | Medium | Low | Low | ~2-3 KB |
+| **13: Type Safety** | Medium | Low | Low | 0 |
+| **14: Remove CDK** | High | Medium | Medium | ~40-60 KB |
+| **15: Calc Optimization** | High | Medium | Medium | 0 (perf only) |
+| **16: Architecture** | High | High | Medium-High | 0 (maintainability) |
+| **17: Error Handling** | Medium | Low | Low | 0 |
+| **18: Accessibility** | Medium | Low | Low | 0 |
+| **19: Test Coverage** | Medium | Medium | Low | 0 |
+
+**Recommended order:** 12 → 13 → 14 → 15 → 17 → 18 → 16 → 19
+(Do 16 after 15 since extracted services benefit from optimization done first)

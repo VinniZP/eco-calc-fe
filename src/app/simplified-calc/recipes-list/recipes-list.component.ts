@@ -26,8 +26,7 @@ import { UniqueRecipesPipe } from './unique-recipes.pipe';
         TableDirective,
         ToggleDirective,
     ],
-    templateUrl: './recipes-list.component.html',
-    styleUrl: './recipes-list.component.scss'
+    templateUrl: './recipes-list.component.html'
 })
 export class RecipesListComponent {
   filtersModel = signal({

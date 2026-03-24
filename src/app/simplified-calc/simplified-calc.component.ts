@@ -8,8 +8,7 @@ import { RecipesListComponent } from './recipes-list/recipes-list.component';
     imports: [
         RecipesListComponent,
     ],
-    templateUrl: './simplified-calc.component.html',
-    styleUrl: './simplified-calc.component.scss'
+    templateUrl: './simplified-calc.component.html'
 })
 export class SimplifiedCalcComponent {
   recipesStore = inject(RecipesStore);

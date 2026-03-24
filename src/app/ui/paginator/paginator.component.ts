@@ -3,8 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, input, output } from '@an
     selector: 'app-paginator',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [],
-    templateUrl: './paginator.component.html',
-    styleUrl: './paginator.component.scss'
+    templateUrl: './paginator.component.html'
 })
 export class PaginatorComponent {
   page = input(1);

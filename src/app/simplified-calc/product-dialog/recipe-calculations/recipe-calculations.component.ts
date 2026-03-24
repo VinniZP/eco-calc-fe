@@ -67,8 +67,7 @@ const normalizeDecimal = (value: number) => {
         TableDirective,
         ToggleDirective,
     ],
-    templateUrl: './recipe-calculations.component.html',
-    styleUrl: './recipe-calculations.component.scss'
+    templateUrl: './recipe-calculations.component.html'
 })
 export class RecipeCalculationsComponent implements OnInit {
   userConfigStore = inject(UserConfigStore);

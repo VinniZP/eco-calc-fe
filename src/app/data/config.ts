@@ -1,4 +1,4 @@
-import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 export interface SelectedSkill {
   skill: string;
@@ -55,24 +55,18 @@ export const UserConfigStore = signalStore(
       }
     },
     disableSkill(skill: string) {
-      const found = state.selectedSkills().findIndex((v) => v.skill === skill);
-      if (found != -1) {
-        const selected = state.selectedSkills();
-        selected.splice(found, 1);
-        patchState(state, { selectedSkills: selected });
-      }
+      patchState(state, {
+        selectedSkills: state.selectedSkills().filter((v) => v.skill !== skill),
+      });
     },
     updateSkillParams(skill: string, { level, lavish }: { level?: number; lavish?: boolean }) {
-      const found = state.selectedSkills().find((v) => v.skill === skill);
-      if (found) {
-        const selected = state.selectedSkills();
-        selected[selected.indexOf(found)] = {
-          ...found,
-          level: level ?? found.level,
-          lavish: lavish ?? found.lavish,
-        };
-        patchState(state, { selectedSkills: selected });
-      }
+      patchState(state, {
+        selectedSkills: state.selectedSkills().map((v) =>
+          v.skill === skill
+            ? { ...v, level: level ?? v.level, lavish: lavish ?? v.lavish }
+            : v,
+        ),
+      });
     },
     updateConfig({ caloriesCost, margin }: { caloriesCost: number; margin: number }) {
       patchState(state, { caloriesCost, margin });
@@ -81,12 +75,9 @@ export const UserConfigStore = signalStore(
       patchState(state, { enabledRecipes: [...state.enabledRecipes(), recipe] });
     },
     disableRecipe(recipe: string) {
-      const found = state.enabledRecipes().findIndex((v) => v === recipe);
-      if (found != -1) {
-        const enabled = state.enabledRecipes();
-        enabled.splice(found, 1);
-        patchState(state, { enabledRecipes: enabled });
-      }
+      patchState(state, {
+        enabledRecipes: state.enabledRecipes().filter((v) => v !== recipe),
+      });
     },
     updateItemPrice(item: string, price: number) {
       patchState(state, { itemPrices: { ...state.itemPrices(), [item]: price } });
@@ -94,7 +85,7 @@ export const UserConfigStore = signalStore(
     updateSellPrice(item: string, price: number) {
       patchState(state, { sellPrices: { ...state.sellPrices(), [item]: price } });
     },
-    getItemPrices(product: number) {
+    getItemPrices(product: string) {
       return {
         personal: state.itemPrices()[product] ?? 0,
         sell: state.sellPrices()[product] ?? 0,
@@ -116,8 +107,4 @@ export const UserConfigStore = signalStore(
       patchState(state, { tagOverrides: { ...state.tagOverrides(), [tag]: override } });
     },
   })),
-  withHooks({
-    onInit(store) {},
-    onDestroy(store) {},
-  }),
 );

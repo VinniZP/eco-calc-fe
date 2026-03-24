@@ -5,7 +5,6 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   templateUrl: './donut.component.html',
-  styleUrl: './donut.component.scss',
 })
 export class DonutComponent {
   items = input([

@@ -9,8 +9,7 @@ import { SelectComponent } from '../../shared/ui/select/select.component';
     selector: 'app-recipes-card',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [SelectComponent, CardComponent, DividerComponent],
-    templateUrl: './recipes-card.component.html',
-    styleUrl: './recipes-card.component.scss'
+    templateUrl: './recipes-card.component.html'
 })
 export class RecipesCardComponent {
   recipesStore = inject(RecipesStore);

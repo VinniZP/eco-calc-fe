@@ -1,7 +1,6 @@
-import { computed, effect, Injectable, signal, untracked } from '@angular/core';
-import { createEffect } from 'ngxtension/create-effect';
-import { createNotifier } from 'ngxtension/create-notifier';
-import { debounceTime, pipe, tap } from 'rxjs';
+import { computed, DestroyRef, effect, inject, Injectable, signal, untracked } from '@angular/core';
+import { debounceTime, Subject, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Testiness } from '../../data/user';
 import { FoodCalcConfig } from './config';
 import { interpolate } from './helpers/math';
@@ -43,6 +42,7 @@ export class FoodItem {
 
 @Injectable()
 export class Stomach {
+  private destroyRef = inject(DestroyRef);
   minTestiness = signal(0.7);
   minCalories = signal(100);
   minNutrients = signal(0);
@@ -52,15 +52,15 @@ export class Stomach {
   foodToTaste = new Map<string, number>();
   food: FoodItem[] = [];
   calculating = signal(false);
-  calculateFx = createEffect<void>(
-    pipe(
-      tap(() => this.calculating.set(true)),
-      debounceTime(30),
-      tap(() => this.calculate()),
-    ),
-  );
 
-  refresh = createNotifier();
+  private calculateSubject = new Subject<void>();
+  calculateFx = () => this.calculateSubject.next();
+
+  private refreshSignal = signal(0);
+  refresh = {
+    listen: () => this.refreshSignal(),
+    notify: () => this.refreshSignal.update((v) => v + 1),
+  };
   subtotal = signal(0);
   balanceMult = signal(0);
   varietyMult = signal(0);
@@ -106,6 +106,15 @@ export class Stomach {
   sortByNutrientsTimes = 0;
 
   constructor() {
+    this.calculateSubject
+      .pipe(
+        tap(() => this.calculating.set(true)),
+        debounceTime(30),
+        tap(() => this.calculate()),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+
     effect(() => {
       this.minNutrients();
       this.minCalories();

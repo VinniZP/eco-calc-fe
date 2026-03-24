@@ -7,8 +7,7 @@ import { ShopComponent } from './shop/shop.component';
     selector: 'app-shops',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [ShopComponent, InputDirective],
-    templateUrl: './shops.component.html',
-    styleUrl: './shops.component.scss'
+    templateUrl: './shops.component.html'
 })
 export class ShopsComponent {
   shopsStore = inject(ShopsStore);

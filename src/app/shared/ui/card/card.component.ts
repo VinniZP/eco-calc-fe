@@ -30,6 +30,6 @@ export class CardComponent {
   );
 
   protected readonly bodyClass = computed(() =>
-    cn(this.compact() ? 'p-2' : 'p-2'),
+    cn(this.compact() ? 'p-2' : 'p-4'),
   );
 }

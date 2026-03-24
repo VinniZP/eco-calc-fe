@@ -16,8 +16,7 @@ import { ToastService } from './shared/toast.service';
     selector: 'app-root',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [RouterOutlet, RouterLink, RouterLinkActive, NavbarComponent, ButtonDirective, LoadingComponent],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+    templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   itemsService = inject(ItemsService);

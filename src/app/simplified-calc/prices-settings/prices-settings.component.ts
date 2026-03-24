@@ -9,8 +9,7 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
     selector: 'app-prices-settings',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormField, CardComponent, FormFieldComponent, InputDirective],
-    templateUrl: './prices-settings.component.html',
-    styleUrl: './prices-settings.component.scss'
+    templateUrl: './prices-settings.component.html'
 })
 export class PricesSettingsComponent {
   userConfigStore = inject(UserConfigStore);

@@ -7,8 +7,7 @@ import { productDialogManager } from '../product-dialog/dialog-manager';
     selector: 'app-product-link',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [TippyDirective],
-    templateUrl: './product-link.component.html',
-    styleUrl: './product-link.component.scss'
+    templateUrl: './product-link.component.html'
 })
 export class ProductLinkComponent {
   dialogManager = productDialogManager();

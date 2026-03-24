@@ -10,8 +10,7 @@ import { SkillItemComponent } from './skill-item/skill-item.component';
     selector: 'app-player-settings-card',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [SelectComponent, SkillItemComponent, CardComponent, DividerComponent],
-    templateUrl: './player-settings-card.component.html',
-    styleUrl: './player-settings-card.component.scss'
+    templateUrl: './player-settings-card.component.html'
 })
 export class PlayerSettingsCardComponent {
   userConfigStore = inject(UserConfigStore);

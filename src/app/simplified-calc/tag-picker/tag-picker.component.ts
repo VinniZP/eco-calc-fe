@@ -8,7 +8,6 @@ import { SelectComponent } from '../../shared/ui/select/select.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [SelectComponent, TippyDirective],
   templateUrl: './tag-picker.component.html',
-  styleUrl: './tag-picker.component.scss',
 })
 export class TagPickerComponent {
   tag = input.required<string>();

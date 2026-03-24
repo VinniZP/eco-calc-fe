@@ -16,8 +16,7 @@ interface DialogData {
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block bg-base-100 w-full h-full max-w-full rounded shadow-2xl max-h-[95vh] overflow-y-auto' },
     imports: [StripTagsPipe, ButtonDirective, DividerComponent, TableDirective],
-    templateUrl: './shop-picker.component.html',
-    styleUrl: './shop-picker.component.scss'
+    templateUrl: './shop-picker.component.html'
 })
 export class ShopPickerComponent {
   data = inject<DialogData>(DIALOG_DATA);

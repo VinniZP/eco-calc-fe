@@ -1,18 +1,16 @@
 import { SlicePipe } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   effect,
   ElementRef,
   inject,
-  Injector,
-  OnInit,
   signal,
   viewChild,
 } from '@angular/core';
-import { injectIsIntersecting } from 'ngxtension/inject-is-intersecting';
-import { filter } from 'rxjs/operators';
 import { ShopsStore } from '../data/shops';
 import { InputDirective } from '../shared/ui/input/input.directive';
 import { ToggleDirective } from '../shared/ui/toggle/toggle.directive';
@@ -22,11 +20,11 @@ import { OfferComponent } from './offer/offer.component';
     selector: 'app-offers',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [OfferComponent, SlicePipe, InputDirective, ToggleDirective],
-    templateUrl: './offers.component.html',
-    styleUrl: './offers.component.scss'
+    templateUrl: './offers.component.html'
 })
-export class OffersComponent implements OnInit {
+export class OffersComponent implements AfterViewInit {
   shopsStore = inject(ShopsStore);
+  private destroyRef = inject(DestroyRef);
   search = signal('');
 
   onlyAvailable = signal(false);
@@ -49,7 +47,6 @@ export class OffersComponent implements OnInit {
   );
 
   scrollTrigger = viewChild<ElementRef>('scrollTrigger');
-  private injector = inject(Injector);
 
   constructor() {
     effect(
@@ -61,15 +58,17 @@ export class OffersComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    const divInViewport$ = injectIsIntersecting({
-      element: this.scrollTrigger()?.nativeElement,
-      injector: this.injector,
-    }).pipe(filter((x) => x.intersectionRatio > 0));
+  ngAfterViewInit() {
+    const el = this.scrollTrigger()?.nativeElement;
+    if (!el) return;
 
-    // Only fetch data when the element is in the viewport
-    divInViewport$.subscribe(() => {
-      this.itemsToShow.update((value) => value + 10);
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.intersectionRatio > 0)) {
+        this.itemsToShow.update((value) => value + 10);
+      }
     });
+
+    observer.observe(el);
+    this.destroyRef.onDestroy(() => observer.disconnect());
   }
 }

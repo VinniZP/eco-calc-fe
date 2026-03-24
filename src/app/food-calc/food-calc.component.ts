@@ -6,7 +6,6 @@ import { form, FormField, required, pattern } from '@angular/forms/signals';
 import { ToastService } from '../shared/toast.service';
 
 import { TippyDirective } from '@ngneat/helipopper';
-import { createNotifier } from 'ngxtension/create-notifier';
 import { debounceTime, startWith } from 'rxjs';
 import { Food, FoodStore } from '../data/food';
 import { ShopsStore } from '../data/shops';
@@ -186,7 +185,11 @@ export class FoodCalcComponent {
     return (calc.cost / calc.calories) * 1000;
   });
 
-  reset$ = createNotifier();
+  private resetSignal = signal(0);
+  reset$ = {
+    listen: () => this.resetSignal(),
+    notify: () => this.resetSignal.update((v) => v + 1),
+  };
 
   constructor() {
     this.foodService.load().subscribe();

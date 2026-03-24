@@ -1,5 +1,5 @@
 <app-form-field [label]="skill().skill">
-  <select class="select select-bordered w-14 max-w-xs select-sm" [value]="skill().level" (change)="changeLevel(+$any($event.target).value)">
+  <select appSelect size="sm" class="w-14" [value]="skill().level" (change)="changeLevel(+$any($event.target).value)">
     <option [value]="1">1</option>
     <option [value]="2">2</option>
     <option [value]="3">3</option>

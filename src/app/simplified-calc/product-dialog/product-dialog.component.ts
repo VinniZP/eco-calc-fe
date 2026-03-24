@@ -29,8 +29,7 @@ interface DialogData {
         BadgeDirective,
         ButtonDirective,
     ],
-    templateUrl: './product-dialog.component.html',
-    styleUrl: './product-dialog.component.scss'
+    templateUrl: './product-dialog.component.html'
 })
 export class ProductDialogComponent implements OnInit {
   userConfigStore = inject(UserConfigStore);

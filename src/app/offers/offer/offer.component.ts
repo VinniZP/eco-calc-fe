@@ -9,8 +9,7 @@ import { StripTagsPipe } from '../../ui/strip-tags.pipe';
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block rounded-lg border border-base-content/[0.06] bg-base-content/[0.02] overflow-hidden' },
     imports: [StripTagsPipe, TableDirective, DecimalPipe],
-    templateUrl: './offer.component.html',
-    styleUrl: './offer.component.scss'
+    templateUrl: './offer.component.html'
 })
 export class OfferComponent {
   shopsStore = inject(ShopsStore);

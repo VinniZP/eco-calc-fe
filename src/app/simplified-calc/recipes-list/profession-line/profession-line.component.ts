@@ -7,8 +7,7 @@ import { Recipe } from '../../../data/recipes';
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block' },
     imports: [TippyDirective],
-    templateUrl: './profession-line.component.html',
-    styleUrl: './profession-line.component.scss'
+    templateUrl: './profession-line.component.html'
 })
 export class ProfessionLineComponent {
   recipe = input.required<Recipe>();
