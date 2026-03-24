@@ -12,7 +12,6 @@ import { CardComponent, FormFieldComponent, InputDirective } from '../../shared/
 })
 export class PricesSettingsComponent {
   userConfigStore = inject(UserConfigStore);
-  margins = [0, 10, 15, 20, 25, 30, 40, 50, 75];
 
   configModel = signal({
     caloriesCost: 0,
@@ -27,7 +26,6 @@ export class PricesSettingsComponent {
   });
 
   constructor() {
-    // Sync store values into the model signal
     effect(() => {
       this.configModel.set({
         caloriesCost: this.userConfigStore.caloriesCost(),
@@ -35,19 +33,13 @@ export class PricesSettingsComponent {
       });
     });
 
-    // Sync valid form values back to the store
-    let initialized = false;
     effect(() => {
       const model = this.configModel();
-      if (!initialized) {
-        initialized = true;
-        return;
-      }
-      if (this.configForm().valid()) {
-        this.userConfigStore.updateConfig({
-          caloriesCost: parseFloat(model.caloriesCost.toString()),
-          margin: parseInt(model.margin.toString(), 10),
-        });
+      const caloriesCost = parseFloat(model.caloriesCost.toString());
+      const margin = parseInt(model.margin.toString(), 10);
+      if (this.configForm().valid() &&
+          (caloriesCost !== this.userConfigStore.caloriesCost() || margin !== this.userConfigStore.margin())) {
+        this.userConfigStore.updateConfig({ caloriesCost, margin });
       }
     });
   }

@@ -72,7 +72,11 @@ export class FoodCalcComponent {
     pattern(schemaPath.minNutrients, /^\d+$/, { message: 'Must be integer' });
   });
 
-  availableInStore = signal(true);
+  private debouncedConfig = toSignal(
+    toObservable(this.configModel).pipe(debounceTime(100)),
+    { initialValue: this.configModel() }
+  );
+
   userService = inject(UserService);
 
   stomachData: Signal<StomachData> = this.userStore.stomach;
@@ -124,7 +128,7 @@ export class FoodCalcComponent {
 
   nextToEat = computed(() => {
     const availableItems = this.unusedOffers();
-    if (!this.availableInStore()) {
+    if (!this.configModel().availableInStore) {
       return this.nextFood();
     }
     return this.nextFood().filter((v) => availableItems[v.name] > 0);
@@ -212,15 +216,13 @@ export class FoodCalcComponent {
         });
       },
     );
-    // Load from localStorage
     const saved = localStorage.getItem('foodCalcConfig');
     if (saved) {
       this.configModel.set({ ...this.configModel(), ...JSON.parse(saved) });
     }
 
-    // Sync config model to localStorage and stomach
     effect(() => {
-      const value = this.configModel();
+      const value = this.debouncedConfig();
       localStorage.setItem('foodCalcConfig', JSON.stringify(value));
       if (!this.configForm().valid()) return;
       this.stomach.minTestiness.set(+value.minTestiness);
@@ -230,7 +232,6 @@ export class FoodCalcComponent {
       if (!Number.isNaN(+value.minNutrients)) {
         this.stomach.minNutrients.set(+value.minNutrients);
       }
-      this.availableInStore.set(value.availableInStore);
     });
   }
 
@@ -271,7 +272,7 @@ export class FoodCalcComponent {
   }
 
   eatCalories(number: number) {
-    const availableInStore = this.availableInStore();
+    const availableInStore = this.configModel().availableInStore;
     const currentCalories = this.stomach.totalCals();
     const eatAsync = () => {
       setTimeout(() => {
@@ -304,7 +305,7 @@ export class FoodCalcComponent {
   }
 
   eatVariety() {
-    const availableInStore = this.availableInStore();
+    const availableInStore = this.configModel().availableInStore;
     const allowedFood = this.stomach.food
       .filter((f) => {
         //
@@ -362,7 +363,7 @@ export class FoodCalcComponent {
         f.calories >= this.stomach.minCalories() &&
         f.nutrients.nutrientTotal() >= this.stomach.minNutrients() &&
         (this.stomach.foodToTaste.get(f.name) || 1) >= this.stomach.minTestiness();
-      return satisfied && (!this.availableInStore() || this.unusedOffers()[f.name] > 0);
+      return satisfied && (!this.configModel().availableInStore || this.unusedOffers()[f.name] > 0);
     });
     let executed = 0;
     const eatAsync = () => {
@@ -457,7 +458,7 @@ export class FoodCalcComponent {
         f.calories >= this.stomach.minCalories() &&
         f.nutrients.nutrientTotal() >= this.stomach.minNutrients() &&
         (this.stomach.foodToTaste.get(f.name) || 0) >= this.stomach.minTestiness();
-      return satisfied && (!this.availableInStore() || this.unusedOffers()[f.name] > 0);
+      return satisfied && (!this.configModel().availableInStore || this.unusedOffers()[f.name] > 0);
     });
     const res = useAlt
       ? simulator.findBestFoodAlternative(availableFood, count)

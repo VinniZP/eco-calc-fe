@@ -1,11 +1,9 @@
 <app-card class="w-full">
   <span card-title>Настройки цен</span>
-  <ng-container>
-    <app-form-field label="Цена за 1000 калорий">
-      <input type="text" appInput size="sm" bordered [error]="configForm.caloriesCost().invalid()" class="w-32" [formField]="configForm.caloriesCost">
-    </app-form-field>
-    <app-form-field label="% Прибыли">
-      <input type="text" appInput size="sm" bordered [error]="configForm.margin().invalid()" class="w-32" [formField]="configForm.margin">
-    </app-form-field>
-  </ng-container>
+  <app-form-field label="Цена за 1000 калорий">
+    <input type="text" appInput size="sm" bordered [error]="configForm.caloriesCost().invalid()" class="w-32" [formField]="configForm.caloriesCost">
+  </app-form-field>
+  <app-form-field label="% Прибыли">
+    <input type="text" appInput size="sm" bordered [error]="configForm.margin().invalid()" class="w-32" [formField]="configForm.margin">
+  </app-form-field>
 </app-card>

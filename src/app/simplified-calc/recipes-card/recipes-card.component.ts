@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, Signal, untracked } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, Signal } from '@angular/core';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
 import { CardComponent, DividerComponent, SelectComponent } from '../../shared/ui';
@@ -25,15 +25,10 @@ export class RecipesCardComponent {
   trackById = (r: Recipe) => r.id;
   recipeLabel = (r: Recipe) => r.displayName;
 
-  constructor() {
-    effect(() => {
-      const recipe = this.selectedRecipeId();
-      if (recipe) {
-        untracked(() => {
-          this.userConfigStore.enableRecipe(recipe.id);
-          this.selectedRecipeId.set(null);
-        });
-      }
-    });
+  onRecipeSelected(recipe: Recipe | null) {
+    if (recipe) {
+      this.userConfigStore.enableRecipe(recipe.id);
+      this.selectedRecipeId.set(null);
+    }
   }
 }

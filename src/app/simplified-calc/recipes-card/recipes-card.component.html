@@ -1,7 +1,8 @@
 <app-card class="w-full">
   <span card-title>Настройки цен</span>
   <app-select
-    [(value)]="selectedRecipeId"
+    [value]="selectedRecipeId()"
+    (valueChange)="onRecipeSelected($event)"
     [options]="recipes()"
     [trackFn]="trackById"
     [labelFn]="recipeLabel"

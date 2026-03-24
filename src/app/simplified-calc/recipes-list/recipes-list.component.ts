@@ -12,6 +12,8 @@ import {
   CdkTable,
 } from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, effect, inject, isDevMode, signal, Signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs';
 import { Recipe, RecipesStore } from '../../data/recipes';
 import { PaginatorComponent } from '../../ui/paginator/paginator.component';
 import { InputDirective, MultiSelectComponent, TableDirective, ToggleDirective } from '../../shared/ui';
@@ -69,22 +71,24 @@ export class RecipesListComponent {
 
   dialogManager = productDialogManager();
 
+  private readonly debouncedFilters = toSignal(
+    toObservable(this.filtersModel).pipe(debounceTime(300)),
+    { initialValue: this.filtersModel() }
+  );
+
   constructor() {
-    // Load from localStorage
     const saved = localStorage.getItem('recipesFilters');
     if (saved) {
       this.filtersModel.set({ ...this.filtersModel(), ...JSON.parse(saved) });
     }
 
-    // Sync to localStorage
     effect(() => {
       const value = this.filtersModel();
       localStorage.setItem('recipesFilters', JSON.stringify(value));
     });
 
-    // Sync to dataSource filter
     effect(() => {
-      this.dataSource.filter.set(this.filtersModel());
+      this.dataSource.filter.set(this.debouncedFilters()!);
     });
 
     if (isDevMode()) {

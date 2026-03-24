@@ -118,7 +118,7 @@ import { SelectOptionDirective } from './select-option.directive';
     </ng-template>
   `,
 })
-export class  SelectComponent<T = any> {
+export class SelectComponent<T = any> {
   readonly value = model<T | null>(null);
   readonly options = input<T[]>([]);
   readonly labelFn = input<((item: T) => string) | undefined>(undefined);

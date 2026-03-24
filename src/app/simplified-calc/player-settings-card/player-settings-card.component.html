@@ -1,7 +1,8 @@
 <app-card class="w-full">
   <span card-title>Навыки и умения</span>
   <app-select
-    [(value)]="selectedSkill"
+    [value]="selectedSkill()"
+    (valueChange)="onSkillSelected($event)"
     [options]="skills()"
     searchable
     placeholder="Выберите навык"

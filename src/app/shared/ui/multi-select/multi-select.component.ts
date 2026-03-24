@@ -100,6 +100,11 @@ export class MultiSelectComponent {
 
   readonly isOpen = signal(false);
 
+  private readonly selectedKeys = computed(() => {
+    const track = this.trackFn();
+    return new Set(this.value().map(v => track ? track(v) : v));
+  });
+
   private readonly triggerEl = viewChild<ElementRef<HTMLElement>>('trigger');
 
   protected readonly triggerWidth = computed(() =>
@@ -126,8 +131,7 @@ export class MultiSelectComponent {
 
   isSelected(item: any): boolean {
     const track = this.trackFn();
-    const key = track ? track(item) : item;
-    return this.value().some(v => (track ? track(v) : v) === key);
+    return this.selectedKeys().has(track ? track(item) : item);
   }
 
   toggle(): void {

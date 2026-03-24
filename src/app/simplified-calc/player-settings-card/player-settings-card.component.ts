@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal, Signal, untracked } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, Signal } from '@angular/core';
 import { CardComponent, DividerComponent, SelectComponent } from '../../shared/ui';
 import { SelectedSkill, UserConfigStore } from '../../data/config';
 import { RecipesStore } from '../../data/recipes';
@@ -19,15 +19,10 @@ export class PlayerSettingsCardComponent {
 
   selectedSkill = signal<string | null>(null);
 
-  constructor() {
-    effect(() => {
-      const skill = this.selectedSkill();
-      if (skill) {
-        untracked(() => {
-          this.userConfigStore.enableSkill(skill);
-          this.selectedSkill.set(null);
-        });
-      }
-    });
+  onSkillSelected(skill: string | null) {
+    if (skill) {
+      this.userConfigStore.enableSkill(skill);
+      this.selectedSkill.set(null);
+    }
   }
 }
