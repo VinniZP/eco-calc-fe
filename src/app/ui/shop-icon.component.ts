@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-shop-icon',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   template: `<svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M21 22H3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />

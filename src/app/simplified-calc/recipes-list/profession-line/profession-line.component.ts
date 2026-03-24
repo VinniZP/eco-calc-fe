@@ -1,9 +1,10 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
 import { Recipe } from '../../../data/recipes';
 
 @Component({
     selector: 'app-profession-line',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block' },
     imports: [TippyDirective],
     templateUrl: './profession-line.component.html',

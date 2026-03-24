@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
 import { InputDirective } from '../../shared/ui';
 import { UserConfigStore } from '../../data/config';
@@ -8,6 +8,7 @@ import { shopDialogManager } from '../shop-picker/dialog-manager';
 
 @Component({
     selector: 'app-ingredient-price',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [ShopIconComponent, TippyDirective, InputDirective],
     templateUrl: './ingredient-price.component.html',
     styleUrl: './ingredient-price.component.scss'

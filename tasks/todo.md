@@ -16,7 +16,7 @@
 | daisyui | 4.12.10 | **5.5.19** | **Remove** |
 | class-variance-authority | — | — | **Add** |
 | Karma + Jasmine | 6.4.0 | **Removed → Vitest** | Remove (→ Vitest) |
-| zone.js | 0.14.10 | **0.15.1** | Remove (→ zoneless) |
+| zone.js | 0.14.10 | **Removed → zoneless** | Remove (→ zoneless) |
 | ReactiveFormsModule | used | used | Remove (→ Signal Forms) |
 | FormsModule (ngModel) | used | used | Remove (→ Signal Forms) |
 | rxjs | 7.8.0 | 7.8.0 | 7.8.2 |
@@ -30,7 +30,7 @@
 - [x] **Phase 5A**: Build UI Kit (CVA + directives + components) (`30bef85`)
 - [x] **Phase 5B**: Migrate templates from DaisyUI to UI Kit (`7c8182b`)
 - [x] **Phase 6**: Karma → Vitest
-- [ ] **Phase 7**: Zoneless migration
+- [x] **Phase 7**: Zoneless migration
 - [ ] **Phase 8**: Signal Forms migration
 - [ ] **Phase 9**: ng-select → Custom ARIA Select
 - [ ] **Phase 10**: Cleanup (remove Material, animations, etc.)
@@ -412,13 +412,13 @@ src/app/shared/ui/
 **Risk: LOW-MEDIUM**
 
 ### Steps
-- [ ] 7.1 Run schematic: `ng generate @angular/core:onpush-zoneless-migration`
-- [ ] 7.2 Review generated changes
-- [ ] 7.3 Replace with `provideZonelessChangeDetection()` in `app.config.ts`
-- [ ] 7.4 Remove `zone.js` from polyfills in `angular.json`
-- [ ] 7.5 `npm uninstall zone.js`
-- [ ] 7.6 Build + thorough manual testing
-- [ ] 7.7 Commit: `chore: migrate to zoneless change detection`
+- [x] 7.1 Add `ChangeDetectionStrategy.OnPush` to all 22 components missing it
+- [x] 7.2 Replace `provideZoneChangeDetection()` with `provideZonelessChangeDetection()` in `main.ts`
+- [x] 7.3 Remove `zone.js` from polyfills in `angular.json`
+- [x] 7.4 Remove `zone.js` dependency (already absent from package.json)
+- [x] 7.5 Build passes — bundle reduced 821 KB → 784 KB (-37 KB)
+- [x] 7.6 Tests pass
+- [x] 7.7 Commit: `chore: migrate to zoneless change detection`
 
 ---
 

@@ -1,5 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -53,6 +54,7 @@ const normalizeDecimal = (value: number) => {
 
 @Component({
     selector: 'app-recipe-calculations',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block' },
     imports: [
         FormsModule,

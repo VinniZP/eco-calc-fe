@@ -1,4 +1,4 @@
-import { Component, inject, Signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { CardComponent, DividerComponent } from '../../shared/ui';
@@ -8,6 +8,7 @@ import { SkillItemComponent } from './skill-item/skill-item.component';
 
 @Component({
     selector: 'app-player-settings-card',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule, NgSelectModule, SkillItemComponent, CardComponent, DividerComponent],
     templateUrl: './player-settings-card.component.html',
     styleUrl: './player-settings-card.component.scss'

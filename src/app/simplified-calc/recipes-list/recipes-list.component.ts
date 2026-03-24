@@ -12,7 +12,7 @@ import {
   CdkTable,
 } from '@angular/cdk/table';
 import { SlicePipe } from '@angular/common';
-import { Component, DestroyRef, effect, inject, isDevMode, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, isDevMode, OnInit, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -30,6 +30,7 @@ import { UniqueRecipesPipe } from './unique-recipes.pipe';
 
 @Component({
     selector: 'app-recipes-list',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CdkTable,
         CdkRecycleRows,

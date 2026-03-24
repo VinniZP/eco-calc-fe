@@ -1,6 +1,7 @@
-import { Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 @Component({
     selector: 'app-paginator',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [],
     templateUrl: './paginator.component.html',
     styleUrl: './paginator.component.scss'

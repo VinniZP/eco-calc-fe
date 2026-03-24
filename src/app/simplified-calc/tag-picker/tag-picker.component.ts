@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TippyDirective } from '@ngneat/helipopper';
@@ -6,6 +6,7 @@ import { ItemsStore } from '../../data/items';
 
 @Component({
   selector: 'app-tag-picker',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgSelectModule, FormsModule, TippyDirective],
   templateUrl: './tag-picker.component.html',
   styleUrl: './tag-picker.component.scss',

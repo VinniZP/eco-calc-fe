@@ -1,5 +1,6 @@
 import { SlicePipe } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -19,6 +20,7 @@ import { OfferComponent } from './offer/offer.component';
 
 @Component({
     selector: 'app-offers',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule, OfferComponent, SlicePipe, InputDirective, ToggleDirective],
     templateUrl: './offers.component.html',
     styleUrl: './offers.component.scss'

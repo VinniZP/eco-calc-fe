@@ -1,7 +1,8 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-donut',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   templateUrl: './donut.component.html',
   styleUrl: './donut.component.scss',

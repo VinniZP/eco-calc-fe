@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
-import { Component, computed, inject, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core';
 import { of } from 'rxjs';
 import { Shop, ShopsStore } from '../../data/shops';
 import { ButtonDirective, DividerComponent, TableDirective } from '../../shared/ui';
@@ -11,6 +11,7 @@ interface DialogData {
 
 @Component({
     selector: 'app-shop-picker',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block bg-base-100 w-full h-full max-w-full rounded shadow-2xl max-h-[95vh] overflow-y-auto' },
     imports: [StripTagsPipe, ButtonDirective, DividerComponent, TableDirective],
     templateUrl: './shop-picker.component.html',

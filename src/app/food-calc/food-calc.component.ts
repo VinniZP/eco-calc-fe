@@ -1,5 +1,5 @@
 import { DecimalPipe, NgClass, PercentPipe, SlicePipe } from '@angular/common';
-import { Component, computed, effect, inject, signal, Signal, untracked } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, Signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -34,6 +34,7 @@ import { TestinessPipe } from './testiness.pipe';
 
 @Component({
     selector: 'app-food-calc',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block max-h-[calc(100vh-100px)]' },
     imports: [
         FormsModule,

@@ -1,11 +1,12 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Shop } from '../../data/shops';
 import { BadgeDirective, TableDirective } from '../../shared/ui';
 import { StripTagsPipe } from '../../ui/strip-tags.pipe';
 
 @Component({
     selector: 'app-shop',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: { class: 'block rounded-lg border border-base-content/[0.06] bg-base-content/[0.02] overflow-hidden' },
     imports: [TableDirective, DecimalPipe, BadgeDirective, StripTagsPipe],
     templateUrl: './shop.component.html',

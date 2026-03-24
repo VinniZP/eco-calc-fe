@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter } from 'rxjs';
@@ -7,6 +7,7 @@ import { CardComponent, FormFieldComponent, InputDirective } from '../../shared/
 
 @Component({
     selector: 'app-prices-settings',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [ReactiveFormsModule, CardComponent, FormFieldComponent, InputDirective],
     templateUrl: './prices-settings.component.html',
     styleUrl: './prices-settings.component.scss'

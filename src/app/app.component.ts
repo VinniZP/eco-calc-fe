@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { getState, patchState } from '@ngrx/signals';
 import { combineLatest } from 'rxjs';
@@ -11,6 +11,7 @@ import { NavbarComponent, ButtonDirective, LoadingComponent } from './shared/ui'
 
 @Component({
     selector: 'app-root',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [RouterOutlet, RouterLink, RouterLinkActive, NavbarComponent, ButtonDirective, LoadingComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
