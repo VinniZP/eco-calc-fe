@@ -1,10 +1,14 @@
 <div class="flex items-center gap-3">
   <input
-    type="number"
+    #priceInput
+    type="text"
+    inputmode="decimal"
     appInput size="xs" bordered
     class="w-[60px]"
-    (change)="handleChange($event)"
-    [value]="itemPrice()"
+    [value]="focused() ? priceInput.value : itemPrice()"
+    (focus)="onFocus(priceInput)"
+    (blur)="onBlur(priceInput)"
+    (keydown.enter)="priceInput.blur()"
   />
   @if (hasShopPrice()) {
     <div

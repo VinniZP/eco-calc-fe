@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   },
   template: `
     <div class="flex items-center justify-between gap-2">
-      <label class="text-sm">{{ label() }}</label>
+      <label class="text-sm text-base-content/70">{{ label() }}</label>
       <ng-content />
     </div>
   `,

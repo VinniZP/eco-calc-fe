@@ -1,12 +1,47 @@
-<div class="flex">
-  @for (pageData of pagesToRender(); track pageData.page) {
-    <button
-      appButton intent="outline" size="sm"
-      [active]="pageData.page == page()"
-      [disabled]="pageData.disabled"
-      (click)="pageData.disabled || changePage(pageData.page)"
-    >
-      {{ pageData.text }}
-    </button>
+<nav class="flex items-center gap-2">
+  <!-- Prev -->
+  <button
+    class="inline-flex items-center justify-center h-8 w-8 rounded-lg text-sm transition-all
+           text-base-content/60 hover:text-base-content hover:bg-base-200/60
+           disabled:opacity-30 disabled:pointer-events-none"
+    [disabled]="page() <= 1"
+    (click)="changePage(page() - 1)"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+
+  <!-- Page numbers -->
+  @for (pageData of pagesToRender(); track $index) {
+    @if (pageData.disabled) {
+      <span class="h-8 w-8 inline-flex items-center justify-center text-xs text-base-content/30">...</span>
+    } @else {
+      <button
+        class="inline-flex items-center justify-center h-8 min-w-8 px-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer"
+        [class]="pageData.page === page()
+          ? 'bg-primary text-primary-content shadow-[0_0_6px_rgba(93,171,122,0.2)]'
+          : 'text-base-content/60 hover:text-base-content hover:bg-base-200/60'"
+        (click)="changePage(pageData.page)"
+      >
+        {{ pageData.text }}
+      </button>
+    }
   }
-</div>
+
+  <!-- Next -->
+  <button
+    class="inline-flex items-center justify-center h-8 w-8 rounded-lg text-sm transition-all
+           text-base-content/60 hover:text-base-content hover:bg-base-200/60
+           disabled:opacity-30 disabled:pointer-events-none"
+    [disabled]="page() >= totalPages()"
+    (click)="changePage(page() + 1)"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <!-- Context -->
+  <span class="text-xs text-base-content/30 ml-2">{{ page() }} / {{ totalPages() }}</span>
+</nav>

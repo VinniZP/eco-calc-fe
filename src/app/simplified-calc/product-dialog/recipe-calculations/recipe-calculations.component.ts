@@ -21,7 +21,6 @@ import {
   BadgeDirective,
   ButtonDirective,
   ButtonGroupComponent,
-  FormFieldComponent,
   TableDirective,
   ToggleDirective,
 } from '../../../shared/ui';
@@ -67,7 +66,6 @@ const normalizeDecimal = (value: number) => {
         BadgeDirective,
         ButtonDirective,
         ButtonGroupComponent,
-        FormFieldComponent,
         TableDirective,
         ToggleDirective,
     ],
@@ -91,7 +89,8 @@ export class RecipeCalculationsComponent implements OnInit {
     return this.recipe().laborCost * this.craftAmount() * (levelMap[this.level()] || 1);
   });
 
-  marginOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 75, 100];
+  marginOptions = [0, 5, 10, 15, 20, 25, 30, 50, 100];
+  marginOptionsRare = [40, 75];
 
   calculations = computed(() => {
     const recipe = this.recipe();
@@ -183,6 +182,14 @@ export class RecipeCalculationsComponent implements OnInit {
       caloriesCost: caloriesCost / craftAmount,
       totalCaloriesCost: caloriesCost,
     };
+  });
+
+  productEntries = computed(() => {
+    const calc = this.calculations();
+    return this.recipe().products.map(p => ({
+      name: p.name,
+      ...calc.products[p.name],
+    }));
   });
 
   tagOverrides = this.userConfigStore.tagOverrides;

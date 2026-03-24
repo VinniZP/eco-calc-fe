@@ -1,11 +1,19 @@
 @reference "tailwindcss";
 
 table[appTable] th {
-  @apply px-3 py-2 text-left text-sm font-semibold text-base-content/70;
+  @apply px-3 py-1.5 text-left text-xs font-medium uppercase tracking-wider text-base-content/35;
 }
 
 table[appTable] td {
   @apply px-3 py-2 text-sm;
+}
+
+/* Row interaction */
+table[appTable] tbody tr {
+  @apply transition-all duration-150 border-l-2 border-l-transparent;
+}
+table[appTable] tbody tr:hover {
+  @apply bg-primary/[0.04] border-l-primary/40;
 }
 
 /* Size variants */
@@ -16,7 +24,7 @@ table[appTable][data-size='compact'] td {
 
 table[appTable][data-size='sm'] th,
 table[appTable][data-size='sm'] td {
-  @apply px-2 py-1.5 text-sm;
+  @apply px-3 py-[7px] text-sm;
 }
 
 table[appTable][data-size='md'] th,
@@ -26,15 +34,28 @@ table[appTable][data-size='md'] td {
 
 /* Zebra striping */
 table[appTable][data-zebra] tbody tr:nth-child(even) {
-  @apply bg-base-200/50;
+  @apply bg-base-content/[0.02];
+}
+table[appTable][data-zebra] tbody tr:nth-child(even):hover {
+  @apply bg-primary/[0.05];
 }
 
 /* Bordered */
 table[appTable][data-bordered] {
-  @apply border border-base-content/20;
+  @apply border border-base-content/10 rounded-lg overflow-hidden;
 }
 
 table[appTable][data-bordered] th,
 table[appTable][data-bordered] td {
-  @apply border border-base-content/10;
+  @apply border border-base-content/[0.04];
+}
+
+/* Header bottom border */
+table[appTable] thead {
+  @apply border-b border-base-content/[0.06];
+}
+
+/* Footer */
+table[appTable] tfoot td {
+  @apply px-3 py-2 text-sm bg-base-content/[0.03];
 }

@@ -1,4 +1,4 @@
-<p class="text-success px-2 py-4">{{ item() }}</p>
+<p class="text-primary font-medium px-3 py-3">{{ item() }}</p>
 <table appTable zebra size="md">
   <thead>
     <tr>
@@ -13,7 +13,7 @@
       <td colspan="3" class="text-success">Продажа</td>
     </tr>
     @for (offer of sellingOffers(); track $index) {
-      <tr [class.text-gray-500]="offer.quantity === 0">
+      <tr [class.text-base-content/30]="offer.quantity === 0">
         <td>{{ offer.shop | stripTags }}</td>
         <td>{{ offer.price }}</td>
         <td>{{ offer.quantity }}</td>
@@ -23,7 +23,7 @@
       <td colspan="3" class="text-warning">Покупка</td>
     </tr>
     @for (offer of buyingOffers(); track $index) {
-      <tr [class.text-gray-500]="offer.quantity === 0">
+      <tr [class.text-base-content/30]="offer.quantity === 0">
         <td>{{ offer.shop | stripTags }}</td>
         <td>{{ offer.price }}</td>
         <td>{{ offer.quantity }}</td>

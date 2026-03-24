@@ -1,78 +1,94 @@
-<div class="flex flex-row p-4 gap-4 flex-wrap" [formGroup]="filters">
-  <input type="text" appInput size="sm" bordered placeholder="Поиск" formControlName="search" />
-  <ng-select
-    formControlName="profession"
-    class="w-full max-w-xs"
-    [multiple]="true"
-    placeholder="Профессия"
-    [closeOnSelect]="false"
-  >
-    @for (skill of skills(); track skill) {
-      <ng-option [value]="skill">{{ skill | stripTags }}</ng-option>
-    }
-    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-      <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }" />
-      {{ item | stripTags }}
-    </ng-template>
-    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-      @for (item of items | slice: 0 : 2; track item) {
-        <div class="ng-value">
-          <span class="ng-value-label">{{ item | stripTags }}</span>
-          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-        </div>
-      }
-      @if (items.length > 2) {
-        <div class="ng-value">
-          <span class="ng-value-label">еще {{ items.length - 2 }}...</span>
-        </div>
-      }
-    </ng-template>
-  </ng-select>
-  <ng-select
-    formControlName="table"
-    class="w-full max-w-xs"
-    [multiple]="true"
-    placeholder="Верстак"
-    [closeOnSelect]="false"
-  >
-    @for (table of tables(); track table) {
-      <ng-option [value]="table">{{ table }}</ng-option>
-    }
-    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-      <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }" />
-      {{ item }}
-    </ng-template>
-    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-      @for (item of items | slice: 0 : 2; track item) {
-        <div class="ng-value">
-          <span class="ng-value-label">{{ item }}</span>
-          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-        </div>
-      }
-      @if (items.length > 2) {
-        <div class="ng-value">
-          <span class="ng-value-label">еще {{ items.length - 2 }}...</span>
-        </div>
-      }
-    </ng-template>
-  </ng-select>
-  @if (dataSource.availableSelling()) {
-    <div class="flex items-center h-8 gap-2">
-      <input type="checkbox" appToggle checked="checked" formControlName="selling" />
-      <span>Только что я продаю</span>
+<div class="px-3 py-2 flex items-center gap-3 flex-wrap border-b border-base-content/[0.04]" [formGroup]="filters">
+  <h2 class="text-sm font-medium text-base-content/60 shrink-0">
+    Рецепты
+    <span class="text-base-content/30 font-normal">{{ dataSource.data().length }}</span>
+  </h2>
+  <div class="flex items-center gap-2 flex-1 flex-wrap">
+    <div class="relative flex-1 min-w-[200px]">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-base-content/30 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input type="text" appInput size="sm" bordered placeholder="Поиск по продукту..." formControlName="search" class="!pl-9" />
     </div>
-  }
+    <ng-select
+      formControlName="profession"
+      class="w-full max-w-[200px]"
+      [multiple]="true"
+      placeholder="Профессия"
+      [closeOnSelect]="false"
+    >
+      @for (skill of skills(); track skill) {
+        <ng-option [value]="skill">{{ skill | stripTags }}</ng-option>
+      }
+      <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+        <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }" />
+        {{ item | stripTags }}
+      </ng-template>
+      <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+        @for (item of items | slice: 0 : 2; track item) {
+          <div class="ng-value">
+            <span class="ng-value-label">{{ item | stripTags }}</span>
+            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+          </div>
+        }
+        @if (items.length > 2) {
+          <div class="ng-value">
+            <span class="ng-value-label">еще {{ items.length - 2 }}...</span>
+          </div>
+        }
+      </ng-template>
+    </ng-select>
+    <ng-select
+      formControlName="table"
+      class="w-full max-w-[200px]"
+      [multiple]="true"
+      placeholder="Верстак"
+      [closeOnSelect]="false"
+    >
+      @for (table of tables(); track table) {
+        <ng-option [value]="table">{{ table }}</ng-option>
+      }
+      <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+        <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }" />
+        {{ item }}
+      </ng-template>
+      <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+        @for (item of items | slice: 0 : 2; track item) {
+          <div class="ng-value">
+            <span class="ng-value-label">{{ item }}</span>
+            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+          </div>
+        }
+        @if (items.length > 2) {
+          <div class="ng-value">
+            <span class="ng-value-label">еще {{ items.length - 2 }}...</span>
+          </div>
+        }
+      </ng-template>
+    </ng-select>
+    @if (dataSource.availableSelling()) {
+      <label class="flex items-center h-8 gap-2 cursor-pointer shrink-0">
+        <input type="checkbox" appToggle checked="checked" formControlName="selling" />
+        <span class="text-sm text-base-content/70">Только мои</span>
+      </label>
+    }
+  </div>
 </div>
 <table appTable zebra size="sm" cdk-table recycleRows [dataSource]="dataSource.paginatedData()">
   <ng-container cdkColumnDef="displayName">
-    <th cdk-header-cell *cdkHeaderCellDef>Продукт</th>
-    <td cdk-cell *cdkCellDef="let row"><app-product-link [product]="row.product" /></td>
+    <th cdk-header-cell *cdkHeaderCellDef class="w-[280px]">Продукт</th>
+    <td cdk-cell *cdkCellDef="let row">
+      <app-product-link [product]="row.product" />
+    </td>
   </ng-container>
   <ng-container cdkColumnDef="craft">
-    <th cdk-header-cell *cdkHeaderCellDef>Профессия / Стол</th>
+    <th cdk-header-cell *cdkHeaderCellDef>Требования</th>
     <td cdk-cell *cdkCellDef="let row">
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col">
         @for (recipe of row.recipes | uniqueRecipes; track recipe.id) {
+          @if (!$first) {
+            <span class="block border-t border-base-content/[0.05] my-0.5"></span>
+          }
           <app-profession-line
             (filterByProfession)="filterByProfession($event)"
             (filterByTable)="filterByTable($event)"
@@ -83,16 +99,17 @@
     </td>
   </ng-container>
   <ng-container cdkColumnDef="actions">
-    <th cdk-header-cell class="w-32" *cdkHeaderCellDef></th>
-
-    <td cdk-cell *cdkCellDef="let row">
-      <button appButton intent="outline" size="xs" (click)="dialogManager.open(row.product)">Посчитать</button>
+    <th cdk-header-cell class="w-10" *cdkHeaderCellDef></th>
+    <td cdk-cell *cdkCellDef="let row" class="text-right !pr-4">
+      <svg class="h-4 w-4 text-base-content/15 group-hover:text-primary/50 transition-colors inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
     </td>
   </ng-container>
   <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
-  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns" class="cursor-pointer group" (click)="dialogManager.open(row.product)"></tr>
 </table>
-<div class="p-4 flex items-center justify-center">
+<div class="py-2 flex items-center justify-center border-t border-base-content/[0.04]">
   <app-paginator
     [page]="dataSource.pagination().page"
     [pageSize]="dataSource.pagination().pageSize"

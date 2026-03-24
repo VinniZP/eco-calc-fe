@@ -17,6 +17,6 @@ export class DividerComponent {
   readonly spacing = input<'none' | 'sm' | 'md'>('md');
 
   protected readonly hostClass = computed(() =>
-    cn('block border-t border-base-content/10 w-full', SPACING[this.spacing()]),
+    cn('block border-t border-base-content/[0.06] w-full', SPACING[this.spacing()]),
   );
 }

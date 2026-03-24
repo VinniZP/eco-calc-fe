@@ -10,7 +10,7 @@ const SIZE = {
   md: 'h-10 px-4 text-base',
 } as const;
 
-const BASE = 'inline-flex items-center justify-center font-medium transition-colors cursor-pointer rounded-none border-r border-base-content/20 last:border-r-0';
+const BASE = 'inline-flex items-center justify-center font-medium transition-all duration-200 cursor-pointer rounded-none border-r border-base-content/10 last:border-r-0';
 
 @Component({
   selector: 'app-button-group',
@@ -41,8 +41,8 @@ export class ButtonGroupComponent {
     return cn(
       this.baseClass(),
       isSelected
-        ? 'bg-primary text-primary-content'
-        : 'bg-base-200 text-base-content hover:bg-base-100',
+        ? 'bg-primary text-primary-content shadow-[0_0_6px_rgba(93,171,122,0.15)]'
+        : 'bg-base-200/60 text-base-content hover:bg-base-200',
     );
   }
 }

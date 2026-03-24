@@ -1,9 +1,20 @@
-@if(recipe().skillNeeds.length) {
-  <button (click)="filterByProfession.emit(recipe().skillNeeds[0].name)" tp="Кликните чтобы отфильтровать по профессии" appButton intent="outline" size="xs">{{recipe().skillNeeds[0].name}}</button> lvl {{recipe().skillNeeds[0].level}}
-} @else {
-  Все
-}
-{{'@'}}
-@if (recipe().craftingTable) {
-  <button (click)="filterByTable.emit(recipe().craftingTable)" appButton intent="outline" size="xs" tp="Кликните чтобы отфильтровать по верстаку">{{recipe().craftingTable}}</button>
-}
+<span class="inline-flex items-center gap-1.5">
+  @if(recipe().skillNeeds.length) {
+    <button
+      (click)="filterByProfession.emit(recipe().skillNeeds[0].name); $event.stopPropagation()"
+      tp="Фильтр по профессии"
+      class="text-sm text-base-content/80 hover:text-primary transition-colors cursor-pointer"
+    >{{recipe().skillNeeds[0].name}}</button>
+    <span class="text-sm text-primary font-semibold">{{recipe().skillNeeds[0].level}}</span>
+  } @else {
+    <span class="text-sm text-base-content/50">любая</span>
+  }
+  @if (recipe().craftingTable) {
+    <span class="text-base-content/20">·</span>
+    <button
+      (click)="filterByTable.emit(recipe().craftingTable); $event.stopPropagation()"
+      tp="Фильтр по верстаку"
+      class="text-sm text-base-content/60 hover:text-primary transition-colors cursor-pointer"
+    >{{recipe().craftingTable}}</button>
+  }
+</span>

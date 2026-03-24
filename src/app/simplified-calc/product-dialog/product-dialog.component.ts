@@ -6,7 +6,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TippyDirective } from '@ngneat/helipopper';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
-import { BadgeDirective, ButtonDirective, DividerComponent, FormFieldComponent } from '../../shared/ui';
+import { BadgeDirective, ButtonDirective } from '../../shared/ui';
 import { ProductLinkComponent } from '../product-link/product-link.component';
 import { RecipeCalculationsComponent } from './recipe-calculations/recipe-calculations.component';
 
@@ -16,7 +16,7 @@ interface DialogData {
 
 @Component({
     selector: 'app-product-dialog',
-    host: { class: 'block bg-base-100 w-full h-full max-w-full rounded shadow-2xl max-h-[95vh] overflow-y-auto min-h-[50vh]' },
+    host: { class: 'block bg-base-100 w-full h-full max-w-full rounded-xl border border-base-content/[0.08] shadow-2xl shadow-black/40 max-h-[95vh] overflow-y-auto min-h-[50vh]' },
     imports: [
         NgSelectModule,
         FormsModule,
@@ -26,8 +26,6 @@ interface DialogData {
         TippyDirective,
         BadgeDirective,
         ButtonDirective,
-        DividerComponent,
-        FormFieldComponent,
     ],
     templateUrl: './product-dialog.component.html',
     styleUrl: './product-dialog.component.scss'

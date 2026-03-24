@@ -1,5 +1,5 @@
-<header class="flex items-center justify-between p-4">
-  <h1>Рецепты для {{ data.product }}</h1>
+<header class="flex items-center justify-between p-4 border-b border-base-content/[0.06]">
+  <h1 class="text-lg font-semibold text-base-content">Рецепты для <span class="text-primary">{{ data.product }}</span></h1>
   <button appButton shape="circle" size="sm" (click)="ref.close()">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -7,9 +7,10 @@
   </button>
 </header>
 <div class="dialog-body">
-  <div class="p-4 pt-0">
-    <app-form-field label="Вариант рецепта">
-      <ng-select [ngModel]="selectedRecipe()" (ngModelChange)="selectRecipe($event)" placeholder="Выберите рецепт">
+  <div class="px-4 pt-4 pb-3 space-y-2">
+    <div class="flex items-center gap-3">
+      <span class="text-sm text-base-content/70 shrink-0">Вариант рецепта</span>
+      <ng-select class="w-full max-w-[420px]" [ngModel]="selectedRecipe()" (ngModelChange)="selectRecipe($event)" placeholder="Выберите рецепт">
         @for (recipe of recipes; track recipe.id) {
           <ng-option [value]="recipe">
             <div class="flex gap-2 items-center">
@@ -24,28 +25,28 @@
           </ng-option>
         }
       </ng-select>
-    </app-form-field>
+    </div>
     @if (usedIn.length) {
-      <p class="mt-2 mb-2">Используется в:</p>
-      <div class="flex flex-wrap gap-x-4 gap-y-2">
+      <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+        <span class="text-sm text-base-content/60">Используется в:</span>
         @for (used of usedIn | slice: 0 : showEnd; track used) {
           <app-product-link [product]="used" />
+          @if (!$last && $index < showEnd - 1) {
+            <span class="text-base-content/25">·</span>
+          }
         }
         @if (usedIn.length > showEnd) {
-          <div
-            class="flex items-center gap-1 cursor-pointer"
+          <span
+            class="text-sm text-primary/60 cursor-pointer hover:text-primary"
             tp="Нажми что бы показать всех"
             tpPlacement="bottom"
             (click)="showEnd = 99999"
-          >
-            <span appBadge>и еще {{ usedIn.length - 5 }}</span>
-          </div>
+          >и еще {{ usedIn.length - 5 }}</span>
         }
       </div>
     }
   </div>
   @if (selectedRecipe(); as recipe) {
-    <app-divider spacing="sm" />
-    <app-recipe-calculations class="p-4 pt-0" [recipe]="recipe" [productName]="data.product" (close)="ref.close()" />
+    <app-recipe-calculations class="block px-4 pb-4" [recipe]="recipe" [productName]="data.product" (close)="ref.close()" />
   }
 </div>

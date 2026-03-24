@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
 import { InputDirective } from '../../shared/ui';
 import { UserConfigStore } from '../../data/config';
@@ -22,6 +22,8 @@ export class IngredientPriceComponent {
   shopsStore = inject(ShopsStore);
   shopDialogManager = shopDialogManager();
 
+  focused = signal(false);
+
   itemPrice = computed(() => {
     if (!this.updateStrategy()) {
       return this.price();
@@ -33,16 +35,22 @@ export class IngredientPriceComponent {
     return this.shopsStore.filterByItemName(this.item()).length > 0;
   });
 
-  handleChange($event: Event) {
-    const target = $event.target as HTMLInputElement;
-    const price = parseFloat(target.value.replace(',', '.').replace(/[^\d.]/g, ''));
-    if (!isNaN(price)) {
+  onFocus(input: HTMLInputElement) {
+    this.focused.set(true);
+    requestAnimationFrame(() => input.select());
+  }
+
+  onBlur(input: HTMLInputElement) {
+    const raw = input.value.replace(',', '.').replace(/[^\d.]/g, '');
+    const price = parseFloat(raw);
+    if (!isNaN(price) && price >= 0) {
       if (this.updateStrategy()) {
         this.userConfigStore.updateItemPrice(this.item(), price);
       } else {
         this.priceUpdated.emit(price);
       }
     }
+    this.focused.set(false);
   }
 
   openShopPicker() {

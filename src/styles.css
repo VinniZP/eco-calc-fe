@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #4ade80;
-  --color-primary-content: #000000;
-  --color-secondary: #ff3700;
+  --color-primary: #5dab7a;
+  --color-primary-content: #0a1a10;
+  --color-secondary: #9a8bc2;
   --color-secondary-content: #ffffff;
-  --color-accent: #00DBFF;
-  --color-accent-content: #000000;
-  --color-neutral: #060606;
-  --color-neutral-content: #a6adbb;
-  --color-base-100: #232a2b;
-  --color-base-200: #1c2223;
-  --color-base-300: #161b1c;
-  --color-base-content: #a6adbb;
-  --color-info: #00d7ff;
-  --color-info-content: #000000;
-  --color-success: #00f7a4;
-  --color-success-content: #000000;
-  --color-warning: #ffc200;
-  --color-warning-content: #000000;
-  --color-error: #ff6f74;
-  --color-error-content: #000000;
+  --color-accent: #5ba8b5;
+  --color-accent-content: #0a2a30;
+  --color-neutral: #1f2937;
+  --color-neutral-content: #8896a7;
+  --color-base-100: #181c28;
+  --color-base-200: #131620;
+  --color-base-300: #0e1019;
+  --color-base-content: #c0c8d4;
+  --color-info: #6b8fc7;
+  --color-info-content: #e8edf4;
+  --color-success: #5dab7a;
+  --color-success-content: #0a2616;
+  --color-warning: #c7a44e;
+  --color-warning-content: #2a1f0a;
+  --color-error: #c96464;
+  --color-error-content: #f5e8e8;
 }
 
 @import "@angular/cdk/overlay-prebuilt.css";
@@ -107,4 +107,28 @@ body {
 body {
   margin: 0;
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Active nav link indicator */
+.btn-active {
+  color: var(--color-primary) !important;
+  position: relative;
+}
+.btn-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  left: 25%;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 1px;
+  transition: transform 0.2s ease-in-out;
+  transform: scaleX(1);
+  transform-origin: center;
+  @starting-style {
+    transform: scaleX(0);
+  }
 }

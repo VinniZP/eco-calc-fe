@@ -11,7 +11,7 @@ import { cn } from '../cn';
   },
   template: `
     <div [class]="bodyClass()">
-      <div class="text-lg font-semibold">
+      <div class="text-sm font-semibold text-base-content/70 mb-1">
         <ng-content select="[card-title]" />
       </div>
       <ng-content />
@@ -24,12 +24,12 @@ export class CardComponent {
 
   protected readonly hostClass = computed(() =>
     cn(
-      'rounded-lg bg-base-300',
-      this.shadow() && 'shadow-xl',
+      'rounded-xl bg-base-300 border border-base-content/[0.06]',
+      this.shadow() && 'shadow-lg shadow-black/20',
     )
   );
 
   protected readonly bodyClass = computed(() =>
-    cn(this.compact() ? 'p-3' : 'p-4 sm:p-6'),
+    cn(this.compact() ? 'p-2' : 'p-2'),
   );
 }
