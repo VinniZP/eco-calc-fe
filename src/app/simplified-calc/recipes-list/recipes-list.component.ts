@@ -1,16 +1,3 @@
-import {
-  CdkCell,
-  CdkCellDef,
-  CdkColumnDef,
-  CdkHeaderCell,
-  CdkHeaderCellDef,
-  CdkHeaderRow,
-  CdkHeaderRowDef,
-  CdkRecycleRows,
-  CdkRow,
-  CdkRowDef,
-  CdkTable,
-} from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, effect, inject, isDevMode, signal, Signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
@@ -30,17 +17,6 @@ import { UniqueRecipesPipe } from './unique-recipes.pipe';
     selector: 'app-recipes-list',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CdkTable,
-        CdkRecycleRows,
-        CdkColumnDef,
-        CdkHeaderCellDef,
-        CdkHeaderCell,
-        CdkCell,
-        CdkCellDef,
-        CdkHeaderRow,
-        CdkRow,
-        CdkHeaderRowDef,
-        CdkRowDef,
         MultiSelectComponent,
         PaginatorComponent,
         ProductLinkComponent,
@@ -62,8 +38,6 @@ export class RecipesListComponent {
   });
 
   stripTagsFn = (s: string) => s.replace(/<[^>]*>/g, '');
-
-  displayedColumns = ['displayName', 'craft', 'actions'];
 
   recipesStore = inject(RecipesStore);
   recipes: Signal<Recipe[]> = this.recipesStore.entities;
