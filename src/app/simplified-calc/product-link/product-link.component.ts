@@ -1,11 +1,12 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
+import { ButtonDirective } from '../../shared/ui';
 import { RecipesStore } from '../../data/recipes';
 import { productDialogManager } from '../product-dialog/dialog-manager';
 
 @Component({
     selector: 'app-product-link',
-    imports: [TippyDirective],
+    imports: [TippyDirective, ButtonDirective],
     templateUrl: './product-link.component.html',
     styleUrl: './product-link.component.scss'
 })

@@ -1,11 +1,12 @@
 import { Component, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { FormFieldComponent, ToggleDirective } from '../../../shared/ui';
 import { SelectedSkill, UserConfigStore } from '../../../data/config';
 
 @Component({
     selector: 'app-skill-item',
     host: { class: 'block border border-neutral rounded p-2' },
-    imports: [FormsModule],
+    imports: [FormsModule, FormFieldComponent, ToggleDirective],
     templateUrl: './skill-item.component.html',
     styleUrl: './skill-item.component.scss'
 })

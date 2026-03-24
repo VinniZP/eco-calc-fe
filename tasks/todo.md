@@ -27,7 +27,7 @@
 - [x] **Phase 2**: Angular 19 → 20 (`0b087b9`)
 - [x] **Phase 3**: Angular 20 → 21 (`f42cc5e`)
 - [x] **Phase 4**: Tailwind 3 → 4 + DaisyUI 4 → 5 (`b4d8e59`)
-- [ ] **Phase 5A**: Build UI Kit (CVA + directives + components)
+- [x] **Phase 5A**: Build UI Kit (CVA + directives + components) (`30bef85`)
 - [ ] **Phase 5B**: Migrate templates from DaisyUI to UI Kit
 - [ ] **Phase 6**: Karma → Vitest
 - [ ] **Phase 7**: Zoneless migration
@@ -332,7 +332,7 @@ src/app/shared/ui/
 - [x] 5A.13 Create `LoadingComponent` — `<app-loading>` full-screen overlay
 - [x] 5A.14 Create `NavbarComponent` — `<app-navbar>` with content projection
 - [x] 5A.15 `ng build` — verify kit compiles (no templates changed yet)
-- [ ] 5A.16 Commit: `feat: add UI kit with CVA components and directives`
+- [x] 5A.16 Commit: `feat: add UI kit with CVA components and directives` (`30bef85`)
 
 ---
 
@@ -371,23 +371,23 @@ src/app/shared/ui/
 
 ### Steps
 
-- [ ] 5B.1 Migrate `app.component.html` — navbar, loading, nav buttons
-- [ ] 5B.2 Migrate `recipes-list.component.html` — table, inputs, buttons, form controls
-- [ ] 5B.3 Migrate `recipe-calculations.component.html` — join groups, badges, toggles, buttons, tables
-- [ ] 5B.4 Migrate `food-calc.component.html` — cards, buttons, inputs, toggles, badges, dividers
-- [ ] 5B.5 Migrate `product-dialog.component.html` — close button, badges, dividers
-- [ ] 5B.6 Migrate `offers.component.html` + `offer.component.html` — cards, inputs, toggles, tables
-- [ ] 5B.7 Migrate `shops.component.html` + `shop.component.html` — cards, inputs, tables
-- [ ] 5B.8 Migrate `shop-picker.component.html` — table, dividers
-- [ ] 5B.9 Migrate `prices-settings.component.html` — card, inputs, form fields
-- [ ] 5B.10 Migrate `player-settings-card.component.html` + `skill-item.component.html` — cards, selects, toggles
-- [ ] 5B.11 Migrate `recipes-card.component.html` — card, divider
-- [ ] 5B.12 Migrate remaining: `ingredient-price`, `product-link`, `profession-line`, `paginator`
-- [ ] 5B.13 Remove `@plugin "daisyui"` from `src/styles.scss`
-- [ ] 5B.14 `npm uninstall daisyui`
-- [ ] 5B.15 Remove ng-select DaisyUI-themed CSS from `src/styles.scss`
-- [ ] 5B.16 `ng build` — fix any missing styles
-- [ ] 5B.17 `ng serve` — visual regression check on every page (use Chrome browser tools)
+- [x] 5B.1 Migrate `app.component.html` — navbar, loading, nav buttons
+- [x] 5B.2 Migrate `recipes-list.component.html` — table, inputs, buttons, form controls
+- [x] 5B.3 Migrate `recipe-calculations.component.html` — join groups, badges, toggles, buttons, tables
+- [x] 5B.4 Migrate `food-calc.component.html` — cards, buttons, inputs, toggles, badges, dividers
+- [x] 5B.5 Migrate `product-dialog.component.html` — close button, badges, dividers
+- [x] 5B.6 Migrate `offers.component.html` + `offer.component.html` — cards, inputs, toggles, tables
+- [x] 5B.7 Migrate `shops.component.html` + `shop.component.html` — cards, inputs, tables
+- [x] 5B.8 Migrate `shop-picker.component.html` — table, dividers
+- [x] 5B.9 Migrate `prices-settings.component.html` — card, inputs, form fields
+- [x] 5B.10 Migrate `player-settings-card.component.html` + `skill-item.component.html` — cards, selects, toggles
+- [x] 5B.11 Migrate `recipes-card.component.html` — card, divider
+- [x] 5B.12 Migrate remaining: `ingredient-price`, `product-link`, `profession-line`, `paginator`
+- [x] 5B.13 Remove `@plugin "daisyui"`, rename `styles.scss` → `styles.css`, add `@theme` design tokens
+- [x] 5B.14 `npm uninstall daisyui`
+- [x] 5B.15 Kept ng-select CSS overrides (still needed until Phase 9 removes ng-select)
+- [x] 5B.16 `ng build` — passes
+- [x] 5B.17 `ng serve` — visual regression check passed (food, calc, shops pages verified)
 - [ ] 5B.18 Commit: `feat: migrate all templates from DaisyUI to UI kit`
 
 ---

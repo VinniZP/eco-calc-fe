@@ -2,10 +2,11 @@ import { Component, computed, inject, Signal, viewChild } from '@angular/core';
 import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
+import { CardComponent, DividerComponent } from '../../shared/ui';
 
 @Component({
     selector: 'app-recipes-card',
-    imports: [NgSelectModule],
+    imports: [NgSelectModule, CardComponent, DividerComponent],
     templateUrl: './recipes-card.component.html',
     styleUrl: './recipes-card.component.scss'
 })

@@ -6,6 +6,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TippyDirective } from '@ngneat/helipopper';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
+import { BadgeDirective, ButtonDirective, DividerComponent, FormFieldComponent } from '../../shared/ui';
 import { ProductLinkComponent } from '../product-link/product-link.component';
 import { RecipeCalculationsComponent } from './recipe-calculations/recipe-calculations.component';
 
@@ -23,6 +24,10 @@ interface DialogData {
         ProductLinkComponent,
         SlicePipe,
         TippyDirective,
+        BadgeDirective,
+        ButtonDirective,
+        DividerComponent,
+        FormFieldComponent,
     ],
     templateUrl: './product-dialog.component.html',
     styleUrl: './product-dialog.component.scss'

@@ -7,10 +7,11 @@ import { ItemsService } from './services/items.service';
 import { RecipesService } from './services/recipes.service';
 import { ShopsService } from './services/shops.service';
 import { UserService } from './services/user.service';
+import { NavbarComponent, ButtonDirective, LoadingComponent } from './shared/ui';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, RouterLink, RouterLinkActive],
+    imports: [RouterOutlet, RouterLink, RouterLinkActive, NavbarComponent, ButtonDirective, LoadingComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })

@@ -2,6 +2,7 @@ import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { Component, computed, inject, Signal } from '@angular/core';
 import { of } from 'rxjs';
 import { Shop, ShopsStore } from '../../data/shops';
+import { ButtonDirective, DividerComponent, TableDirective } from '../../shared/ui';
 import { StripTagsPipe } from '../../ui/strip-tags.pipe';
 
 interface DialogData {
@@ -11,7 +12,7 @@ interface DialogData {
 @Component({
     selector: 'app-shop-picker',
     host: { class: 'block bg-base-100 w-full h-full max-w-full rounded shadow-2xl max-h-[95vh] overflow-y-auto' },
-    imports: [StripTagsPipe],
+    imports: [StripTagsPipe, ButtonDirective, DividerComponent, TableDirective],
     templateUrl: './shop-picker.component.html',
     styleUrl: './shop-picker.component.scss'
 })

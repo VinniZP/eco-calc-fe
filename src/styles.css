@@ -1,6 +1,26 @@
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: dark --default;
+
+@theme {
+  --color-primary: #4ade80;
+  --color-primary-content: #000000;
+  --color-secondary: #ff3700;
+  --color-secondary-content: #ffffff;
+  --color-accent: #00DBFF;
+  --color-accent-content: #000000;
+  --color-neutral: #060606;
+  --color-neutral-content: #a6adbb;
+  --color-base-100: #232a2b;
+  --color-base-200: #1c2223;
+  --color-base-300: #161b1c;
+  --color-base-content: #a6adbb;
+  --color-info: #00d7ff;
+  --color-info-content: #000000;
+  --color-success: #00f7a4;
+  --color-success-content: #000000;
+  --color-warning: #ffc200;
+  --color-warning-content: #000000;
+  --color-error: #ff6f74;
+  --color-error-content: #000000;
 }
 
 @import "@angular/cdk/overlay-prebuilt.css";
@@ -12,20 +32,6 @@
 @import "@ng-select/ng-select/themes/default.theme.css";
 
 @import "./app/shared/ui/table/table.styles.css";
-
-:root {
-  --color-primary: #4ade80;
-  --color-secondary: #ff3700;
-  --color-accent: #00DBFF;
-  --color-neutral: #060606;
-  --color-base-100: #232a2b;
-  --color-base-200: #1c2223;
-  --color-base-300: #161b1c;
-  --color-info: #00d7ff;
-  --color-success: #00f7a4;
-  --color-warning: #ffc200;
-  --color-error: #ff6f74;
-}
 
 .ng-select .ng-select-container {
   min-height: 32px !important;
@@ -68,11 +74,11 @@
   background-color: var(--color-base-100) !important;
   border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
   color: var(--color-base-content) !important;
-  &:hover {
-    background-color: var(--color-base-100) !important;
-    border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
-    color: var(--color-base-content) !important;
-  }
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected:hover {
+  background-color: var(--color-base-100) !important;
+  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
+  color: var(--color-base-content) !important;
 }
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input > input {
   color: var(--color-base-content);
@@ -86,16 +92,19 @@
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon {
   border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
-  &:hover {
-    border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
-    background-color: var(--color-base-300) !important;
-  }
+}
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon:hover {
+  border-color: oklch(from var(--color-base-content) l c h / 0.2) !important;
+  background-color: var(--color-base-300) !important;
 }
 
 html,
 body {
   height: 100%;
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
 }
 body {
   margin: 0;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }

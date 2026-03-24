@@ -1,9 +1,9 @@
 @if(recipe().skillNeeds.length) {
-  <button (click)="filterByProfession.emit(recipe().skillNeeds[0].name)" tp="Кликните чтобы отфильтровать по профессии" class="btn btn-xs btn-outline">{{recipe().skillNeeds[0].name}}</button> lvl {{recipe().skillNeeds[0].level}}
+  <button (click)="filterByProfession.emit(recipe().skillNeeds[0].name)" tp="Кликните чтобы отфильтровать по профессии" appButton intent="outline" size="xs">{{recipe().skillNeeds[0].name}}</button> lvl {{recipe().skillNeeds[0].level}}
 } @else {
   Все
 }
 {{'@'}}
 @if (recipe().craftingTable) {
-  <button (click)="filterByTable.emit(recipe().craftingTable)" class="btn btn-xs btn-outline" tp="Кликните чтобы отфильтровать по верстаку">{{recipe().craftingTable}}</button>
+  <button (click)="filterByTable.emit(recipe().craftingTable)" appButton intent="outline" size="xs" tp="Кликните чтобы отфильтровать по верстаку">{{recipe().craftingTable}}</button>
 }

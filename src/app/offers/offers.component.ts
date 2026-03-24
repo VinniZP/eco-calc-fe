@@ -14,11 +14,12 @@ import { FormsModule } from '@angular/forms';
 import { injectIsIntersecting } from 'ngxtension/inject-is-intersecting';
 import { filter } from 'rxjs/operators';
 import { ShopsStore } from '../data/shops';
+import { CardComponent, InputDirective, ToggleDirective } from '../shared/ui';
 import { OfferComponent } from './offer/offer.component';
 
 @Component({
     selector: 'app-offers',
-    imports: [FormsModule, OfferComponent, SlicePipe],
+    imports: [FormsModule, OfferComponent, SlicePipe, CardComponent, InputDirective, ToggleDirective],
     templateUrl: './offers.component.html',
     styleUrl: './offers.component.scss'
 })

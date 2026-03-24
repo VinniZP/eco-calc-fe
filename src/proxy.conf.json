@@ -1,1 +1,8 @@
-{  "/api": {    "target": "https://eco.kamgames.xyz/",    "logLevel": "debug",    "changeOrigin": true,    "secure": false  }}
+{
+  "/api": {
+    "target": "http://192.168.10.47:3001/",
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "secure": false
+  }
+}

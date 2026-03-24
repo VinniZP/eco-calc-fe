@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
+import { InputDirective } from '../../shared/ui';
 import { UserConfigStore } from '../../data/config';
 import { ShopsStore } from '../../data/shops';
 import { ShopIconComponent } from '../../ui/shop-icon.component';
@@ -7,7 +8,7 @@ import { shopDialogManager } from '../shop-picker/dialog-manager';
 
 @Component({
     selector: 'app-ingredient-price',
-    imports: [ShopIconComponent, TippyDirective],
+    imports: [ShopIconComponent, TippyDirective, InputDirective],
     templateUrl: './ingredient-price.component.html',
     styleUrl: './ingredient-price.component.scss'
 })

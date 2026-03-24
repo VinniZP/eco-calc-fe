@@ -3,10 +3,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter } from 'rxjs';
 import { UserConfigStore } from '../../data/config';
+import { CardComponent, FormFieldComponent, InputDirective } from '../../shared/ui';
 
 @Component({
     selector: 'app-prices-settings',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, CardComponent, FormFieldComponent, InputDirective],
     templateUrl: './prices-settings.component.html',
     styleUrl: './prices-settings.component.scss'
 })

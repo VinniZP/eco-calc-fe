@@ -1,9 +1,9 @@
-<div class="join">
+<div class="flex">
   @for (pageData of pagesToRender(); track pageData.page) {
     <button
-      class="join-item btn btn-sm"
-      [class.btn-disabled]="pageData.disabled"
-      [class.btn-active]="pageData.page == page()"
+      appButton intent="outline" size="sm"
+      [active]="pageData.page == page()"
+      [disabled]="pageData.disabled"
       (click)="pageData.disabled || changePage(pageData.page)"
     >
       {{ pageData.text }}

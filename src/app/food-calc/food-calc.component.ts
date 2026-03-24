@@ -15,6 +15,15 @@ import { createNotifier } from 'ngxtension/create-notifier';
 import { debounceTime, startWith } from 'rxjs';
 import { Food, FoodStore } from '../data/food';
 import { ShopsStore } from '../data/shops';
+import {
+  BadgeDirective,
+  ButtonDirective,
+  CardComponent,
+  DividerComponent,
+  FormFieldComponent,
+  InputDirective,
+  ToggleDirective,
+} from '../shared/ui';
 import { StomachData, Testiness, UserStore } from '../data/user';
 import { FoodService } from '../services/food.service';
 import { UserService } from '../services/user.service';
@@ -41,6 +50,13 @@ import { TestinessPipe } from './testiness.pipe';
         TippyDirective,
         ReactiveFormsModule,
         NgSelectModule,
+        ButtonDirective,
+        InputDirective,
+        BadgeDirective,
+        ToggleDirective,
+        CardComponent,
+        FormFieldComponent,
+        DividerComponent,
     ],
     templateUrl: './food-calc.component.html',
     styleUrl: './food-calc.component.scss',

@@ -1,11 +1,12 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { ShopsStore } from '../../data/shops';
+import { TableDirective } from '../../shared/ui';
 import { StripTagsPipe } from '../../ui/strip-tags.pipe';
 
 @Component({
     selector: 'app-offer',
     host: { class: 'block border border-gray-700 bg-base-300 rounded-lg shadow-md' },
-    imports: [StripTagsPipe],
+    imports: [StripTagsPipe, TableDirective],
     templateUrl: './offer.component.html',
     styleUrl: './offer.component.scss'
 })

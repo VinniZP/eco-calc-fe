@@ -17,6 +17,14 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TippyDirective } from '@ngneat/helipopper';
 import { UserConfigStore } from '../../../data/config';
 import { Recipe } from '../../../data/recipes';
+import {
+  BadgeDirective,
+  ButtonDirective,
+  ButtonGroupComponent,
+  FormFieldComponent,
+  TableDirective,
+  ToggleDirective,
+} from '../../../shared/ui';
 import { IngredientPriceComponent } from '../../ingredient-price/ingredient-price.component';
 import { ProductLinkComponent } from '../../product-link/product-link.component';
 import { TagPickerComponent } from '../../tag-picker/tag-picker.component';
@@ -56,6 +64,12 @@ const normalizeDecimal = (value: number) => {
         TippyDirective,
         JsonPipe,
         TagPickerComponent,
+        BadgeDirective,
+        ButtonDirective,
+        ButtonGroupComponent,
+        FormFieldComponent,
+        TableDirective,
+        ToggleDirective,
     ],
     templateUrl: './recipe-calculations.component.html',
     styleUrl: './recipe-calculations.component.scss'

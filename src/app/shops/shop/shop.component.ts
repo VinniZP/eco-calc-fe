@@ -1,9 +1,10 @@
 import { Component, computed, input } from '@angular/core';
 import { Shop } from '../../data/shops';
+import { TableDirective } from '../../shared/ui';
 
 @Component({
     selector: 'app-shop',
-    imports: [],
+    imports: [TableDirective],
     templateUrl: './shop.component.html',
     styleUrl: './shop.component.scss'
 })

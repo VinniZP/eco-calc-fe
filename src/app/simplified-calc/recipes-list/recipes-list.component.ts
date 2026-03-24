@@ -21,6 +21,7 @@ import { syncFormToLocalStorage } from '../../core/helpers/form';
 import { Recipe, RecipesStore } from '../../data/recipes';
 import { PaginatorComponent } from '../../ui/paginator/paginator.component';
 import { StripTagsPipe } from '../../ui/strip-tags.pipe';
+import { ButtonDirective, InputDirective, TableDirective, ToggleDirective } from '../../shared/ui';
 import { productDialogManager } from '../product-dialog/dialog-manager';
 import { ProductLinkComponent } from '../product-link/product-link.component';
 import { ProfessionLineComponent } from './profession-line/profession-line.component';
@@ -50,6 +51,10 @@ import { UniqueRecipesPipe } from './unique-recipes.pipe';
         ProfessionLineComponent,
         UniqueRecipesPipe,
         StripTagsPipe,
+        ButtonDirective,
+        InputDirective,
+        TableDirective,
+        ToggleDirective,
     ],
     templateUrl: './recipes-list.component.html',
     styleUrl: './recipes-list.component.scss'

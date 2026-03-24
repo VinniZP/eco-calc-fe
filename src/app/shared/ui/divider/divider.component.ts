@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 
 import { cn } from '../cn';
 
+const SPACING = { none: 'my-0', sm: 'my-1', md: 'my-2' } as const;
 @Component({
   selector: 'app-divider',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,7 +12,6 @@ import { cn } from '../cn';
   },
   template: '',
 })
-const SPACING = { none: 'my-0', sm: 'my-1', md: 'my-2' } as const;
 
 export class DividerComponent {
   readonly spacing = input<'none' | 'sm' | 'md'>('md');

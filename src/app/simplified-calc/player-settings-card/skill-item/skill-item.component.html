@@ -1,7 +1,4 @@
-
-<div class="form-control flex items-center flex-row">
-  <div class="label">{{skill().skill}}</div>
-  <span class="flex-1"></span>
+<app-form-field [label]="skill().skill">
   <select class="select select-bordered w-14 max-w-xs select-sm" [ngModel]="skill().level" (ngModelChange)="changeLevel($event)">
     <option [value]="1">1</option>
     <option [value]="2">2</option>
@@ -11,10 +8,9 @@
     <option [value]="6">6</option>
     <option [value]="7">7</option>
   </select>
-</div>
+</app-form-field>
 @if(skill().level >= 6) {
-  <div class="form-control flex items-center flex-row gap-2">
-    <input type="checkbox" class="toggle" [ngModel]="skill().lavish" (ngModelChange)="changeLavish($event)" />
-    <div class="label">Чистое рабочее место</div>
-  </div>
+  <app-form-field label="Чистое рабочее место">
+    <input type="checkbox" appToggle [ngModel]="skill().lavish" (ngModelChange)="changeLavish($event)" />
+  </app-form-field>
 }

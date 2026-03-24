@@ -1,6 +1,5 @@
-
 @if(hasRecipe()) {
-  <button tp="Кликните чтобы посчитать цену" (click)="dialogManager.open(product())" class="btn btn-xs btn-outline" [class.btn-warning]="static()">{{product()}}</button>
+  <button tp="Кликните чтобы посчитать цену" (click)="dialogManager.open(product())" appButton [intent]="static() ? 'warning' : 'outline'" size="xs">{{product()}}</button>
 } @else {
   <span [class.text-warning]="static()">{{product()}}</span>
 }
