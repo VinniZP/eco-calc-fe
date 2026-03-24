@@ -14,6 +14,8 @@
 | @ngneat/helipopper | 9.2.1 | **11.1.4** | 12.x |
 | tailwindcss | 3.4.6 | **4.2.2** | 4.x |
 | daisyui | 4.12.10 | **5.5.19** | **Remove** |
+| @angular/cdk (table) | used | **Removed** | Remove (overlay/dialog still used) |
+| tailwind-merge | default | **custom config** | Minimal class groups only |
 | class-variance-authority | — | — | **Add** |
 | Karma + Jasmine | 6.4.0 | **Removed → Vitest** | Remove (→ Vitest) |
 | zone.js | 0.14.10 | **Removed → zoneless** | Remove (→ zoneless) |
@@ -506,6 +508,22 @@ src/app/shared/ui/
 - [x] 10.7 Final build — **496 KB initial (under 500 KB budget!)**, zero warnings
 - [x] 10.8 Tests pass
 - [x] 10.9 Commit: `chore: remove Angular Material, cleanup config`
+
+---
+
+## Phase 11: Bundle Optimization
+
+- [x] 11.1 Remove CdkTable from recipes-list — replaced with plain `@for` table (CdkRecycleRows was deprecated/no-op, no CDK features were used)
+- [x] 11.2 Replace default `twMerge` with `createTailwindMerge` custom config — only spacing, sizing, colors, border-radius, ring, shadow class groups
+- [x] 11.3 Build verified — **359 KB raw / 94.3 KB gzipped initial** (down from 389 KB / 101.1 KB)
+- [x] 11.4 Commit: `perf: remove CdkTable, use custom tailwind-merge config`
+
+### Savings breakdown
+| Change | Raw | Gzipped |
+|--------|-----|---------|
+| CdkTable removal | -30.3 kB | ~-8 kB |
+| tailwind-merge custom config | -19.8 kB | ~-5 kB |
+| **Total** | **-50.1 kB** | **~-13 kB** |
 
 ---
 
