@@ -104,7 +104,7 @@ import { SelectOptionDirective } from './select-option.directive';
               ngOption
               [value]="item"
               (click)="select(item)"
-              class="px-3 py-2 text-sm cursor-pointer break-all"
+              class="px-3 py-2 text-sm cursor-pointer wrap-break-word min-w-0"
             >
               @if (optionTpl()) {
                 <ng-container *ngTemplateOutlet="optionTpl()!; context: { $implicit: item }" />

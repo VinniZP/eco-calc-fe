@@ -73,7 +73,7 @@ import { cn } from '../cn';
             ngOption
             [value]="item"
             (click)="toggleItem(item)"
-            class="px-3 py-2 text-sm cursor-pointer flex items-center gap-2 break-all"
+            class="px-3 py-2 text-sm cursor-pointer flex items-center gap-2 wrap-break-word min-w-0"
           >
             <div [class]="checkboxClass(item)">
               @if (isSelected(item)) {
