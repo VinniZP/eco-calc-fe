@@ -22,8 +22,6 @@
   --color-error-content: #f5e8e8;
 }
 
-@import "@angular/cdk/overlay-prebuilt.css";
-
 @import "tippy.js/dist/tippy.css";
 @import "tippy.js/themes/translucent.css";
 @import "tippy.js/animations/scale.css";

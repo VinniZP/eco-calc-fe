@@ -55,12 +55,12 @@ export class IngredientPriceComponent {
   }
 
   openShopPicker() {
-    this.shopDialogManager.open(this.item()).closed.subscribe((res) => {
+    this.shopDialogManager.open(this.item()).closed.then((res) => {
       if (res) {
         if (this.updateStrategy()) {
-          this.userConfigStore.updateItemPrice(this.item(), res as number);
+          this.userConfigStore.updateItemPrice(this.item(), res);
         } else {
-          this.priceUpdated.emit(res as number);
+          this.priceUpdated.emit(res);
         }
       }
     });

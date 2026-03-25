@@ -4,7 +4,9 @@ import {
   Component,
   computed,
   contentChild,
+  DestroyRef,
   ElementRef,
+  inject,
   input,
   model,
   signal,
@@ -12,7 +14,6 @@ import {
   viewChild,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { Listbox, Option } from '@angular/aria/listbox';
 
 import { cn } from '../cn';
@@ -22,14 +23,13 @@ import { SelectOptionDirective } from './select-option.directive';
   selector: 'app-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CdkOverlayOrigin,
-    CdkConnectedOverlay,
     NgTemplateOutlet,
     Listbox,
     Option,
   ],
+  host: { '(document:click)': 'onDocumentClick($event)' },
   styles: `
-    :host { display: block; }
+    :host { display: block; position: relative; }
     [ngOption][data-active='true'] { background-color: oklch(from var(--color-base-content) l c h / 0.1); }
     [ngOption][aria-selected='true'] { background-color: oklch(from var(--color-primary) l c h / 0.2); color: var(--color-primary); }
     .select-panel { scrollbar-width: thin; scrollbar-color: oklch(from var(--color-base-content) l c h / 0.2) transparent; }
@@ -37,8 +37,6 @@ import { SelectOptionDirective } from './select-option.directive';
   template: `
     <div
       #trigger
-      cdkOverlayOrigin
-      #overlayOrigin="cdkOverlayOrigin"
       (click)="toggle()"
       [class]="triggerClass()"
       role="combobox"
@@ -78,14 +76,8 @@ import { SelectOptionDirective } from './select-option.directive';
       </div>
     </div>
 
-    <ng-template
-      cdkConnectedOverlay
-      [cdkConnectedOverlayOrigin]="overlayOrigin"
-      [cdkConnectedOverlayOpen]="isOpen()"
-      [cdkConnectedOverlayWidth]="triggerWidth()"
-      (overlayOutsideClick)="close()"
-    >
-      <div class="bg-base-200 border border-base-content/15 rounded shadow-lg mt-1 overflow-hidden">
+    @if (isOpen()) {
+      <div class="absolute left-0 right-0 z-50 bg-base-200 border border-base-content/15 rounded shadow-lg mt-1 overflow-hidden">
         @if (searchable()) {
           <input
             #searchInput
@@ -115,10 +107,12 @@ import { SelectOptionDirective } from './select-option.directive';
           }
         </div>
       </div>
-    </ng-template>
+    }
   `,
 })
 export class SelectComponent<T = any> {
+  private readonly hostEl = inject(ElementRef);
+
   readonly value = model<T | null>(null);
   readonly options = input<T[]>([]);
   readonly labelFn = input<((item: T) => string) | undefined>(undefined);
@@ -129,7 +123,6 @@ export class SelectComponent<T = any> {
   readonly size = input<'sm' | 'md'>('md');
 
   protected readonly optionTpl = contentChild(SelectOptionDirective, { read: TemplateRef });
-  private readonly triggerEl = viewChild<ElementRef<HTMLElement>>('trigger');
 
   readonly isOpen = signal(false);
   readonly searchQuery = signal('');
@@ -151,10 +144,6 @@ export class SelectComponent<T = any> {
     const item = this.selectedItem();
     return item != null ? this.getLabel(item) : '';
   });
-
-  protected readonly triggerWidth = computed(() =>
-    this.triggerEl()?.nativeElement.offsetWidth ?? 0,
-  );
 
   protected readonly triggerClass = computed(() => {
     const sizeClass = this.size() === 'sm' ? 'min-h-8 px-3 py-1' : 'min-h-10 px-4 py-1.5';
@@ -215,6 +204,12 @@ export class SelectComponent<T = any> {
   onPanelKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
       event.preventDefault();
+      this.close();
+    }
+  }
+
+  onDocumentClick(event: Event): void {
+    if (this.isOpen() && !this.hostEl.nativeElement.contains(event.target as Node)) {
       this.close();
     }
   }

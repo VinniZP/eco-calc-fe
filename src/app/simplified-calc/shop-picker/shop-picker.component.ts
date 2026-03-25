@@ -1,7 +1,7 @@
-import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
-import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, Signal } from '@angular/core';
 import { of } from 'rxjs';
 import { Shop, ShopsStore } from '../../data/shops';
+import { DialogRef } from '../../shared/dialog.service';
 import { ButtonDirective } from '../../shared/ui/button/button.directive';
 import { DividerComponent } from '../../shared/ui/divider/divider.component';
 import { TableDirective } from '../../shared/ui/table/table.directive';
@@ -19,8 +19,14 @@ interface DialogData {
     templateUrl: './shop-picker.component.html'
 })
 export class ShopPickerComponent {
-  data = inject<DialogData>(DIALOG_DATA);
   shopStore = inject(ShopsStore);
+
+  dialogData = input.required<DialogData>();
+  dialogRef = input.required<DialogRef<number | null>>();
+
+  get data() { return this.dialogData(); }
+  get ref() { return this.dialogRef(); }
+
   shops: Signal<Shop[]> = computed(() => {
     return this.shopStore
       .filterByItemName(this.data.product)
@@ -31,26 +37,12 @@ export class ShopPickerComponent {
       .sort((a, b) => a.minPrice - b.minPrice);
   });
 
-  constructor(public ref: DialogRef<number | null, ShopPickerComponent>) {}
-
   close() {
     this.ref.close(null);
   }
 
   pickPrice(price: number) {
     this.ref.close(price);
-  }
-
-  static config(
-    data: DialogData,
-  ): Partial<DialogConfig<DialogData, DialogRef<number | null, ShopPickerComponent>>> {
-    return {
-      data,
-      disableClose: true,
-      width: '800px',
-      maxWidth: 'calc(100vw - 32px)',
-      id: 'shop-dialog-' + data.product,
-    };
   }
 
   protected readonly of = of;

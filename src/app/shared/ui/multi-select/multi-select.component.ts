@@ -3,12 +3,11 @@ import {
   Component,
   computed,
   ElementRef,
+  inject,
   input,
   model,
   signal,
-  viewChild,
 } from '@angular/core';
-import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { SlicePipe } from '@angular/common';
 import { Listbox, Option } from '@angular/aria/listbox';
 
@@ -16,10 +15,11 @@ import { cn } from '../cn';
 
 @Component({
   selector: 'app-multi-select',
-  imports: [CdkOverlayOrigin, CdkConnectedOverlay, SlicePipe, Listbox, Option],
+  imports: [SlicePipe, Listbox, Option],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '(document:click)': 'onDocumentClick($event)' },
   styles: `
-    :host { display: block; }
+    :host { display: block; position: relative; }
     [ngOption][data-active='true'] { background-color: oklch(from var(--color-base-content) l c h / 0.1); }
     [ngOption][aria-selected='true'] { background-color: oklch(from var(--color-primary) l c h / 0.15); }
     .select-panel { scrollbar-width: thin; scrollbar-color: oklch(from var(--color-base-content) l c h / 0.2) transparent; }
@@ -27,8 +27,6 @@ import { cn } from '../cn';
   template: `
     <div
       #trigger
-      cdkOverlayOrigin
-      #overlayOrigin="cdkOverlayOrigin"
       (click)="toggle()"
       [class]="triggerClass()"
       role="combobox"
@@ -60,14 +58,8 @@ import { cn } from '../cn';
       </svg>
     </div>
 
-    <ng-template
-      cdkConnectedOverlay
-      [cdkConnectedOverlayOrigin]="overlayOrigin"
-      [cdkConnectedOverlayOpen]="isOpen()"
-      [cdkConnectedOverlayWidth]="triggerWidth()"
-      (overlayOutsideClick)="close()"
-    >
-      <div ngListbox multi selectionMode="explicit" class="select-panel bg-base-200 border border-base-content/15 rounded shadow-lg mt-1 max-h-60 overflow-y-auto overflow-x-hidden">
+    @if (isOpen()) {
+      <div ngListbox multi selectionMode="explicit" class="select-panel absolute left-0 right-0 z-50 bg-base-200 border border-base-content/15 rounded shadow-lg mt-1 max-h-60 overflow-y-auto overflow-x-hidden">
         @for (item of options(); track trackItem(item)) {
           <div
             ngOption
@@ -86,10 +78,12 @@ import { cn } from '../cn';
           </div>
         }
       </div>
-    </ng-template>
+    }
   `,
 })
 export class MultiSelectComponent {
+  private readonly hostEl = inject(ElementRef);
+
   readonly value = model<any[]>([]);
   readonly options = input<any[]>([]);
   readonly labelFn = input<((item: any) => string) | undefined>(undefined);
@@ -104,12 +98,6 @@ export class MultiSelectComponent {
     const track = this.trackFn();
     return new Set(this.value().map(v => track ? track(v) : v));
   });
-
-  private readonly triggerEl = viewChild<ElementRef<HTMLElement>>('trigger');
-
-  protected readonly triggerWidth = computed(() =>
-    this.triggerEl()?.nativeElement.offsetWidth ?? 0,
-  );
 
   readonly triggerClass = computed(() =>
     cn(
@@ -169,6 +157,12 @@ export class MultiSelectComponent {
       'w-4 h-4 rounded border flex items-center justify-center shrink-0',
       this.isSelected(item) ? 'bg-primary border-primary' : 'border-base-content/30',
     );
+  }
+
+  onDocumentClick(event: Event): void {
+    if (this.isOpen() && !this.hostEl.nativeElement.contains(event.target as Node)) {
+      this.close();
+    }
   }
 
   private removeFromValue(item: any): void {
