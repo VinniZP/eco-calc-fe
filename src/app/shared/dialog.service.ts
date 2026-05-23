@@ -29,15 +29,10 @@ export class DialogService {
     }
 
     const dialog = document.createElement('dialog');
+    dialog.classList.add('app-dialog');
     if (config.id) dialog.id = config.id;
-    Object.assign(dialog.style, {
-      width: config.width ?? '',
-      maxWidth: config.maxWidth ?? '',
-      padding: '0',
-      border: 'none',
-      background: 'transparent',
-      overflow: 'visible',
-    });
+    if (config.width) dialog.style.width = config.width;
+    if (config.maxWidth) dialog.style.maxWidth = config.maxWidth;
     document.body.appendChild(dialog);
 
     let resolveClose!: (value: R | undefined) => void;

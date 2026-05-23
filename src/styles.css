@@ -46,6 +46,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+dialog.app-dialog {
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
+}
+dialog.app-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+}
+
 /* Active nav link indicator */
 .btn-active {
   color: var(--color-primary) !important;
