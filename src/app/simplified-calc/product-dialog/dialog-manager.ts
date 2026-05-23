@@ -9,8 +9,6 @@ export function productDialogManager() {
       return dialog.open(ProductDialogComponent, {
         data: { product },
         id: 'product-dialog-' + product,
-        width: '100%',
-        maxWidth: 'calc(100vw - 32px)',
       });
     },
   };
