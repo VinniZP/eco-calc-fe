@@ -39,11 +39,11 @@ const levelMap: Record<number, number> = {
 
 const moduleReduce: Record<number, number> = {
   0: 1,
-  1: 0.9,
-  2: 0.75,
-  3: 0.6,
-  4: 0.55,
-  5: 0.5,
+  1: 0.95,
+  2: 0.9,
+  3: 0.85,
+  4: 0.8,
+  5: 0.75,
 };
 
 const normalizeDecimal = (value: number) => {
