@@ -29,7 +29,6 @@ export class DialogService {
     }
 
     const dialog = document.createElement('dialog');
-    dialog.classList.add('app-dialog');
     if (config.id) dialog.id = config.id;
     if (config.width) dialog.style.width = config.width;
     if (config.maxWidth) dialog.style.maxWidth = config.maxWidth;
