@@ -11,6 +11,7 @@ import { ButtonDirective } from './shared/ui/button/button.directive';
 import { LoadingComponent } from './shared/ui/loading/loading.component';
 import { NavbarComponent } from './shared/ui/navbar/navbar.component';
 import { ToastService } from './shared/toast.service';
+import { APP_VERSION } from './version';
 
 @Component({
     selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
   userConfigStore = inject(UserConfigStore);
   toastService = inject(ToastService);
   loadingState = signal(true);
+  readonly version = APP_VERSION;
 
   constructor() {
     effect(() => {

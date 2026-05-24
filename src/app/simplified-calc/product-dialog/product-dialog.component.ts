@@ -58,7 +58,6 @@ export class ProductDialogComponent implements OnInit {
     return {
       data,
       disableClose: true,
-      width: '100%',
       maxWidth: 'calc(100vw - 32px)',
       id: 'product-dialog-' + data.product,
     };
