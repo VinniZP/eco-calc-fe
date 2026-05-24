@@ -1,9 +1,9 @@
+import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { SlicePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
 import { UserConfigStore } from '../../data/config';
 import { Recipe, RecipesStore } from '../../data/recipes';
-import { DialogRef } from '../../shared/dialog.service';
 import { BadgeDirective } from '../../shared/ui/badge/badge.directive';
 import { ButtonDirective } from '../../shared/ui/button/button.directive';
 import { SelectOptionDirective } from '../../shared/ui/select/select-option.directive';
@@ -34,22 +34,14 @@ interface DialogData {
 export class ProductDialogComponent implements OnInit {
   userConfigStore = inject(UserConfigStore);
   recipesStore = inject(RecipesStore);
-
-  dialogData = input.required<DialogData>();
-  dialogRef = input.required<DialogRef<void>>();
-
-  get data() { return this.dialogData(); }
-  get ref() { return this.dialogRef(); }
-
-  recipes: Recipe[] = [];
-  usedIn: string[] = [];
+  data = inject<DialogData>(DIALOG_DATA);
+  ref = inject(DialogRef);
+  recipes: Recipe[] = this.recipesStore.getRecipesForProduct(this.data.product);
+  usedIn: string[] = this.recipesStore.usedInProducts(this.data.product);
   showEnd = 5;
   selectedRecipe = signal<Recipe | null>(null);
 
   ngOnInit() {
-    this.recipes = this.recipesStore.getRecipesForProduct(this.data.product);
-    this.usedIn = this.recipesStore.usedInProducts(this.data.product);
-
     const recipeName = this.userConfigStore.getProductSettings(this.data.product)?.recipeName;
     const recipe = this.recipes.find((r) => r.name === recipeName);
     if (recipe) {
@@ -58,6 +50,18 @@ export class ProductDialogComponent implements OnInit {
     if (!recipeName && this.recipes.length === 1) {
       this.selectedRecipe.set(this.recipes[0]);
     }
+  }
+
+  static config(
+    data: DialogData,
+  ): Partial<DialogConfig<DialogData, DialogRef<void, ProductDialogComponent>>> {
+    return {
+      data,
+      disableClose: true,
+      width: '100%',
+      maxWidth: 'calc(100vw - 32px)',
+      id: 'product-dialog-' + data.product,
+    };
   }
 
   trackById = (r: Recipe) => r.id;

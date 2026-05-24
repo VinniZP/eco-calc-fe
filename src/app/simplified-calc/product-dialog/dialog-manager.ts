@@ -1,15 +1,16 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { inject } from '@angular/core';
-import { DialogService } from '../../shared/dialog.service';
 import { ProductDialogComponent } from './product-dialog.component';
 
 export function productDialogManager() {
-  const dialog = inject(DialogService);
+  const dialog = inject(Dialog);
   return {
     open: (product: string) => {
-      return dialog.open(ProductDialogComponent, {
-        data: { product },
-        id: 'product-dialog-' + product,
-      });
+      const dialogById = dialog.getDialogById('product-dialog-' + product);
+      if (dialogById) {
+        return dialogById;
+      }
+      return dialog.open(ProductDialogComponent, ProductDialogComponent.config({ product }));
     },
   };
 }
