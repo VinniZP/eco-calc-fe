@@ -18,7 +18,7 @@ interface DialogData {
 @Component({
     selector: 'app-product-dialog',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { class: 'block bg-base-100 w-[min(95vw,1280px)] max-h-[95vh] overflow-y-auto rounded-xl border border-base-content/[0.08] shadow-2xl shadow-black/40' },
+    host: { class: 'block bg-base-100 w-[min(95vw,1280px)] min-h-[300px] max-h-[95vh] overflow-y-auto rounded-xl border border-base-content/[0.08] shadow-2xl shadow-black/40' },
     imports: [
         SelectComponent,
         SelectOptionDirective,
