@@ -30,6 +30,17 @@ import { SelectOptionDirective } from './select-option.directive';
   host: { '(document:click)': 'onDocumentClick($event)' },
   styles: `
     :host { display: block; position: relative; }
+    .select-dropdown {
+      background-color: oklch(from var(--color-base-100) calc(l + 0.05) c h);
+      border-color: oklch(from var(--color-base-content) l c h / 0.25);
+      color: var(--color-base-content);
+    }
+    .select-search {
+      background-color: oklch(from var(--color-base-100) calc(l - 0.04) c h);
+      border-color: oklch(from var(--color-base-content) l c h / 0.15);
+      color: var(--color-base-content);
+    }
+    .select-search::placeholder { color: oklch(from var(--color-base-content) l c h / 0.45); }
     [ngOption][data-active='true'] { background-color: oklch(from var(--color-base-content) l c h / 0.1); }
     [ngOption][aria-selected='true'] { background-color: oklch(from var(--color-primary) l c h / 0.2); color: var(--color-primary); }
     .select-panel { scrollbar-width: thin; scrollbar-color: oklch(from var(--color-base-content) l c h / 0.2) transparent; }
@@ -77,7 +88,7 @@ import { SelectOptionDirective } from './select-option.directive';
     </div>
 
     @if (isOpen()) {
-      <div class="absolute left-0 right-0 z-50 bg-base-200 border border-base-content/15 rounded shadow-lg mt-1 overflow-hidden">
+      <div class="select-dropdown absolute left-0 right-0 z-50 border rounded shadow-xl shadow-black/40 mt-1 overflow-hidden">
         @if (searchable()) {
           <input
             #searchInput
@@ -86,7 +97,7 @@ import { SelectOptionDirective } from './select-option.directive';
             (input)="onSearchInput($event)"
             (keydown)="onPanelKeydown($event)"
             placeholder="Поиск..."
-            class="w-full bg-base-300 border-b border-base-content/15 px-3 py-2 text-sm text-base-content focus:outline-none"
+            class="select-search w-full border-b px-3 py-2 text-sm text-base-content focus:outline-none"
           />
         }
 

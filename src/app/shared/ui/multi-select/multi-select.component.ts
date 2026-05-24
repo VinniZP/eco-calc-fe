@@ -20,6 +20,11 @@ import { cn } from '../cn';
   host: { '(document:click)': 'onDocumentClick($event)' },
   styles: `
     :host { display: block; position: relative; }
+    .select-dropdown {
+      background-color: oklch(from var(--color-base-100) calc(l + 0.05) c h);
+      border-color: oklch(from var(--color-base-content) l c h / 0.25);
+      color: var(--color-base-content);
+    }
     [ngOption][data-active='true'] { background-color: oklch(from var(--color-base-content) l c h / 0.1); }
     [ngOption][aria-selected='true'] { background-color: oklch(from var(--color-primary) l c h / 0.15); }
     .select-panel { scrollbar-width: thin; scrollbar-color: oklch(from var(--color-base-content) l c h / 0.2) transparent; }
@@ -59,7 +64,7 @@ import { cn } from '../cn';
     </div>
 
     @if (isOpen()) {
-      <div ngListbox multi selectionMode="explicit" class="select-panel absolute left-0 right-0 z-50 bg-base-200 border border-base-content/15 rounded shadow-lg mt-1 max-h-60 overflow-y-auto overflow-x-hidden">
+      <div ngListbox multi selectionMode="explicit" class="select-dropdown select-panel absolute left-0 right-0 z-50 border rounded shadow-xl shadow-black/40 mt-1 max-h-60 overflow-y-auto overflow-x-hidden">
         @for (item of options(); track trackItem(item)) {
           <div
             ngOption
